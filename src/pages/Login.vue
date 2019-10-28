@@ -53,7 +53,7 @@ export default {
 			}
 			return !this.isAddressValid();
 		},
-	}
+	},
 }
 </script>
 

@@ -10,12 +10,12 @@ Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/login', component: Login },
-	{ path: '/', component: Main }
+	{ path: '/', component: Main },
 ];
 
 const router = new VueRouter({
 	mode: 'history',
-	routes
+	routes,
 });
 
 const app = new Vue({
