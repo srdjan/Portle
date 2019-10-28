@@ -10,7 +10,13 @@
 				<button @click="logout()" id="logout-button">Logout</button>
 			</div>
 		</header>
-		<router-view/>
+		<main>
+			<aside></aside>
+			<section>
+				<router-view/>
+			</section>
+			<aside></aside>
+		</main>
 	</div>
 </template>
 
