@@ -17,7 +17,7 @@
 export default {
 	data() {
 		return {
-			address: '',
+			address: null,
 		}
 	},
 	mounted() {
