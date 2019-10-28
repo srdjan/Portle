@@ -1,3 +1,7 @@
+[build]
+	publish = "dist/"
+	command = "webpack"
+
 # SPA setup
 [[redirects]]
 	from = "/*"
