@@ -1,13 +1,55 @@
 <template>
 	<div id="app">
+		<header v-if="showNavigation()">
+			<div class="header-part" @click="openHomePage()">
+				<img id="logo" :src="logo">
+				<h1 id="title">Portle</h1>
+			</div>
+			<div class="header-part">
+				<span>{{ formatAddress() }}</span>
+				<button @click="logout()" id="logout-button">Logout</button>
+			</div>
+		</header>
 		<router-view/>
 	</div>
 </template>
 
 <script>
 import favicon from '../public/favicon.ico';
+import logo from '../public/img/logo.svg';
 
-export default {}
+export default {
+	methods: {
+		showNavigation() {
+			const path = this.$route.path;
+			if (path == '/login') {
+				return false;
+			}
+			return true;
+		},
+		openHomePage() {
+			this.$router.push('/');
+		},
+		logout() {
+			localStorage.removeItem('address');
+			localStorage.removeItem('auth');
+			this.$router.push('/login');
+		},
+		formatAddress() {
+			const address = localStorage.getItem('address');
+			if (!address) {
+				return '';
+			}
+			const ellipsizedAddress = `${address.substr(0, 6)}…${address.substr(38)}`;
+			return ellipsizedAddress;
+		},
+	},
+	computed: {
+		logo() {
+			return logo;
+		},
+	},
+}
 </script>
 
 <style>
@@ -262,6 +304,10 @@ input.invalid {
 h1#title {
 	margin-left: 0.5em;
 	cursor: default;
+}
+
+#logo {
+	height: 32px;
 }
 
 #logout-button {
