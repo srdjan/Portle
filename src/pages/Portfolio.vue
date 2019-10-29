@@ -13,8 +13,6 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
-import tokens from '../data/tokens.json';
-import decimals from '../data/decimals.json';
 import addresses from '../data/addresses.json';
 
 import TotalBalance from '../components/TotalBalance.vue';
@@ -72,7 +70,7 @@ export default {
 				const id = tokenData.tokenInfo.symbol.toLowerCase();
 				const address = tokenData.tokenInfo.address;
 				const price = tokenData.tokenInfo.price;
-				const tickerAddress = this.addresses[id];
+				const tickerAddress = addresses[id];
 				if (!tickerAddress || (address != tickerAddress.toLowerCase())) {
 					continue;
 				}
@@ -99,17 +97,6 @@ export default {
 			}
 		},
 	},
-	computed: {
-		tokens() {
-			return tokens;
-		},
-		decimals() {
-			return decimals;
-		},
-		addresses() {
-			return addresses;
-		},
-	}
 }
 </script>
 

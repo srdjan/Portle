@@ -7,7 +7,6 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import tokens from '../data/tokens.json';
 import decimals from '../data/decimals.json';
 
 export default {
@@ -17,10 +16,10 @@ export default {
 			if (!balance) {
 				return new BigNumber(0);
 			}
-			const decimals = this.decimals[ticker];
+			const decimal = decimals[ticker];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimals);
+			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
 			return shortBalance;
 		},
@@ -49,12 +48,6 @@ export default {
 				assetValue = assetValue.plus(value);
 			}
 			return assetValue;
-		},
-		tokens() {
-			return tokens;
-		},
-		decimals() {
-			return decimals;
 		},
 	},
 }

@@ -26,10 +26,10 @@ export default {
 		},
 		getAmount(ticker) {
 			const balance = this.balances[ticker];
-			const decimals = this.decimals[ticker];
+			const decimal = decimals[ticker];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimals);
+			const decimalNumber = ten.pow(decimal);
 			const amount = balanceNumber.div(decimalNumber);
 			return amount;
 		},
@@ -48,21 +48,12 @@ export default {
 		},
 	},
 	computed: {
-		tickers() {
-			return tickers;
-		},
-		tokens() {
-			return tokens;
-		},
-		decimals() {
-			return decimals;
-		},
 		assets() {
 			const assets = [];
 			for (const id in this.balances) {
 				const asset = {
-					ticker: this.tickers[id],
-					title: this.tokens[id],
+					ticker: tickers[id],
+					title: tokens[id],
 					amount: new BigNumber(this.getAmount(id)),
 					price: new BigNumber(this.prices[id]),
 					value: new BigNumber(this.getValue(id)),
