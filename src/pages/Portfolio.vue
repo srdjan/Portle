@@ -14,6 +14,7 @@ import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
 import addresses from '../data/addresses.json';
+import coinIds from '../data/coin-ids.json';
 
 import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
@@ -80,20 +81,17 @@ export default {
 			}
 		},
 		async loadPrices() {
-			const coinIdMap = {
-				'dai': 'dai',
-				'usdc': 'usd-coin',
-				'eth': 'ethereum',
-			};
-			const coinIds = Object.values(coinIdMap);
-			const coinIdString = coinIds.join('%2C');
-			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinIdString}&vs_currencies=usd`;
+			const assets = ['dai', 'usdc', 'eth'];
+			const assetIds = assets.map((asset) => coinIds[asset]);
+			const assetIdString = assetIds.join('%2C');
+			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
  			const response = await fetch(url);
 			const prices = await response.json();
-			for (const ticker in coinIdMap) {
-				const coinId = coinIdMap[ticker];
+			for (let i = 0; i < assets.length; i++) {
+				const id = assets[i];
+				const coinId = assetIds[i];
 				const price = prices[coinId].usd;
-				Vue.set(this.prices, ticker, price);
+				Vue.set(this.prices, id, price);
 			}
 		},
 	},
