@@ -24,19 +24,19 @@ export default {
 		isShown(asset) {
 			return asset.value.gt(1);
 		},
-		getAmount(ticker) {
-			const balance = this.balances[ticker];
-			const decimal = decimals[ticker];
+		getAmount(id) {
+			const balance = this.balances[id];
+			const decimal = decimals[id];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const amount = balanceNumber.div(decimalNumber);
 			return amount;
 		},
-		getValue(ticker) {
-			const price = this.prices[ticker];
+		getValue(id) {
+			const price = this.prices[id];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getAmount(ticker);
+			const balance = this.getAmount(id);
 			const value = priceNumber.times(balance);
 			return value;
 		},

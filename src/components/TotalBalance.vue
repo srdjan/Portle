@@ -12,21 +12,21 @@ import decimals from '../data/decimals.json';
 export default {
 	props: [ 'balances', 'prices' ],
 	methods: {
-		getShortBalance(balance, ticker) {
+		getShortBalance(balance, id) {
 			if (!balance) {
 				return new BigNumber(0);
 			}
-			const decimal = decimals[ticker];
+			const decimal = decimals[id];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
 			return shortBalance;
 		},
-		getValue(balance, ticker) {
-			const price = this.prices[ticker] || '0';
+		getValue(balance, id) {
+			const price = this.prices[id] || '0';
 			const priceNumber = new BigNumber(price);
-			const shortBalance = this.getShortBalance(balance, ticker);
+			const shortBalance = this.getShortBalance(balance, id);
 			const value = priceNumber.times(shortBalance);
 			return value;
 		},
@@ -42,9 +42,9 @@ export default {
 		},
 		assetValue() {
 			let assetValue = new BigNumber(0);
-			for (const ticker in this.balances) {
-				const balance = this.balances[ticker];
-				const value = this.getValue(balance, ticker);
+			for (const id in this.balances) {
+				const balance = this.balances[id];
+				const value = this.getValue(balance, id);
 				assetValue = assetValue.plus(value);
 			}
 			return assetValue;
