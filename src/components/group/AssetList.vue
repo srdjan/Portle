@@ -14,6 +14,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import tickers from '../../data/tickers.json';
 import tokens from '../../data/tokens.json';
 import decimals from '../../data/decimals.json';
 
@@ -47,6 +48,9 @@ export default {
 		},
 	},
 	computed: {
+		tickers() {
+			return tickers;
+		},
 		tokens() {
 			return tokens;
 		},
@@ -55,13 +59,13 @@ export default {
 		},
 		assets() {
 			const assets = [];
-			for (const ticker in this.balances) {
+			for (const id in this.balances) {
 				const asset = {
-					ticker,
-					title: this.tokens[ticker],
-					amount: new BigNumber(this.getAmount(ticker)),
-					price: new BigNumber(this.prices[ticker]),
-					value: new BigNumber(this.getValue(ticker)),
+					ticker: this.tickers[id],
+					title: this.tokens[id],
+					amount: new BigNumber(this.getAmount(id)),
+					price: new BigNumber(this.prices[id]),
+					value: new BigNumber(this.getValue(id)),
 				};
 				assets.push(asset);
 			}

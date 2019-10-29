@@ -63,29 +63,29 @@ export default {
 			const ten = new BigNumber(10);
 			const etherMultiplier = ten.pow(18);
 			const etherBalanceInWei = etherBalanceNumber.times(etherMultiplier);
-			Vue.set(this.balances, 'ETH', etherBalanceInWei.toString());
+			Vue.set(this.balances, 'eth', etherBalanceInWei.toString());
 			// ERC20
 			if (!balance.tokens) {
 				return;
 			}
 			for (const tokenData of balance.tokens) {
-				const ticker = tokenData.tokenInfo.symbol;
+				const id = tokenData.tokenInfo.symbol.toLowerCase();
 				const address = tokenData.tokenInfo.address;
 				const price = tokenData.tokenInfo.price;
-				const tickerAddress = this.addresses[ticker];
+				const tickerAddress = this.addresses[id];
 				if (!tickerAddress || (address != tickerAddress.toLowerCase())) {
 					continue;
 				}
 				const balance = tokenData.balance.toString();
-				Vue.set(this.balances, ticker, balance);
-				Vue.set(this.prices, ticker, price.rate);
+				Vue.set(this.balances, id, balance);
+				Vue.set(this.prices, id, price.rate);
 			}
 		},
 		async loadPrices() {
 			const coinIdMap = {
-				'DAI': 'dai',
-				'USDC': 'usd-coin',
-				'ETH': 'ethereum',
+				'dai': 'dai',
+				'usdc': 'usd-coin',
+				'eth': 'ethereum',
 			};
 			const coinIds = Object.values(coinIdMap);
 			const coinIdString = coinIds.join('%2C');
