@@ -1,6 +1,6 @@
 <template>
 	<div id="list">
-		<div class="card" v-for="asset in assets" v-if="isShown(asset)">
+		<div class="card" v-for="asset in assets" v-if="isShown(asset)" @click="openAsset(asset)">
 			<div class="amount">{{ formatAmount(asset.amount) }} {{ asset.ticker }}</div>
 			<div class="description">{{ asset.title }}</div>
 			<div class="price-value sparse">
@@ -21,6 +21,11 @@ import decimals from '../../data/decimals.json';
 export default {
 	props: [ 'balances', 'prices' ],
 	methods: {
+		openAsset(asset) {
+			const id = asset.ticker.toLowerCase();
+			const path = `/asset/${id}`;
+			this.$router.push(path);
+		},
 		isShown(asset) {
 			return asset.value.gt(1);
 		},
