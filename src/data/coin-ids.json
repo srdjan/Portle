@@ -1,0 +1,20 @@
+{
+	"eth": "ethereum",
+	"weth": "weth",
+	"dai": "dai",
+	"usdc": "usd-coin",
+	"knc": "kyber-network",
+	"snx": "havven",
+	"wbtc": "wrapped-bitcoin",
+	"mkr": "maker",
+	"zrx": "0x",
+	"mana": "decentraland",
+	"rep": "augur",
+	"bat": "basic-attention-token",
+	"link": "chainlink",
+	"omg": "omisego",
+	"aoa": "aurora",
+	"amb": "amber",
+	"erc20": "erc20",
+	"seth": "seth"
+}
