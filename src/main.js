@@ -6,11 +6,15 @@ import App from './App.vue';
 import Login from './pages/Login.vue';
 import Portfolio from './pages/Portfolio.vue';
 
+import Asset from './pages/view/Asset.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
 	{ path: '/login', component: Login },
 	{ path: '/', component: Portfolio },
+
+	{ path: '/asset/:id', component: Asset },
 ];
 
 const router = new VueRouter({
