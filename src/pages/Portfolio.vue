@@ -37,8 +37,8 @@ export default {
 			this.$router.push('/login');
 			return;
 		}
-		this.loadBalances();
 		this.loadPrices();
+		this.loadBalances();
 	},
 	methods: {
 		loadAccount() {
