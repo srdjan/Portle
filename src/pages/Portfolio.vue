@@ -5,6 +5,10 @@
 			<h2>Assets</h2>
 		</div>
 		<AssetList :balances="balances" :prices="prices"/>
+		<div class="header">
+			<h2>Deposits</h2>
+		</div>
+		<DepositList :balances="depositBalances" :prices="prices" :rates="rates"/>
 	</div>
 </template>
 
@@ -18,11 +22,13 @@ import coinIds from '../data/coin-ids.json';
 
 import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
+import DepositList from '../components/group/DepositList.vue';
 
 export default {
 	components: {
 		TotalBalance,
 		AssetList,
+		DepositList,
 	},
 	data() {
 		return {
