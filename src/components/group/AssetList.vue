@@ -27,28 +27,31 @@ export default {
 			this.$router.push(path);
 		},
 		isShown(asset) {
-			return asset.value.gt(1);
+			const value = new BigNumber(asset.value);
+			return value.gt(1);
 		},
-		getAmount(id) {
+		getAmountString(id) {
 			const balance = this.balances[id];
 			const decimal = decimals[id];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const amount = balanceNumber.div(decimalNumber);
-			return amount;
+			return amount.toString();
 		},
-		getValue(id) {
+		getValueString(id) {
 			const price = this.prices[id];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getAmount(id);
+			const balance = this.getAmountString(id);
 			const value = priceNumber.times(balance);
-			return value;
+			return value.toString();
 		},
-		formatAmount(amount) {
+		formatAmount(amountString) {
+			const amount = new BigNumber(amountString);
 			return `${amount.toFixed(2)}`;
 		},
-		formatMoney(price) {
+		formatMoney(priceString) {
+			const price = new BigNumber(priceString);
 			return `$${price.toFixed(2)}`;
 		},
 	},
@@ -59,16 +62,18 @@ export default {
 				const asset = {
 					ticker: tickers[id],
 					title: tokens[id],
-					amount: new BigNumber(this.getAmount(id)),
-					price: new BigNumber(this.prices[id]),
-					value: new BigNumber(this.getValue(id)),
+					amount: this.getAmountString(id),
+					price: this.prices[id],
+					value: this.getValueString(id),
 				};
 				assets.push(asset);
 			}
 			assets.sort((a, b) => {
-				return a.value.lt(b.value)
+				const aValue = new BigNumber(a.value);
+				const bValue = new BigNumber(b.value);
+				return aValue.lt(bValue)
 					? 1
-					: a.value.gt(b.value)
+					: aValue.gt(bValue)
 						? -1
 						: 0;
 			})
