@@ -208,7 +208,7 @@ export default {
 			}
 		},
 		async loadPrices() {
-			const assets = ['dai', 'usdc', 'eth'];
+			const assets = ['dai', 'usdc', 'eth', 'seth'];
 			const assetIds = assets.map((asset) => coinIds[asset]);
 			const assetIdString = assetIds.join('%2C');
 			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
