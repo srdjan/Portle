@@ -1,6 +1,6 @@
 <template>
 	<div id="view">
-		<TotalBalance :balances="balances" :prices="prices"/>
+		<TotalBalance :balances="balances" :deposits="depositBalances" :prices="prices"/>
 		<div class="header">
 			<h2>Assets</h2>
 		</div>

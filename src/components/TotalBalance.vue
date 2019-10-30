@@ -10,7 +10,7 @@ import BigNumber from 'bignumber.js';
 import decimals from '../data/decimals.json';
 
 export default {
-	props: [ 'balances', 'prices' ],
+	props: [ 'balances', 'deposits', 'prices' ],
 	methods: {
 		getShortBalance(balance, id) {
 			if (!balance) {
@@ -37,7 +37,8 @@ export default {
 	},
 	computed: {
 		totalBalance() {
-			const balance = this.assetValue;
+			const balance = this.assetValue
+				.plus(this.depositValue);
 			return balance;
 		},
 		assetValue() {
@@ -48,6 +49,17 @@ export default {
 				assetValue = assetValue.plus(value);
 			}
 			return assetValue;
+		},
+		depositValue() {
+			let depositValue = new BigNumber(0);
+			for (const platform in this.deposits) {
+				for (const id in this.deposits[platform]) {
+					const balance = this.deposits[platform][id];
+					const value = this.getValue(balance, id);
+					depositValue = depositValue.plus(value);
+				}
+			}
+			return depositValue;
 		},
 	},
 }
