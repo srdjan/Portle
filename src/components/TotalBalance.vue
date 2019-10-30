@@ -10,7 +10,7 @@ import BigNumber from 'bignumber.js';
 import decimals from '../data/decimals.json';
 
 export default {
-	props: [ 'balances', 'deposits', 'prices' ],
+	props: [ 'assets', 'deposits', 'prices' ],
 	methods: {
 		getShortBalance(balance, id) {
 			if (!balance) {
@@ -43,8 +43,8 @@ export default {
 		},
 		assetValue() {
 			let assetValue = new BigNumber(0);
-			for (const id in this.balances) {
-				const balance = this.balances[id];
+			for (const id in this.assets) {
+				const balance = this.assets[id];
 				const value = this.getValue(balance, id);
 				assetValue = assetValue.plus(value);
 			}

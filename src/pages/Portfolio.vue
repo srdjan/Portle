@@ -1,10 +1,10 @@
 <template>
 	<div id="view">
-		<TotalBalance :balances="balances" :deposits="depositBalances" :prices="prices"/>
+		<TotalBalance :assets="assetBalances" :deposits="depositBalances" :prices="prices"/>
 		<div class="header">
 			<h2>Assets</h2>
 		</div>
-		<AssetList :balances="balances" :prices="prices"/>
+		<AssetList :balances="assetBalances" :prices="prices"/>
 		<div class="header">
 			<h2>Deposits</h2>
 		</div>
@@ -33,7 +33,7 @@ export default {
 	data() {
 		return {
 			account: null,
-			balances: {},
+			assetBalances: {},
 			depositBalances: {
 				Compound: {},
 				Fulcrum: {},
@@ -84,7 +84,7 @@ export default {
 			const ten = new BigNumber(10);
 			const etherMultiplier = ten.pow(18);
 			const etherBalanceInWei = etherBalanceNumber.times(etherMultiplier);
-			Vue.set(this.balances, 'eth', etherBalanceInWei.toString());
+			Vue.set(this.assetBalances, 'eth', etherBalanceInWei.toString());
 			// ERC20
 			if (!balance.tokens) {
 				return;
@@ -98,7 +98,7 @@ export default {
 					continue;
 				}
 				const balance = tokenData.balance.toString();
-				Vue.set(this.balances, id, balance);
+				Vue.set(this.assetBalances, id, balance);
 				Vue.set(this.prices, id, price.rate);
 			}
 		},
