@@ -1,6 +1,6 @@
 <template>
 	<div id="list">
-		<div class="card" v-for="deposit in deposits" v-if="isValuePositive(deposit)" @click="openDeposit(deposit)">
+		<div class="card" v-for="deposit in deposits" v-if="isShown(deposit)" @click="openDeposit(deposit)">
 			<div class="balance">{{ formatAmount(deposit.amount) }} {{ deposit.ticker }}</div>
 			<div class="platform sparse">
 				<div>{{ formatPlatform(deposit.platformId) }}</div>
@@ -29,7 +29,7 @@ export default {
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
 		},
-		isValuePositive(deposit) {
+		isShown(deposit) {
 			const value = new BigNumber(deposit.value);
 			return value.gt(0);
 		},
