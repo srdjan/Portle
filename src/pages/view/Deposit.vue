@@ -39,6 +39,26 @@ export default {
 		this._loadDeposit();
 	},
 	methods: {
+		formatPlatform(platformId) {
+			const platformMap = {
+				'compound': 'Compound',
+				'fulcrum': 'Fulcrum',
+			};
+			const platform = platformMap[platformId];
+			return platform;
+		},
+		formatAmount(amountString) {
+			const amount = new BigNumber(amountString);
+			return `${amount.toFixed(2)}`;
+		},
+		formatMoney(priceString) {
+			const price = new BigNumber(priceString);
+			return `$${price.toFixed(2)}`;
+		},
+		formatRate(rateString) {
+			const rate = new BigNumber(rateString);
+			return `${rate.times(100).toFixed(2)}%`;
+		},
 		_loadAccount() {
 			const address = localStorage.getItem('address');
 			const auth = localStorage.getItem('auth') == 'true';
@@ -184,26 +204,6 @@ export default {
 				const rate = rateNumber.toString();
 				this.rate = rate;
 			}
-		},
-		formatPlatform(platformId) {
-			const platformMap = {
-				'compound': 'Compound',
-				'fulcrum': 'Fulcrum',
-			};
-			const platform = platformMap[platformId];
-			return platform;
-		},
-		formatAmount(amountString) {
-			const amount = new BigNumber(amountString);
-			return `${amount.toFixed(2)}`;
-		},
-		formatMoney(priceString) {
-			const price = new BigNumber(priceString);
-			return `$${price.toFixed(2)}`;
-		},
-		formatRate(rateString) {
-			const rate = new BigNumber(rateString);
-			return `${rate.times(100).toFixed(2)}%`;
 		},
 	},
 	computed: {

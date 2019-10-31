@@ -12,6 +12,10 @@ import decimals from '../data/decimals.json';
 export default {
 	props: [ 'assets', 'deposits', 'prices' ],
 	methods: {
+		formatMoney(moneyString) {
+			const money = new BigNumber(moneyString);
+			return `$${money.toFixed(2)}`;
+		},
 		_getAmountString(balanceString, assetId) {
 			if (!balanceString) {
 				return new BigNumber(0);
@@ -29,10 +33,6 @@ export default {
 			const amount = this._getAmountString(balanceString, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
-		},
-		formatMoney(moneyString) {
-			const money = new BigNumber(moneyString);
-			return `$${money.toFixed(2)}`;
 		},
 	},
 	computed: {

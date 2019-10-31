@@ -30,6 +30,14 @@ export default {
 			const value = new BigNumber(asset.value);
 			return value.gt(1);
 		},
+		formatAmount(amountString) {
+			const amount = new BigNumber(amountString);
+			return `${amount.toFixed(2)}`;
+		},
+		formatMoney(priceString) {
+			const price = new BigNumber(priceString);
+			return `$${price.toFixed(2)}`;
+		},
 		_getAmountString(assetId) {
 			const balance = this.balances[assetId];
 			const decimal = decimals[assetId];
@@ -45,14 +53,6 @@ export default {
 			const amount = this._getAmountString(assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
-		},
-		formatAmount(amountString) {
-			const amount = new BigNumber(amountString);
-			return `${amount.toFixed(2)}`;
-		},
-		formatMoney(priceString) {
-			const price = new BigNumber(priceString);
-			return `$${price.toFixed(2)}`;
 		},
 	},
 	computed: {

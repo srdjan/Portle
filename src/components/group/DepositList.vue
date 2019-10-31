@@ -29,21 +29,9 @@ export default {
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
 		},
-		_getAmountString(platformId, assetId) {
-			const balance = this.balances[platformId][assetId];
-			const decimal = decimals[assetId];
-			const balanceNumber = new BigNumber(balance);
-			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimal);
-			const amount = balanceNumber.div(decimalNumber);
-			return amount.toString();
-		},
-		_getValueString(platformId, assetId) {
-			const price = this.prices[assetId];
-			const priceNumber = new BigNumber(price);
-			const amount = this._getAmountString(platformId, assetId);
-			const value = priceNumber.times(amount);
-			return value.toString();
+		isValuePositive(deposit) {
+			const value = new BigNumber(deposit.value);
+			return value.gt(0);
 		},
 		formatPlatform(platformId) {
 			const platformMap = {
@@ -65,9 +53,21 @@ export default {
 			const price = new BigNumber(priceString);
 			return `$${price.toFixed(2)}`;
 		},
-		isValuePositive(deposit) {
-			const value = new BigNumber(deposit.value);
-			return value.gt(0);
+		_getAmountString(platformId, assetId) {
+			const balance = this.balances[platformId][assetId];
+			const decimal = decimals[assetId];
+			const balanceNumber = new BigNumber(balance);
+			const ten = new BigNumber(10);
+			const decimalNumber = ten.pow(decimal);
+			const amount = balanceNumber.div(decimalNumber);
+			return amount.toString();
+		},
+		_getValueString(platformId, assetId) {
+			const price = this.prices[assetId];
+			const priceNumber = new BigNumber(price);
+			const amount = this._getAmountString(platformId, assetId);
+			const value = priceNumber.times(amount);
+			return value.toString();
 		},
 	},
 	computed: {

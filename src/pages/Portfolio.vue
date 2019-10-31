@@ -74,6 +74,20 @@ export default {
 				auth,
 			};
 		},
+		async _loadPrices() {
+			const assets = ['dai', 'usdc', 'eth', 'seth'];
+			const assetIds = assets.map((asset) => coinIds[asset]);
+			const assetIdString = assetIds.join('%2C');
+			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
+ 			const response = await fetch(url);
+			const prices = await response.json();
+			for (let i = 0; i < assets.length; i++) {
+				const assetId = assets[i];
+				const coinId = assetIds[i];
+				const price = prices[coinId].usd;
+				Vue.set(this.prices, assetId, price);
+			}
+		},
 		async _loadBalances() {
 			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
 			const response = await fetch(url);
@@ -205,20 +219,6 @@ export default {
 				const borrowRate = borrowRateNumber.toString();
 				Vue.set(this.rates.supply.fulcrum, assetId, supplyRate);
 				Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
-			}
-		},
-		async _loadPrices() {
-			const assets = ['dai', 'usdc', 'eth', 'seth'];
-			const assetIds = assets.map((asset) => coinIds[asset]);
-			const assetIdString = assetIds.join('%2C');
-			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
- 			const response = await fetch(url);
-			const prices = await response.json();
-			for (let i = 0; i < assets.length; i++) {
-				const assetId = assets[i];
-				const coinId = assetIds[i];
-				const price = prices[coinId].usd;
-				Vue.set(this.prices, assetId, price);
 			}
 		},
 	},
