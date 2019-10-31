@@ -52,18 +52,18 @@ export default {
 		}
 	},
 	mounted() {
-		this.loadAccount();
+		this._loadAccount();
 		if (!this.account) {
 			this.$router.push('/login');
 			return;
 		}
-		this.loadPrices();
-		this.loadBalances();
-		this.loadCompound();
-		this.loadFulcrum();
+		this._loadPrices();
+		this._loadBalances();
+		this._loadCompound();
+		this._loadFulcrum();
 	},
 	methods: {
-		loadAccount() {
+		_loadAccount() {
 			const address = localStorage.getItem('address');
 			const auth = localStorage.getItem('auth') == 'true';
 			if (!address) {
@@ -74,7 +74,7 @@ export default {
 				auth,
 			};
 		},
-		async loadBalances() {
+		async _loadBalances() {
 			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
 			const response = await fetch(url);
 			const balance = await response.json();
@@ -102,7 +102,7 @@ export default {
 				Vue.set(this.prices, assetId, price.rate);
 			}
 		},
-		async loadCompound() {
+		async _loadCompound() {
 			const url = "https://api.thegraph.com/subgraphs/name/destiner/compound";
 			const query = `
 				query {
@@ -155,7 +155,7 @@ export default {
 				Vue.set(this.rates.borrow.compound, assetId, borrowRate);
 			}
 		},
-		async loadFulcrum() {
+		async _loadFulcrum() {
 			const url = "https://api.thegraph.com/subgraphs/name/destiner/fulcrum";
 			const query = `
 				query {
@@ -207,7 +207,7 @@ export default {
 				Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
 			}
 		},
-		async loadPrices() {
+		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'seth'];
 			const assetIds = assets.map((asset) => coinIds[asset]);
 			const assetIdString = assetIds.join('%2C');

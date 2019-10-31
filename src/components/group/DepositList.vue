@@ -29,7 +29,7 @@ export default {
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
 		},
-		getAmountString(platformId, assetId) {
+		_getAmountString(platformId, assetId) {
 			const balance = this.balances[platformId][assetId];
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(balance);
@@ -38,10 +38,10 @@ export default {
 			const amount = balanceNumber.div(decimalNumber);
 			return amount.toString();
 		},
-		getValueString(platformId, assetId) {
+		_getValueString(platformId, assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const amount = this.getAmountString(platformId, assetId);
+			const amount = this._getAmountString(platformId, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},
@@ -78,12 +78,12 @@ export default {
 				for (const assetId in platformBalances) {
 					const price = this.prices[assetId];
 					const deposit = {
-						amount: this.getAmountString(platformId, assetId),
+						amount: this._getAmountString(platformId, assetId),
 						ticker: tickers[assetId],
 						platformId,
 						price,
 						rate: this.rates.supply[platformId][assetId],
-						value: this.getValueString(platformId, assetId),
+						value: this._getValueString(platformId, assetId),
 					};
 					deposits.push(deposit);
 				}

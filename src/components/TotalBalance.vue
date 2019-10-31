@@ -12,7 +12,7 @@ import decimals from '../data/decimals.json';
 export default {
 	props: [ 'assets', 'deposits', 'prices' ],
 	methods: {
-		getAmountString(balanceString, assetId) {
+		_getAmountString(balanceString, assetId) {
 			if (!balanceString) {
 				return new BigNumber(0);
 			}
@@ -23,10 +23,10 @@ export default {
 			const amount = balanceNumber.div(decimalNumber);
 			return amount.toString();
 		},
-		getValueString(balanceString, assetId) {
+		_getValueString(balanceString, assetId) {
 			const price = this.prices[assetId] || '0';
 			const priceNumber = new BigNumber(price);
-			const amount = this.getAmountString(balanceString, assetId);
+			const amount = this._getAmountString(balanceString, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},
@@ -37,25 +37,25 @@ export default {
 	},
 	computed: {
 		totalBalance() {
-			const balance = this.assetValue
-				.plus(this.depositValue);
+			const balance = this._assetValue
+				.plus(this._depositValue);
 			return balance;
 		},
-		assetValue() {
+		_assetValue() {
 			let assetValue = new BigNumber(0);
 			for (const assetId in this.assets) {
 				const balance = this.assets[assetId];
-				const value = this.getValueString(balance, assetId);
+				const value = this._getValueString(balance, assetId);
 				assetValue = assetValue.plus(value);
 			}
 			return assetValue;
 		},
-		depositValue() {
+		_depositValue() {
 			let depositValue = new BigNumber(0);
 			for (const platformId in this.deposits) {
 				for (const assetId in this.deposits[platformId]) {
 					const balance = this.deposits[platformId][assetId];
-					const value = this.getValueString(balance, assetId);
+					const value = this._getValueString(balance, assetId);
 					depositValue = depositValue.plus(value);
 				}
 			}

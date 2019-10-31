@@ -25,17 +25,17 @@ export default {
 		}
 	},
 	mounted() {
-		this.loadAccount();
+		this._loadAccount();
 		if (!this.account) {
 			this.$router.push('/login');
 			return;
 		}
 		this.assetId = this.$route.params.assetId;
-		this.loadPrice();
-		this.loadBalance();
+		this._loadPrice();
+		this._loadBalance();
 	},
 	methods: {
-		loadAccount() {
+		_loadAccount() {
 			const address = localStorage.getItem('address');
 			const auth = localStorage.getItem('auth') == 'true';
 			if (!address) {
@@ -46,14 +46,14 @@ export default {
 				auth,
 			};
 		},
-		async loadPrice() {
+		async _loadPrice() {
 			const coinId = coinIds[this.assetId];
 			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`;
  			const response = await fetch(url);
 			const prices = await response.json();
 			this.price = prices[coinId].usd;
 		},
-		async loadBalance() {
+		async _loadBalance() {
 			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
 			const response = await fetch(url);
 			const balance = await response.json();
@@ -80,7 +80,7 @@ export default {
 				}
 			}
 		},
-		getAmountString(assetId) {
+		_getAmountString(assetId) {
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
@@ -88,10 +88,10 @@ export default {
 			const amount = balanceNumber.div(decimalNumber);
 			return amount.toString();
 		},
-		getValueString(assetId) {
+		_getValueString(assetId) {
 			const price = this.price;
 			const priceNumber = new BigNumber(price);
-			const amount = this.getAmountString(assetId);
+			const amount = this._getAmountString(assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},
@@ -112,9 +112,9 @@ export default {
 			const asset = {
 				name: tokens[this.assetId],
 				ticker: tickers[this.assetId],
-				amount: this.getAmountString(this.assetId),
+				amount: this._getAmountString(this.assetId),
 				price: this.price,
-				value: this.getValueString(this.assetId),
+				value: this._getValueString(this.assetId),
 			};
 			return asset;
 		},

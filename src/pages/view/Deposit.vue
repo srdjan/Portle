@@ -28,18 +28,18 @@ export default {
 		}
 	},
 	mounted() {
-		this.loadAccount();
+		this._loadAccount();
 		if (!this.account) {
 			this.$router.push('/login');
 			return;
 		}
 		this.platformId = this.$route.params.platformId;
 		this.assetId = this.$route.params.assetId;
-		this.loadPrices();
-		this.loadDeposit();
+		this._loadPrices();
+		this._loadDeposit();
 	},
 	methods: {
-		loadAccount() {
+		_loadAccount() {
 			const address = localStorage.getItem('address');
 			const auth = localStorage.getItem('auth') == 'true';
 			if (!address) {
@@ -50,7 +50,7 @@ export default {
 				auth,
 			};
 		},
-		async loadPrices() {
+		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];
 			const assetIds = assets.map((asset) => coinIds[asset]);
 			const assetIdString = assetIds.join('%2C');
@@ -64,7 +64,7 @@ export default {
 				Vue.set(this.prices, assetId, price);
 			}
 		},
-		loadDeposit() {
+		_loadDeposit() {
 			if (this.platformId == 'compound') {
 				this._loadCompoundDeposit();
 			}
@@ -72,7 +72,7 @@ export default {
 				this._loadFulcrumDeposit();
 			}
 		},
-		getAmountString(assetId) {
+		_getAmountString(assetId) {
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
@@ -80,10 +80,10 @@ export default {
 			const amount = balanceNumber.div(decimalNumber);
 			return amount.toString();
 		},
-		getValueString(assetId) {
+		_getValueString(assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const amount = this.getAmountString(assetId);
+			const amount = this._getAmountString(assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},
@@ -222,10 +222,10 @@ export default {
 			const asset = {
 				platformId,
 				ticker,
-				amount: this.getAmountString(assetId),
+				amount: this._getAmountString(assetId),
 				rate,
 				price,
-				value: this.getValueString(assetId),
+				value: this._getValueString(assetId),
 			};
 			return asset;
 		},

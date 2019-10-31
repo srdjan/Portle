@@ -30,7 +30,7 @@ export default {
 			const value = new BigNumber(asset.value);
 			return value.gt(1);
 		},
-		getAmountString(assetId) {
+		_getAmountString(assetId) {
 			const balance = this.balances[assetId];
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(balance);
@@ -39,10 +39,10 @@ export default {
 			const amount = balanceNumber.div(decimalNumber);
 			return amount.toString();
 		},
-		getValueString(assetId) {
+		_getValueString(assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const amount = this.getAmountString(assetId);
+			const amount = this._getAmountString(assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},
@@ -62,9 +62,9 @@ export default {
 				const asset = {
 					ticker: tickers[assetId],
 					title: tokens[assetId],
-					amount: this.getAmountString(assetId),
+					amount: this._getAmountString(assetId),
 					price: this.prices[assetId],
-					value: this.getValueString(assetId),
+					value: this._getValueString(assetId),
 				};
 				assets.push(asset);
 			}
