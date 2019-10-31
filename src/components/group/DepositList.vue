@@ -1,6 +1,6 @@
 <template>
 	<div id="list">
-		<div class="card" v-for="deposit in deposits" v-if="isValuePositive(deposit)">
+		<div class="card" v-for="deposit in deposits" v-if="isValuePositive(deposit)" @click="openDeposit(deposit)">
 			<div class="balance">{{ formatBalance(deposit.balance) }} {{ deposit.ticker }}</div>
 			<div class="platform sparse">
 				<div>{{ deposit.platform }}</div>
@@ -23,6 +23,12 @@ import decimals from '../../data/decimals.json';
 export default {
 	props: [ 'balances', 'rates', 'prices', ],
 	methods: {
+		openDeposit(deposit) {
+			const platform = deposit.platform.toLowerCase();
+			const id = deposit.ticker.toLowerCase();
+			const path = `/deposit/${platform}/${id}`;
+			this.$router.push(path);
+		},
 		getBalanceString(platform, id) {
 			const balance = this.balances[platform][id];
 			const decimal = decimals[id];
