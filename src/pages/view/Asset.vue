@@ -19,7 +19,7 @@ export default {
 	data() {
 		return {
 			account: undefined,
-			id: '',
+			assetId: '',
 			balance: 0,
 			price: 0,
 		}
@@ -30,7 +30,7 @@ export default {
 			this.$router.push('/login');
 			return;
 		}
-		this.id = this.$route.params.id;
+		this.assetId = this.$route.params.assetId;
 		this.loadPrice();
 		this.loadBalance();
 	},
@@ -47,7 +47,7 @@ export default {
 			};
 		},
 		async loadPrice() {
-			const coinId = coinIds[this.id];
+			const coinId = coinIds[this.assetId];
 			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`;
  			const response = await fetch(url);
 			const prices = await response.json();
@@ -57,7 +57,7 @@ export default {
 			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
 			const response = await fetch(url);
 			const balance = await response.json();
-			if (this.id == 'eth') {
+			if (this.assetId == 'eth') {
 				// ETH
 				const etherBalance = balance.ETH.balance;
 				const etherBalanceNumber = new BigNumber(etherBalance);
@@ -72,26 +72,26 @@ export default {
 				return;
 			}
 			for (const tokenData of balance.tokens) {
-				const id = tokenData.tokenInfo.symbol.toLowerCase();
-				if (id == this.id) {
+				const assetId = tokenData.tokenInfo.symbol.toLowerCase();
+				if (assetId == this.assetId) {
 					const balance = tokenData.balance.toString();
 					this.balance = balance;
 					break;
 				}
 			}
 		},
-		getBalance(id) {
-			const decimal = decimals[id];
+		getBalance(assetId) {
+			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
 			return shortBalance;
 		},
-		getValue(id) {
+		getValue(assetId) {
 			const price = this.price;
 			const priceNumber = new BigNumber(price);
-			const balance = this.getBalance(id);
+			const balance = this.getBalance(assetId);
 			const value = priceNumber.times(balance);
 			return value;
 		},
@@ -104,15 +104,15 @@ export default {
 	},
 	computed: {
 		asset() {
-			if (!this.id) {
+			if (!this.assetId) {
 				return;
 			}
 			const asset = {
-				name: tokens[this.id],
-				ticker: tickers[this.id],
-				balance: this.getBalance(this.id),
+				name: tokens[this.assetId],
+				ticker: tickers[this.assetId],
+				balance: this.getBalance(this.assetId),
 				price: this.price,
-				value: this.getValue(this.id),
+				value: this.getValue(this.assetId),
 			};
 			return asset;
 		},

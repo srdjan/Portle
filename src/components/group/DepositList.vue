@@ -25,23 +25,23 @@ export default {
 	methods: {
 		openDeposit(deposit) {
 			const platform = deposit.platform.toLowerCase();
-			const id = deposit.ticker.toLowerCase();
-			const path = `/deposit/${platform}/${id}`;
+			const assetId = deposit.ticker.toLowerCase();
+			const path = `/deposit/${platform}/${assetId}`;
 			this.$router.push(path);
 		},
-		getBalanceString(platform, id) {
-			const balance = this.balances[platform][id];
-			const decimal = decimals[id];
+		getBalanceString(platform, assetId) {
+			const balance = this.balances[platform][assetId];
+			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
 			return shortBalance.toString();
 		},
-		getValueString(platform, id) {
-			const price = this.prices[id];
+		getValueString(platform, assetId) {
+			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getBalanceString(platform, id);
+			const balance = this.getBalanceString(platform, assetId);
 			const value = priceNumber.times(balance);
 			return value.toString();
 		},
@@ -67,15 +67,15 @@ export default {
 			const deposits = [];
 			for (const platform in this.balances) {
 				const platformBalances = this.balances[platform];
-				for (const id in platformBalances) {
-					const price = this.prices[id];
+				for (const assetId in platformBalances) {
+					const price = this.prices[assetId];
 					const deposit = {
-						balance: this.getBalanceString(platform, id),
-						ticker: tickers[id],
+						balance: this.getBalanceString(platform, assetId),
+						ticker: tickers[assetId],
 						platform,
 						price,
-						rate: this.rates.supply[platform][id],
-						value: this.getValueString(platform, id),
+						rate: this.rates.supply[platform][assetId],
+						value: this.getValueString(platform, assetId),
 					};
 					deposits.push(deposit);
 				}

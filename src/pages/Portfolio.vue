@@ -90,16 +90,16 @@ export default {
 				return;
 			}
 			for (const tokenData of balance.tokens) {
-				const id = tokenData.tokenInfo.symbol.toLowerCase();
+				const assetId = tokenData.tokenInfo.symbol.toLowerCase();
 				const address = tokenData.tokenInfo.address;
 				const price = tokenData.tokenInfo.price;
-				const tickerAddress = addresses[id];
+				const tickerAddress = addresses[assetId];
 				if (!tickerAddress || (address != tickerAddress.toLowerCase())) {
 					continue;
 				}
 				const balance = tokenData.balance.toString();
-				Vue.set(this.assetBalances, id, balance);
-				Vue.set(this.prices, id, price.rate);
+				Vue.set(this.assetBalances, assetId, balance);
+				Vue.set(this.prices, assetId, price.rate);
 			}
 		},
 		async loadCompound() {
@@ -134,14 +134,14 @@ export default {
 			}
 			const balances = data.userBalances[0].balances;
 			for (const balance of balances) {
-				const id = balance.token.symbol.substr(1).toLowerCase();
+				const assetId = balance.token.symbol.substr(1).toLowerCase();
 				const supplyIndex = balance.token.supplyIndex;
 				const tokenRawBalance = balance.balance;
 				// Set balances
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(supplyIndex).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.Compound, id, tokenBalance);
+				Vue.set(this.depositBalances.Compound, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.token.supplyRate;
 				const borrowRawRate = balance.token.borrowRate;
@@ -151,8 +151,8 @@ export default {
 				const borrowRateNumber = borrowRawRateNumber.times('2102400').div('1e18');
 				const supplyRate = supplyRateNumber.toString();
 				const borrowRate = borrowRateNumber.toString();
-				Vue.set(this.rates.supply.Compound, id, supplyRate);
-				Vue.set(this.rates.borrow.Compound, id, borrowRate);
+				Vue.set(this.rates.supply.Compound, assetId, supplyRate);
+				Vue.set(this.rates.borrow.Compound, assetId, borrowRate);
 			}
 		},
 		async loadFulcrum() {
@@ -186,14 +186,14 @@ export default {
 			}
 			const balances = data.userBalances[0].balances;
 			for (const balance of balances) {
-				const id = balance.token.symbol.substr(1).toLowerCase();
+				const assetId = balance.token.symbol.substr(1).toLowerCase();
 				const index = balance.token.index;
 				const tokenRawBalance = balance.balance;
 				// Set balances
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.Fulcrum, id, tokenBalance);
+				Vue.set(this.depositBalances.Fulcrum, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.token.supplyRate;
 				const borrowRawRate = balance.token.borrowRate;
@@ -203,8 +203,8 @@ export default {
 				const borrowRateNumber = borrowRawRateNumber.div('1e18').div('1e2');
 				const supplyRate = supplyRateNumber.toString();
 				const borrowRate = borrowRateNumber.toString();
-				Vue.set(this.rates.supply.Fulcrum, id, supplyRate);
-				Vue.set(this.rates.borrow.Fulcrum, id, borrowRate);
+				Vue.set(this.rates.supply.Fulcrum, assetId, supplyRate);
+				Vue.set(this.rates.borrow.Fulcrum, assetId, borrowRate);
 			}
 		},
 		async loadPrices() {
@@ -215,10 +215,10 @@ export default {
  			const response = await fetch(url);
 			const prices = await response.json();
 			for (let i = 0; i < assets.length; i++) {
-				const id = assets[i];
+				const assetId = assets[i];
 				const coinId = assetIds[i];
 				const price = prices[coinId].usd;
-				Vue.set(this.prices, id, price);
+				Vue.set(this.prices, assetId, price);
 			}
 		},
 	},

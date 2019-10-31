@@ -21,7 +21,7 @@ export default {
 		return {
 			account: undefined,
 			platformId: '',
-			id: '',
+			assetId: '',
 			balance: 0,
 			rate: 0,
 			prices: {},
@@ -34,7 +34,7 @@ export default {
 			return;
 		}
 		this.platformId = this.$route.params.platform;
-		this.id = this.$route.params.id;
+		this.assetId = this.$route.params.assetId;
 		this.loadPrices();
 		this.loadDeposit();
 	},
@@ -58,10 +58,10 @@ export default {
  			const response = await fetch(url);
 			const prices = await response.json();
 			for (let i = 0; i < assets.length; i++) {
-				const id = assets[i];
+				const assetId = assets[i];
 				const coinId = assetIds[i];
 				const price = prices[coinId].usd;
-				Vue.set(this.prices, id, price);
+				Vue.set(this.prices, assetId, price);
 			}
 		},
 		loadDeposit() {
@@ -72,18 +72,18 @@ export default {
 				this._loadFulcrumDeposit();
 			}
 		},
-		getAmountString(id) {
-			const decimal = decimals[id];
+		getAmountString(assetId) {
+			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
 			return shortBalance.toString();
 		},
-		getValueString(id) {
-			const price = this.prices[id];
+		getValueString(assetId) {
+			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getAmountString(id);
+			const balance = this.getAmountString(assetId);
 			const value = priceNumber.times(balance);
 			return value.toString();
 		},
@@ -117,8 +117,8 @@ export default {
 			}
 			const balances = data.userBalances[0].balances;
 			for (const balance of balances) {
-				const id = balance.token.symbol.substr(1).toLowerCase();
-				if (this.id != id) {
+				const assetId = balance.token.symbol.substr(1).toLowerCase();
+				if (this.assetId != assetId) {
 					continue;
 				}
 				const supplyIndex = balance.token.supplyIndex;
@@ -166,8 +166,8 @@ export default {
 			}
 			const balances = data.userBalances[0].balances;
 			for (const balance of balances) {
-				const id = balance.token.symbol.substr(1).toLowerCase();
-				if (this.id != id) {
+				const assetId = balance.token.symbol.substr(1).toLowerCase();
+				if (this.assetId != assetId) {
 					continue;
 				}
 				const index = balance.token.index;
@@ -211,21 +211,21 @@ export default {
 			if (this.balance == 0) {
 				return;
 			}
-			const id = this.id;
-			const ticker = tickers[id];
+			const assetId = this.assetId;
+			const ticker = tickers[assetId];
 			const platform = this.getPlatform(this.platformId);
 			const rate = this.rate;
-			const price = this.prices[id];
+			const price = this.prices[assetId];
 			if (!price) {
 				return;
 			}
 			const asset = {
 				platform,
 				ticker,
-				balance: this.getAmountString(id),
+				balance: this.getAmountString(assetId),
 				rate,
 				price,
-				value: this.getValueString(id),
+				value: this.getValueString(assetId),
 			};
 			return asset;
 		},

@@ -22,27 +22,27 @@ export default {
 	props: [ 'balances', 'prices' ],
 	methods: {
 		openAsset(asset) {
-			const id = asset.ticker.toLowerCase();
-			const path = `/asset/${id}`;
+			const assetId = asset.ticker.toLowerCase();
+			const path = `/asset/${assetId}`;
 			this.$router.push(path);
 		},
 		isShown(asset) {
 			const value = new BigNumber(asset.value);
 			return value.gt(1);
 		},
-		getAmountString(id) {
-			const balance = this.balances[id];
-			const decimal = decimals[id];
+		getAmountString(assetId) {
+			const balance = this.balances[assetId];
+			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const amount = balanceNumber.div(decimalNumber);
 			return amount.toString();
 		},
-		getValueString(id) {
-			const price = this.prices[id];
+		getValueString(assetId) {
+			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getAmountString(id);
+			const balance = this.getAmountString(assetId);
 			const value = priceNumber.times(balance);
 			return value.toString();
 		},
@@ -58,13 +58,13 @@ export default {
 	computed: {
 		assets() {
 			const assets = [];
-			for (const id in this.balances) {
+			for (const assetId in this.balances) {
 				const asset = {
-					ticker: tickers[id],
-					title: tokens[id],
-					amount: this.getAmountString(id),
-					price: this.prices[id],
-					value: this.getValueString(id),
+					ticker: tickers[assetId],
+					title: tokens[assetId],
+					amount: this.getAmountString(assetId),
+					price: this.prices[assetId],
+					value: this.getValueString(assetId),
 				};
 				assets.push(asset);
 			}
