@@ -35,18 +35,18 @@ export default {
 			account: null,
 			assetBalances: {},
 			depositBalances: {
-				Compound: {},
-				Fulcrum: {},
+				compound: {},
+				fulcrum: {},
 			},
 			prices: {},
 			rates: {
 				supply: {
-					Compound: {},
-					Fulcrum: {},
+					compound: {},
+					fulcrum: {},
 				},
 				borrow: {
-					Compound: {},
-					Fulcrum: {},
+					compound: {},
+					fulcrum: {},
 				},
 			},
 		}
@@ -141,7 +141,7 @@ export default {
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(supplyIndex).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.Compound, assetId, tokenBalance);
+				Vue.set(this.depositBalances.compound, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.token.supplyRate;
 				const borrowRawRate = balance.token.borrowRate;
@@ -151,8 +151,8 @@ export default {
 				const borrowRateNumber = borrowRawRateNumber.times('2102400').div('1e18');
 				const supplyRate = supplyRateNumber.toString();
 				const borrowRate = borrowRateNumber.toString();
-				Vue.set(this.rates.supply.Compound, assetId, supplyRate);
-				Vue.set(this.rates.borrow.Compound, assetId, borrowRate);
+				Vue.set(this.rates.supply.compound, assetId, supplyRate);
+				Vue.set(this.rates.borrow.compound, assetId, borrowRate);
 			}
 		},
 		async loadFulcrum() {
@@ -193,7 +193,7 @@ export default {
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.Fulcrum, assetId, tokenBalance);
+				Vue.set(this.depositBalances.fulcrum, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.token.supplyRate;
 				const borrowRawRate = balance.token.borrowRate;
@@ -203,8 +203,8 @@ export default {
 				const borrowRateNumber = borrowRawRateNumber.div('1e18').div('1e2');
 				const supplyRate = supplyRateNumber.toString();
 				const borrowRate = borrowRateNumber.toString();
-				Vue.set(this.rates.supply.Fulcrum, assetId, supplyRate);
-				Vue.set(this.rates.borrow.Fulcrum, assetId, borrowRate);
+				Vue.set(this.rates.supply.fulcrum, assetId, supplyRate);
+				Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
 			}
 		},
 		async loadPrices() {
