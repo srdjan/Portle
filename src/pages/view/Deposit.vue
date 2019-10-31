@@ -33,7 +33,7 @@ export default {
 			this.$router.push('/login');
 			return;
 		}
-		this.platformId = this.$route.params.platform;
+		this.platformId = this.$route.params.platformId;
 		this.assetId = this.$route.params.assetId;
 		this.loadPrices();
 		this.loadDeposit();

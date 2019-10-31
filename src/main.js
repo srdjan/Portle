@@ -16,7 +16,7 @@ const routes = [
 	{ path: '/', component: Portfolio },
 
 	{ path: '/asset/:assetId', component: Asset },
-	{ path: '/deposit/:platform/:assetId', component: Deposit },
+	{ path: '/deposit/:platformId/:assetId', component: Deposit },
 ];
 
 const router = new VueRouter({

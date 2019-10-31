@@ -52,9 +52,9 @@ export default {
 		},
 		depositValue() {
 			let depositValue = new BigNumber(0);
-			for (const platform in this.deposits) {
-				for (const assetId in this.deposits[platform]) {
-					const balance = this.deposits[platform][assetId];
+			for (const platformId in this.deposits) {
+				for (const assetId in this.deposits[platformId]) {
+					const balance = this.deposits[platformId][assetId];
 					const value = this.getValue(balance, assetId);
 					depositValue = depositValue.plus(value);
 				}
