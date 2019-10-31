@@ -80,25 +80,27 @@ export default {
 				}
 			}
 		},
-		getBalance(assetId) {
+		getBalanceString(assetId) {
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
-			return shortBalance;
+			return shortBalance.toString();
 		},
-		getValue(assetId) {
+		getValueString(assetId) {
 			const price = this.price;
 			const priceNumber = new BigNumber(price);
-			const balance = this.getBalance(assetId);
+			const balance = this.getBalanceString(assetId);
 			const value = priceNumber.times(balance);
-			return value;
+			return value.toString();
 		},
-		formatAmount(amount) {
+		formatAmount(amountString) {
+			const amount = new BigNumber(amountString);
 			return `${amount.toFixed(2)}`;
 		},
-		formatMoney(price) {
+		formatMoney(priceString) {
+			const price = new BigNumber(priceString);
 			return `$${price.toFixed(2)}`;
 		},
 	},
@@ -110,9 +112,9 @@ export default {
 			const asset = {
 				name: tokens[this.assetId],
 				ticker: tickers[this.assetId],
-				balance: this.getBalance(this.assetId),
+				balance: this.getBalanceString(this.assetId),
 				price: this.price,
-				value: this.getValue(this.assetId),
+				value: this.getValueString(this.assetId),
 			};
 			return asset;
 		},

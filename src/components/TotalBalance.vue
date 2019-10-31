@@ -12,23 +12,23 @@ import decimals from '../data/decimals.json';
 export default {
 	props: [ 'assets', 'deposits', 'prices' ],
 	methods: {
-		getShortBalance(balance, assetId) {
-			if (!balance) {
+		getShortBalanceString(balanceString, assetId) {
+			if (!balanceString) {
 				return new BigNumber(0);
 			}
 			const decimal = decimals[assetId];
-			const balanceNumber = new BigNumber(balance);
+			const balanceNumber = new BigNumber(balanceString);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
 			const shortBalance = balanceNumber.div(decimalNumber);
-			return shortBalance;
+			return shortBalance.toString();
 		},
-		getValue(balance, assetId) {
+		getValueString(balanceString, assetId) {
 			const price = this.prices[assetId] || '0';
 			const priceNumber = new BigNumber(price);
-			const shortBalance = this.getShortBalance(balance, assetId);
+			const shortBalance = this.getShortBalanceString(balanceString, assetId);
 			const value = priceNumber.times(shortBalance);
-			return value;
+			return value.toString();
 		},
 		formatMoney(moneyString) {
 			const money = new BigNumber(moneyString);
@@ -45,7 +45,7 @@ export default {
 			let assetValue = new BigNumber(0);
 			for (const assetId in this.assets) {
 				const balance = this.assets[assetId];
-				const value = this.getValue(balance, assetId);
+				const value = this.getValueString(balance, assetId);
 				assetValue = assetValue.plus(value);
 			}
 			return assetValue;
@@ -55,7 +55,7 @@ export default {
 			for (const platformId in this.deposits) {
 				for (const assetId in this.deposits[platformId]) {
 					const balance = this.deposits[platformId][assetId];
-					const value = this.getValue(balance, assetId);
+					const value = this.getValueString(balance, assetId);
 					depositValue = depositValue.plus(value);
 				}
 			}
