@@ -3,7 +3,7 @@
 		<div class="card" v-for="deposit in deposits" v-if="isValuePositive(deposit)" @click="openDeposit(deposit)">
 			<div class="balance">{{ formatBalance(deposit.balance) }} {{ deposit.ticker }}</div>
 			<div class="platform sparse">
-				<div>{{ deposit.platformId }}</div>
+				<div>{{ formatPlatform(deposit.platformId) }}</div>
 				<div>{{ formatRate(deposit.rate)}}</div>
 			</div>
 			<div class="details sparse">
@@ -44,6 +44,14 @@ export default {
 			const balance = this.getBalanceString(platformId, assetId);
 			const value = priceNumber.times(balance);
 			return value.toString();
+		},
+		formatPlatform(platformId) {
+			const platformMap = {
+				'compound': 'Compound',
+				'fulcrum': 'Fulcrum',
+			};
+			const platform = platformMap[platformId];
+			return platform;
 		},
 		formatBalance(balanceString) {
 			const balance = new BigNumber(balanceString);

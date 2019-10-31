@@ -1,7 +1,7 @@
 <template>
 	<div id="view" v-if="deposit">
 		<div id="type">Deposit</div>
-		<div id="platform">{{ deposit.platform }}</div>
+		<div id="platform">{{ formatPlatform(deposit.platformId) }}</div>
 		<div id="amount">{{ formatBalance(deposit.balance) }} {{ deposit.ticker }}</div>
 		<div id="rate">{{ formatRate(deposit.rate) }} annual rate</div>
 		<div id="value">{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ deposit.ticker }}</div>
@@ -185,7 +185,7 @@ export default {
 				this.rate = rate;
 			}
 		},
-		getPlatform(platformId) {
+		formatPlatform(platformId) {
 			const platformMap = {
 				'compound': 'Compound',
 				'fulcrum': 'Fulcrum',
@@ -212,15 +212,15 @@ export default {
 				return;
 			}
 			const assetId = this.assetId;
+			const platformId = this.platformId;
 			const ticker = tickers[assetId];
-			const platform = this.getPlatform(this.platformId);
 			const rate = this.rate;
 			const price = this.prices[assetId];
 			if (!price) {
 				return;
 			}
 			const asset = {
-				platform,
+				platformId,
 				ticker,
 				balance: this.getAmountString(assetId),
 				rate,
