@@ -2,7 +2,7 @@
 	<div id="view" v-if="deposit">
 		<div id="type">Deposit</div>
 		<div id="platform">{{ formatPlatform(deposit.platformId) }}</div>
-		<div id="amount">{{ formatBalance(deposit.balance) }} {{ deposit.ticker }}</div>
+		<div id="amount">{{ formatAmount(deposit.amount) }} {{ deposit.ticker }}</div>
 		<div id="rate">{{ formatRate(deposit.rate) }} annual rate</div>
 		<div id="value">{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ deposit.ticker }}</div>
 	</div>
@@ -77,14 +77,14 @@ export default {
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
-			const shortBalance = balanceNumber.div(decimalNumber);
-			return shortBalance.toString();
+			const amount = balanceNumber.div(decimalNumber);
+			return amount.toString();
 		},
 		getValueString(assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getAmountString(assetId);
-			const value = priceNumber.times(balance);
+			const amount = this.getAmountString(assetId);
+			const value = priceNumber.times(amount);
 			return value.toString();
 		},
 		async _loadCompoundDeposit() {
@@ -193,9 +193,9 @@ export default {
 			const platform = platformMap[platformId];
 			return platform;
 		},
-		formatBalance(balanceString) {
-			const balance = new BigNumber(balanceString);
-			return `${balance.toFixed(2)}`;
+		formatAmount(amountString) {
+			const amount = new BigNumber(amountString);
+			return `${amount.toFixed(2)}`;
 		},
 		formatMoney(priceString) {
 			const price = new BigNumber(priceString);
@@ -222,7 +222,7 @@ export default {
 			const asset = {
 				platformId,
 				ticker,
-				balance: this.getAmountString(assetId),
+				amount: this.getAmountString(assetId),
 				rate,
 				price,
 				value: this.getValueString(assetId),

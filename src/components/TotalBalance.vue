@@ -12,7 +12,7 @@ import decimals from '../data/decimals.json';
 export default {
 	props: [ 'assets', 'deposits', 'prices' ],
 	methods: {
-		getShortBalanceString(balanceString, assetId) {
+		getAmountString(balanceString, assetId) {
 			if (!balanceString) {
 				return new BigNumber(0);
 			}
@@ -20,14 +20,14 @@ export default {
 			const balanceNumber = new BigNumber(balanceString);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
-			const shortBalance = balanceNumber.div(decimalNumber);
-			return shortBalance.toString();
+			const amount = balanceNumber.div(decimalNumber);
+			return amount.toString();
 		},
 		getValueString(balanceString, assetId) {
 			const price = this.prices[assetId] || '0';
 			const priceNumber = new BigNumber(price);
-			const shortBalance = this.getShortBalanceString(balanceString, assetId);
-			const value = priceNumber.times(shortBalance);
+			const amount = this.getAmountString(balanceString, assetId);
+			const value = priceNumber.times(amount);
 			return value.toString();
 		},
 		formatMoney(moneyString) {

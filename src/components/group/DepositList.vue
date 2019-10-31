@@ -1,7 +1,7 @@
 <template>
 	<div id="list">
 		<div class="card" v-for="deposit in deposits" v-if="isValuePositive(deposit)" @click="openDeposit(deposit)">
-			<div class="balance">{{ formatBalance(deposit.balance) }} {{ deposit.ticker }}</div>
+			<div class="balance">{{ formatAmount(deposit.amount) }} {{ deposit.ticker }}</div>
 			<div class="platform sparse">
 				<div>{{ formatPlatform(deposit.platformId) }}</div>
 				<div>{{ formatRate(deposit.rate)}}</div>
@@ -29,20 +29,20 @@ export default {
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
 		},
-		getBalanceString(platformId, assetId) {
+		getAmountString(platformId, assetId) {
 			const balance = this.balances[platformId][assetId];
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
-			const shortBalance = balanceNumber.div(decimalNumber);
-			return shortBalance.toString();
+			const amount = balanceNumber.div(decimalNumber);
+			return amount.toString();
 		},
 		getValueString(platformId, assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getBalanceString(platformId, assetId);
-			const value = priceNumber.times(balance);
+			const amount = this.getAmountString(platformId, assetId);
+			const value = priceNumber.times(amount);
 			return value.toString();
 		},
 		formatPlatform(platformId) {
@@ -53,9 +53,9 @@ export default {
 			const platform = platformMap[platformId];
 			return platform;
 		},
-		formatBalance(balanceString) {
-			const balance = new BigNumber(balanceString);
-			return `${balance.toFixed(2)}`;
+		formatAmount(amountString) {
+			const amount = new BigNumber(amountString);
+			return `${amount.toFixed(2)}`;
 		},
 		formatRate(rateString) {
 			const rate = new BigNumber(rateString);
@@ -78,7 +78,7 @@ export default {
 				for (const assetId in platformBalances) {
 					const price = this.prices[assetId];
 					const deposit = {
-						balance: this.getBalanceString(platformId, assetId),
+						amount: this.getAmountString(platformId, assetId),
 						ticker: tickers[assetId],
 						platformId,
 						price,

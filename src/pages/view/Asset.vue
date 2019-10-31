@@ -2,7 +2,7 @@
 	<div id="view" v-if="asset">
 		<div id="type">Asset</div>
 		<div id="name">{{ asset.name }}</div>
-		<div id="amount">{{ formatAmount(asset.balance) }} {{ asset.ticker }}</div>
+		<div id="amount">{{ formatAmount(asset.amount) }} {{ asset.ticker }}</div>
 		<div id="value">{{ formatMoney(asset.value) }} @ {{ formatMoney(asset.price) }}/{{ asset.ticker }}</div>
 	</div>
 </template>
@@ -80,19 +80,19 @@ export default {
 				}
 			}
 		},
-		getBalanceString(assetId) {
+		getAmountString(assetId) {
 			const decimal = decimals[assetId];
 			const balanceNumber = new BigNumber(this.balance);
 			const ten = new BigNumber(10);
 			const decimalNumber = ten.pow(decimal);
-			const shortBalance = balanceNumber.div(decimalNumber);
-			return shortBalance.toString();
+			const amount = balanceNumber.div(decimalNumber);
+			return amount.toString();
 		},
 		getValueString(assetId) {
 			const price = this.price;
 			const priceNumber = new BigNumber(price);
-			const balance = this.getBalanceString(assetId);
-			const value = priceNumber.times(balance);
+			const amount = this.getAmountString(assetId);
+			const value = priceNumber.times(amount);
 			return value.toString();
 		},
 		formatAmount(amountString) {
@@ -112,7 +112,7 @@ export default {
 			const asset = {
 				name: tokens[this.assetId],
 				ticker: tickers[this.assetId],
-				balance: this.getBalanceString(this.assetId),
+				amount: this.getAmountString(this.assetId),
 				price: this.price,
 				value: this.getValueString(this.assetId),
 			};

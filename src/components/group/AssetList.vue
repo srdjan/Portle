@@ -42,8 +42,8 @@ export default {
 		getValueString(assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const balance = this.getAmountString(assetId);
-			const value = priceNumber.times(balance);
+			const amount = this.getAmountString(assetId);
+			const value = priceNumber.times(amount);
 			return value.toString();
 		},
 		formatAmount(amountString) {
