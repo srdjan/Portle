@@ -1,0 +1,264 @@
+<template>
+	<div id="view" v-if="deposit">
+		<div id="type">Deposit</div>
+		<div id="platform">{{ deposit.platform }}</div>
+		<div id="amount">{{ formatBalance(deposit.balance) }} {{ deposit.ticker }}</div>
+		<div id="rate">{{ formatRate(deposit.rate) }} annual rate</div>
+		<div id="value">{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ deposit.ticker }}</div>
+	</div>
+</template>
+
+<script>
+import Vue from 'vue';
+import BigNumber from 'bignumber.js';
+
+import tickers from '../../data/tickers.json';
+import decimals from '../../data/decimals.json';
+import coinIds from '../../data/coin-ids.json';
+
+export default {
+	data() {
+		return {
+			account: undefined,
+			platformId: '',
+			id: '',
+			balance: 0,
+			rate: 0,
+			prices: {},
+		}
+	},
+	mounted() {
+		this.loadAccount();
+		if (!this.account) {
+			this.$router.push('/login');
+			return;
+		}
+		this.platformId = this.$route.params.platform;
+		this.id = this.$route.params.id;
+		this.loadPrices();
+		this.loadDeposit();
+	},
+	methods: {
+		loadAccount() {
+			const address = localStorage.getItem('address');
+			const auth = localStorage.getItem('auth') == 'true';
+			if (!address) {
+				return;
+			}
+			this.account = {
+				address,
+				auth,
+			};
+		},
+		async loadPrices() {
+			const assets = ['dai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];
+			const assetIds = assets.map((asset) => coinIds[asset]);
+			const assetIdString = assetIds.join('%2C');
+			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
+ 			const response = await fetch(url);
+			const prices = await response.json();
+			for (let i = 0; i < assets.length; i++) {
+				const id = assets[i];
+				const coinId = assetIds[i];
+				const price = prices[coinId].usd;
+				Vue.set(this.prices, id, price);
+			}
+		},
+		loadDeposit() {
+			if (this.platformId == 'compound') {
+				this._loadCompoundDeposit();
+			}
+			if (this.platformId == 'fulcrum') {
+				this._loadFulcrumDeposit();
+			}
+		},
+		getAmountString(id) {
+			const decimal = decimals[id];
+			const balanceNumber = new BigNumber(this.balance);
+			const ten = new BigNumber(10);
+			const decimalNumber = ten.pow(decimal);
+			const shortBalance = balanceNumber.div(decimalNumber);
+			return shortBalance.toString();
+		},
+		getValueString(id) {
+			const price = this.prices[id];
+			const priceNumber = new BigNumber(price);
+			const balance = this.getAmountString(id);
+			const value = priceNumber.times(balance);
+			return value.toString();
+		},
+		async _loadCompoundDeposit() {
+			const url = "https://api.thegraph.com/subgraphs/name/destiner/compound";
+			const query = `
+				query {
+					userBalances(where: {
+						id: "${this.account.address}"
+					}) {
+						balances {
+							token {
+								symbol
+								supplyIndex
+								supplyRate
+							}
+							balance
+						}
+					}
+				}`;
+			const opts = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ query })
+			};
+			const response = await fetch(url, opts);
+			const json = await response.json();
+			const data = json.data;
+			if (data.userBalances.length == 0) {
+				return;
+			}
+			const balances = data.userBalances[0].balances;
+			for (const balance of balances) {
+				const id = balance.token.symbol.substr(1).toLowerCase();
+				if (this.id != id) {
+					continue;
+				}
+				const supplyIndex = balance.token.supplyIndex;
+				const tokenRawBalance = balance.balance;
+				// Set balance
+				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
+				const tokenBalanceNumber = tokenRawBalanceNumber.times(supplyIndex).div('1e18');
+				const tokenBalance = tokenBalanceNumber.toString();
+				this.balance = tokenBalance;
+				// Set rate
+				const rawRate = balance.token.supplyRate;
+				const rawRateNumber = new BigNumber(rawRate);
+				const rateNumber = rawRateNumber.times('2102400').div('1e18');
+				const rate = rateNumber.toString();
+				this.rate = rate;
+			}
+		},
+		async _loadFulcrumDeposit() {
+			const url = "https://api.thegraph.com/subgraphs/name/destiner/fulcrum";
+			const query = `
+				query {
+					userBalances(where: {
+						id: "${this.account.address}"
+					}) {
+						balances {
+							token {
+								symbol
+								index
+								supplyRate
+							}
+							balance
+						}
+					}
+				}`;
+			const opts = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ query })
+			};
+			const response = await fetch(url, opts);
+			const json = await response.json();
+			const data = json.data;
+			if (data.userBalances.length == 0) {
+				return;
+			}
+			const balances = data.userBalances[0].balances;
+			for (const balance of balances) {
+				const id = balance.token.symbol.substr(1).toLowerCase();
+				if (this.id != id) {
+					continue;
+				}
+				const index = balance.token.index;
+				const tokenRawBalance = balance.balance;
+				// Set balance
+				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
+				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
+				const tokenBalance = tokenBalanceNumber.toString();
+				this.balance = tokenBalance;
+				// Set rate
+				const rawRate = balance.token.supplyRate;
+				const rawRateNumber = new BigNumber(rawRate);
+				const rateNumber = rawRateNumber.div('1e18').div('1e2');
+				const rate = rateNumber.toString();
+				this.rate = rate;
+			}
+		},
+		getPlatform(platformId) {
+			const platformMap = {
+				'compound': 'Compound',
+				'fulcrum': 'Fulcrum',
+			};
+			const platform = platformMap[platformId];
+			return platform;
+		},
+		formatBalance(balanceString) {
+			const balance = new BigNumber(balanceString);
+			return `${balance.toFixed(2)}`;
+		},
+		formatMoney(priceString) {
+			const price = new BigNumber(priceString);
+			return `$${price.toFixed(2)}`;
+		},
+		formatRate(rateString) {
+			const rate = new BigNumber(rateString);
+			return `${rate.times(100).toFixed(2)}%`;
+		},
+	},
+	computed: {
+		deposit() {
+			if (this.balance == 0) {
+				return;
+			}
+			const id = this.id;
+			const ticker = tickers[id];
+			const platform = this.getPlatform(this.platformId);
+			const rate = this.rate;
+			const price = this.prices[id];
+			if (!price) {
+				return;
+			}
+			const asset = {
+				platform,
+				ticker,
+				balance: this.getAmountString(id),
+				rate,
+				price,
+				value: this.getValueString(id),
+			};
+			return asset;
+		},
+	},
+}
+</script>
+
+<style scoped>
+#view {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#type {
+	margin-top: 1em;
+	padding: 0.25em 0.5em;
+	color: grey;
+	font-size: 0.8em;
+	border: 1px solid gray;
+}
+
+#platform {
+	margin-top: 2em;
+}
+
+#amount {
+	font-size: 3em;
+	font-weight: bold;
+}
+
+#value,
+#rate {
+	font-size: 1.15em;
+}
+</style>
