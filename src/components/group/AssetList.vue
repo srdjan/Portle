@@ -1,7 +1,7 @@
 <template>
 	<div id="list">
 		<div class="card" v-for="asset in assets" v-if="isShown(asset)" @click="openAsset(asset)">
-			<div class="amount">{{ formatAmount(asset.amount) }} {{ asset.ticker }}</div>
+			<div class="amount">{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}</div>
 			<div class="description">{{ asset.title }}</div>
 			<div class="price-value sparse">
 				<div>{{ formatMoney(asset.price) }}</div>
@@ -22,13 +22,17 @@ export default {
 	props: [ 'balances', 'prices' ],
 	methods: {
 		openAsset(asset) {
-			const assetId = asset.ticker.toLowerCase();
+			const assetId = asset.assetId;
 			const path = `/asset/${assetId}`;
 			this.$router.push(path);
 		},
 		isShown(asset) {
 			const value = new BigNumber(asset.value);
 			return value.gt(1);
+		},
+		formatAsset(assetId) {
+			const ticker = tickers[assetId];
+			return ticker;
 		},
 		formatAmount(amountString) {
 			const amount = new BigNumber(amountString);
@@ -60,7 +64,7 @@ export default {
 			const assets = [];
 			for (const assetId in this.balances) {
 				const asset = {
-					ticker: tickers[assetId],
+					assetId,
 					title: tokens[assetId],
 					amount: this._getAmountString(assetId),
 					price: this.prices[assetId],

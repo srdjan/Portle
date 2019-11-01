@@ -1,7 +1,7 @@
 <template>
 	<div id="list">
 		<div class="card" v-for="deposit in deposits" v-if="isShown(deposit)" @click="openDeposit(deposit)">
-			<div class="balance">{{ formatAmount(deposit.amount) }} {{ deposit.ticker }}</div>
+			<div class="balance">{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}</div>
 			<div class="platform sparse">
 				<div>{{ formatPlatform(deposit.platformId) }}</div>
 				<div>{{ formatRate(deposit.rate)}}</div>
@@ -25,13 +25,17 @@ export default {
 	methods: {
 		openDeposit(deposit) {
 			const platformId = deposit.platformId.toLowerCase();
-			const assetId = deposit.ticker.toLowerCase();
+			const assetId = deposit.assetId;
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
 		},
 		isShown(deposit) {
 			const value = new BigNumber(deposit.value);
 			return value.gt(0);
+		},
+		formatAsset(assetId) {
+			const ticker = tickers[assetId];
+			return ticker;
 		},
 		formatPlatform(platformId) {
 			const platformMap = {
@@ -79,7 +83,7 @@ export default {
 					const price = this.prices[assetId];
 					const deposit = {
 						amount: this._getAmountString(platformId, assetId),
-						ticker: tickers[assetId],
+						assetId,
 						platformId,
 						price,
 						rate: this.rates.supply[platformId][assetId],

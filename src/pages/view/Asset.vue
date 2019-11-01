@@ -2,8 +2,8 @@
 	<div id="view" v-if="asset">
 		<div id="type">Asset</div>
 		<div id="name">{{ asset.name }}</div>
-		<div id="amount">{{ formatAmount(asset.amount) }} {{ asset.ticker }}</div>
-		<div id="value">{{ formatMoney(asset.value) }} @ {{ formatMoney(asset.price) }}/{{ asset.ticker }}</div>
+		<div id="amount">{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}</div>
+		<div id="value">{{ formatMoney(asset.value) }} @ {{ formatMoney(asset.price) }}/{{ formatAsset(asset.assetId) }}</div>
 	</div>
 </template>
 
@@ -35,6 +35,10 @@ export default {
 		this._loadBalance();
 	},
 	methods: {
+		formatAsset(assetId) {
+			const ticker = tickers[assetId];
+			return ticker;
+		},
 		formatAmount(amountString) {
 			const amount = new BigNumber(amountString);
 			return `${amount.toFixed(2)}`;
@@ -109,12 +113,13 @@ export default {
 			if (!this.assetId) {
 				return;
 			}
+			const assetId = this.assetId;
 			const asset = {
-				name: tokens[this.assetId],
-				ticker: tickers[this.assetId],
-				amount: this._getAmountString(this.assetId),
+				name: tokens[assetId],
+				assetId,
+				amount: this._getAmountString(assetId),
 				price: this.price,
-				value: this._getValueString(this.assetId),
+				value: this._getValueString(assetId),
 			};
 			return asset;
 		},
