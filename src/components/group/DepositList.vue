@@ -24,7 +24,7 @@ export default {
 	props: [ 'balances', 'rates', 'prices', ],
 	methods: {
 		openDeposit(deposit) {
-			const platformId = deposit.platformId.toLowerCase();
+			const platformId = deposit.platformId;
 			const assetId = deposit.assetId;
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
