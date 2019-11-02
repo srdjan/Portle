@@ -474,13 +474,14 @@ export default {
 			const response = await fetch(url, opts);
 			const json = await response.json();
 			const data = json.data;
+			const markets = data.markets;
 			for (const market of markets) {
-				const assetId = market.token.symbol.substr(1).toLowerCase();
+				const assetId = market.token.symbol.toLowerCase();
 				const address = market.token.id;
 				const rawRate = market.supplyRate;
 				const index = market.supplyIndex;
 				const rawRateNumber = new BigNumber(rawRate);
-				const rateNumber = rawRateNumber.div('1e18').div('1e2');
+				const rateNumber = rawRateNumber.div('1e18');
 				const rate = rateNumber.toString();
 				Vue.set(this.tokenAddresses.dydx, assetId, address);
 				Vue.set(this.rates.dydx, assetId, rate);
