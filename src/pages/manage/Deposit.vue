@@ -66,18 +66,22 @@ export default {
 			assetAmount: '100',
 			rates: {
 				compound: {},
+				dydx: {},
 				fulcrum: {},
 			},
 			indices: {
 				compound: {},
+				dydx: {},
 				fulcrum: {},
 			},
 			tokenAddresses: {
 				compound: {},
+				dydx: {},
 				fulcrum: {},
 			},
 			balances: {
 				compound: {},
+				dydx: {},
 				fulcrum: {},
 			},
 			txStatus: 'none',
@@ -91,6 +95,7 @@ export default {
 		}
 		this._loadRouterState();
 		this._loadCompound();
+		this._loadDydx();
 		this._loadFulcrum();
 	},
 	methods: {
@@ -129,6 +134,7 @@ export default {
 		formatPlatform(platformId) {
 			const platformMap = {
 				'compound': 'Compound',
+				'dydx': 'dYdX',
 				'fulcrum': 'Fulcrum',
 			};
 			const platform = platformMap[platformId];
@@ -348,6 +354,61 @@ export default {
 				Vue.set(this.balances.compound, assetId, balance);
 			}
 		},
+		async _loadDydx() {
+			const url = "https://api.thegraph.com/subgraphs/name/destiner/dydx";
+			const query = `
+				query {
+					markets {
+						token {
+							id
+							symbol
+						}
+						supplyIndex
+						supplyRate
+					}
+					users(where: {
+						id: "${this.account.address}"
+					}) {
+						balances {
+							balance
+							market {
+								token {
+									symbol
+								}
+							}
+						}
+					}
+				}`;
+			const opts = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ query })
+			};
+			const response = await fetch(url, opts);
+			const json = await response.json();
+			const data = json.data;
+			for (const market of markets) {
+				const assetId = market.token.symbol.substr(1).toLowerCase();
+				const address = market.token.id;
+				const rawRate = market.supplyRate;
+				const index = market.supplyIndex;
+				const rawRateNumber = new BigNumber(rawRate);
+				const rateNumber = rawRateNumber.div('1e18').div('1e2');
+				const rate = rateNumber.toString();
+				Vue.set(this.tokenAddresses.dydx, assetId, address);
+				Vue.set(this.rates.dydx, assetId, rate);
+				Vue.set(this.indices.dydx, assetId, index);
+			}
+			if (data.users.length == 0) {
+				return;
+			}
+			const userBalances = data.users[0].balances;
+			for (const userBalance of userBalances) {
+				const assetId = userBalance.market.token.symbol.substr(1).toLowerCase();
+				const balance = userBalance.balance;
+				Vue.set(this.balances.dydx, assetId, balance);
+			}
+		},
 		async _loadFulcrum() {
 			const url = "https://api.thegraph.com/subgraphs/name/destiner/fulcrum";
 			const query = `
@@ -424,7 +485,7 @@ export default {
 			return [ 'dai', 'usdc', ];
 		},
 		platforms() {
-			return [ 'compound', 'fulcrum', ];
+			return [ 'compound', 'dydx', 'fulcrum', ];
 		},
 	},
 }
