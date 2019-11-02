@@ -36,16 +36,19 @@ export default {
 			assetBalances: {},
 			depositBalances: {
 				compound: {},
+				dydx: {},
 				fulcrum: {},
 			},
 			prices: {},
 			rates: {
 				supply: {
 					compound: {},
+					dydx: {},
 					fulcrum: {},
 				},
 				borrow: {
 					compound: {},
+					dydx: {},
 					fulcrum: {},
 				},
 			},
@@ -60,6 +63,7 @@ export default {
 		this._loadPrices();
 		this._loadBalances();
 		this._loadCompound();
+		this._loadDydx();
 		this._loadFulcrum();
 	},
 	methods: {
@@ -167,6 +171,57 @@ export default {
 				const borrowRate = borrowRateNumber.toString();
 				Vue.set(this.rates.supply.compound, assetId, supplyRate);
 				Vue.set(this.rates.borrow.compound, assetId, borrowRate);
+			}
+		},
+		async _loadDydx() {
+			const url = "https://api.thegraph.com/subgraphs/name/destiner/dydx";
+			const query = `
+				query {
+					users(where: {
+						id: "${this.account.address}"
+					}) {
+						balances {
+							balance
+							market {
+								token {
+									symbol
+								}
+								supplyIndex
+								supplyRate
+							}
+						}
+					}
+				}`;
+			const opts = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ query })
+			};
+			const response = await fetch(url, opts);
+			const json = await response.json();
+			const data = json.data;
+			if (data.users.length == 0) {
+				return;
+			}
+			const balances = data.users[0].balances;
+			for (const balance of balances) {
+				const symbol = balance.market.token.symbol;
+				const id = symbol == 'WETH'
+					? 'eth'
+					: symbol.toLowerCase();
+				const index = balance.market.supplyIndex;
+				const tokenRawBalance = balance.balance;
+				// Set balances
+				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
+				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
+				const tokenBalance = tokenBalanceNumber.toString();
+				Vue.set(this.depositBalances.dydx, id, tokenBalance);
+				// Set rates
+				const supplyRawRate = balance.market.supplyRate;
+				const supplyRawRateNumber = new BigNumber(supplyRawRate);
+				const supplyRateNumber = supplyRawRateNumber.div('1e18');
+				const supplyRate = supplyRateNumber.toString();
+				Vue.set(this.rates.supply.dydx, id, supplyRate);
 			}
 		},
 		async _loadFulcrum() {
