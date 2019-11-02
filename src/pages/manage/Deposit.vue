@@ -44,6 +44,7 @@ import TxStatus from '../../components/TxStatus.vue';
 
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
+import dydxAbi from '../../data/abi/dydx.json';
 import fulcrumTokenAbi from '../../data/abi/fulcrumInterestToken.json';
 
 import tickers from '../../data/tickers.json';
@@ -52,6 +53,8 @@ import addresses from '../../data/addresses.json';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
+
+const dydxAddress = '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e';
 
 export default {
 	components: {
@@ -115,6 +118,9 @@ export default {
 			if (this.platformId == 'compound') {
 				this._depositCompound();
 			}
+			if (this.platformId == 'dydx') {
+				this._depositDydx();
+			}
 			if (this.platformId == 'fulcrum') {
 				this._depositFulcrum();
 			}
@@ -122,6 +128,9 @@ export default {
 		withdraw() {
 			if (this.platformId == 'compound') {
 				this._withdrawCompound();
+			}
+			if (this.platformId == 'dydx') {
+				this._withdrawDydx();
 			}
 			if (this.platformId == 'fulcrum') {
 				this._withdrawFulcrum();
@@ -216,6 +225,45 @@ export default {
 				this.txStatus = 'rejected';
 			}
 		},
+		async _depositDydx() {
+			const account = this.account.address;
+			const marketId = this._getDydxMarket(this.assetId);
+			const assetAddress = addresses[this.assetId];
+			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
+			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
+			await this._checkAllowance(dydxAddress, assetAddress, depositBalance);
+			try {
+				this.txStatus = 'mining';
+				const accounts = [{
+					owner: account,
+					number: 0,
+				}];
+				const actions = [{
+					actionType: 0,
+					accountId: 0,
+					amount: {
+						sign: true,
+						denomination: 0,
+						ref: 0,
+						value: depositBalance,
+					},
+					primaryMarketId: marketId,
+					secondaryMarketId: 0,
+					otherAddress: account,
+					otherAccountId: 0,
+					data: '0x',
+				}];
+				const tx = await dydx.operate(accounts, actions);
+				const txReceipt = await provider.getTransactionReceipt(tx.hash);
+				if (txReceipt.status == 1) {
+					this.txStatus = 'success';
+				} else {
+					this.txStatus = 'failure';
+				}
+			} catch(e) {
+				this.txStatus = 'rejected';
+			}
+		},
 		async _depositFulcrum() {
 			const assetAddress = addresses[this.assetId];
 			const iTokenAddress = this.tokenAddresses.fulcrum[this.assetId];
@@ -248,6 +296,45 @@ export default {
 			try {
 				this.txStatus = 'mining';
 				const tx = await cToken.redeem(tokenBalance);
+				const txReceipt = await provider.getTransactionReceipt(tx.hash);
+				if (txReceipt.status == 1) {
+					this.txStatus = 'success';
+				} else {
+					this.txStatus = 'failure';
+				}
+			} catch(e) {
+				this.txStatus = 'rejected';
+			}
+		},
+		async _withdrawDydx() {
+			const account = this.account.address;
+			const marketId = this._getDydxMarket(this.assetId);
+			const assetAddress = addresses[this.assetId];
+			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
+			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
+			await this._checkAllowance(dydxAddress, assetAddress, depositBalance);
+			try {
+				this.txStatus = 'mining';
+				const accounts = [{
+					owner: account,
+					number: 0,
+				}];
+				const actions = [{
+					actionType: 1,
+					accountId: 0,
+					amount: {
+						sign: false,
+						denomination: 0,
+						ref: 0,
+						value: depositBalance,
+					},
+					primaryMarketId: marketId,
+					secondaryMarketId: 0,
+					otherAddress: account,
+					otherAccountId: 0,
+					data: '0x',
+				}];
+				const tx = await dydx.operate(accounts, actions);
 				const txReceipt = await provider.getTransactionReceipt(tx.hash);
 				if (txReceipt.status == 1) {
 					this.txStatus = 'success';
@@ -478,6 +565,14 @@ export default {
 			const longAmountNumber = amountNumber.times(multiplier);
 			const longAmount = longAmountNumber.toFixed(0);
 			return longAmount;
+		},
+		_getDydxMarket(assetId) {
+			const markets = {
+				'eth': 0,
+				'dai': 1,
+				'usdc': 2,
+			};
+			return markets[assetId];
 		},
 	},
 	computed: {
