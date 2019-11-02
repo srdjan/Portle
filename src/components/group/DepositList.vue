@@ -40,6 +40,7 @@ export default {
 		formatPlatform(platformId) {
 			const platformMap = {
 				'compound': 'Compound',
+				'dydx': 'dYdX',
 				'fulcrum': 'Fulcrum',
 			};
 			const platform = platformMap[platformId];
