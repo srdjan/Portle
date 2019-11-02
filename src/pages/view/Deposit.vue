@@ -46,6 +46,7 @@ export default {
 		formatPlatform(platformId) {
 			const platformMap = {
 				'compound': 'Compound',
+				'dydx': 'dYdX',
 				'fulcrum': 'Fulcrum',
 			};
 			const platform = platformMap[platformId];
@@ -91,6 +92,9 @@ export default {
 		_loadDeposit() {
 			if (this.platformId == 'compound') {
 				this._loadCompoundDeposit();
+			}
+			if (this.platformId == 'dydx') {
+				this._loadDydxDeposit();
 			}
 			if (this.platformId == 'fulcrum') {
 				this._loadFulcrumDeposit();
@@ -158,6 +162,60 @@ export default {
 				const rateNumber = rawRateNumber.times('2102400').div('1e18');
 				const rate = rateNumber.toString();
 				this.rate = rate;
+			}
+		},
+		async _loadDydxDeposit() {
+			const url = "https://api.thegraph.com/subgraphs/name/destiner/dydx";
+			const query = `
+				query {
+					users(where: {
+						id: "${this.account.address}"
+					}) {
+						balances {
+							balance
+							market {
+								token {
+									symbol
+								}
+								supplyIndex
+								supplyRate
+							}
+						}
+					}
+				}`;
+			const opts = {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ query })
+			};
+			const response = await fetch(url, opts);
+			const json = await response.json();
+			const data = json.data;
+			if (data.users.length == 0) {
+				return;
+			}
+			const balances = data.users[0].balances;
+			for (const balance of balances) {
+				const symbol = balance.market.token.symbol;
+				const assetId = symbol == 'WETH'
+					? 'eth'
+					: symbol.toLowerCase();
+				if (this.assetId != assetId) {
+					continue;
+				}
+				const index = balance.market.supplyIndex;
+				const tokenRawBalance = balance.balance;
+				// Set balances
+				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
+				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
+				const tokenBalance = tokenBalanceNumber.toString();
+				this.balance = tokenBalance;
+				// Set rates
+				const supplyRawRate = balance.market.supplyRate;
+				const supplyRawRateNumber = new BigNumber(supplyRawRate);
+				const supplyRateNumber = supplyRawRateNumber.div('1e18');
+				const supplyRate = supplyRateNumber.toString();
+				this.rate = supplyRate;
 			}
 		},
 		async _loadFulcrumDeposit() {
