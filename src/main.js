@@ -9,6 +9,8 @@ import Portfolio from './pages/Portfolio.vue';
 import Asset from './pages/view/Asset.vue';
 import Deposit from './pages/view/Deposit.vue';
 
+import ManageDeposit from './pages/manage/Deposit.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -17,6 +19,8 @@ const routes = [
 
 	{ path: '/asset/:assetId', component: Asset },
 	{ path: '/deposit/:platformId/:assetId', component: Deposit },
+
+	{ path: '/deposit/manage', component: ManageDeposit },
 ];
 
 const router = new VueRouter({
