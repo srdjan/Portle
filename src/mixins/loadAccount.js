@@ -8,7 +8,7 @@ export const loadAccount = {
 		this._loadAccount();
 	},
 	methods: {
-		async _loadAccount(provider, txPromise) {
+		async _loadAccount() {
 			const address = localStorage.getItem('address');
 			const auth = localStorage.getItem('auth') == 'true';
 			this.account = {
