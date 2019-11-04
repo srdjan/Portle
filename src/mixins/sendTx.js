@@ -5,7 +5,7 @@ export const sendTx = {
 		}
 	},
 	methods: {
-		async _sendTx(txPromise) {
+		async _sendTx(provider, txPromise) {
 			try {
 				this.txStatus = 'mining';
 				const tx = await txPromise;

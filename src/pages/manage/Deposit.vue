@@ -218,7 +218,7 @@ export default {
 			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(cTokenAddress, assetAddress, mintBalance);
 			const txPromise = cToken.mint(mintBalance);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _depositDydx() {
 			const account = this.account.address;
@@ -247,7 +247,7 @@ export default {
 				data: '0x',
 			}];
 			const txPromise = dydx.operate(accounts, actions);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _depositFulcrum() {
 			const assetAddress = addresses[this.assetId];
@@ -257,7 +257,7 @@ export default {
 			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(iTokenAddress, assetAddress, mintBalance);
 			const txPromise = iToken.mint(account, mintBalance);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawCompound() {
 			const assetAddress = addresses[this.assetId];
@@ -269,7 +269,7 @@ export default {
 			const cTokenAddress = this.tokenAddresses.compound[this.assetId];
 			const cToken = new ethers.Contract(cTokenAddress, compoundTokenAbi, signer);
 			const txPromise = cToken.redeem(tokenBalance);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawDydx() {
 			const account = this.account.address;
@@ -298,7 +298,7 @@ export default {
 				data: '0x',
 			}];
 			const txPromise = dydx.operate(accounts, actions);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawFulcrum() {
 			const account = this.account.address;
@@ -311,7 +311,7 @@ export default {
 			const iTokenAddress = this.tokenAddresses.fulcrum[this.assetId];
 			const iToken = new ethers.Contract(iTokenAddress, fulcrumTokenAbi, signer);
 			const txPromise = iToken.burn(account, tokenBalance);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _checkAllowance(spender, address, amount) {
 			const uintMax = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
@@ -322,7 +322,7 @@ export default {
 				return;
 			}
 			const txPromise = inputToken.approve(spender, uintMax);
-			await this._sendTx(txPromise);
+			await this._sendTx(provider, txPromise);
 		},
 		async _loadCompound() {
 			const url = "https://api.thegraph.com/subgraphs/name/destiner/compound";
