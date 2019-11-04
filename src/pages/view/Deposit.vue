@@ -5,6 +5,10 @@
 		<div id="amount">{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}</div>
 		<div id="rate">{{ formatRate(deposit.rate) }} annual rate</div>
 		<div id="value">{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ formatAsset(deposit.assetId) }}</div>
+		<div id="action-wrapper" v-if="account && account.auth">
+			<button class="action" @click="openDeposit('deposit')">Deposit</button>
+			<button class="action" @click="openDeposit('withdraw')">Withdraw</button>
+		</div>
 	</div>
 </template>
 
@@ -39,6 +43,15 @@ export default {
 		this._loadDeposit();
 	},
 	methods: {
+		openDeposit(action) {
+			const path = '/deposit/manage';
+			this.$router.state = {
+				assetId: this.assetId,
+				platformId: this.platformId,
+				action,
+			};
+			this.$router.push(path);
+		},
 		formatAsset(assetId) {
 			const ticker = tickers[assetId];
 			return ticker;
@@ -321,5 +334,9 @@ export default {
 #value,
 #rate {
 	font-size: 1.15em;
+}
+
+#action-wrapper {
+	margin-top: 3em;
 }
 </style>
