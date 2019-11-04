@@ -177,12 +177,6 @@ input.invalid {
 	color: #c80815;
 }
 
-.header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
 .input-group {
 	padding: 0.5em 0;
 	background: white;

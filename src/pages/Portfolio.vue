@@ -281,6 +281,12 @@ export default {
 </script>
 
 <style scoped>
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 #swap-button {
 	margin-left: 8px;
 }
