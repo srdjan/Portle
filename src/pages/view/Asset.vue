@@ -10,23 +10,26 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import { loadAccount } from '../../mixins/loadAccount.js';
+
 import tickers from '../../data/tickers.json';
 import tokens from '../../data/tokens.json';
 import decimals from '../../data/decimals.json';
 import coinIds from '../../data/coin-ids.json';
 
 export default {
+	mixins: [
+		loadAccount,
+	],
 	data() {
 		return {
-			account: undefined,
 			assetId: '',
 			balance: 0,
 			price: 0,
 		}
 	},
 	mounted() {
-		this._loadAccount();
-		if (!this.account) {
+		if (!this.account.address) {
 			this.$router.push('/login');
 			return;
 		}
@@ -46,17 +49,6 @@ export default {
 		formatMoney(priceString) {
 			const price = new BigNumber(priceString);
 			return `$${price.toFixed(2)}`;
-		},
-		_loadAccount() {
-			const address = localStorage.getItem('address');
-			const auth = localStorage.getItem('auth') == 'true';
-			if (!address) {
-				return;
-			}
-			this.account = {
-				address,
-				auth,
-			};
 		},
 		async _loadPrice() {
 			const coinId = coinIds[this.assetId];

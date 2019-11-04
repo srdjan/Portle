@@ -18,6 +18,8 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
+import { loadAccount } from '../mixins/loadAccount.js';
+
 import addresses from '../data/addresses.json';
 import coinIds from '../data/coin-ids.json';
 
@@ -33,9 +35,11 @@ export default {
 		AssetList,
 		DepositList,
 	},
+	mixins: [
+		loadAccount,
+	],
 	data() {
 		return {
-			account: null,
 			assetBalances: {},
 			depositBalances: {
 				compound: {},
@@ -58,8 +62,7 @@ export default {
 		}
 	},
 	mounted() {
-		this._loadAccount();
-		if (!this.account) {
+		if (!this.account.address) {
 			this.$router.push('/login');
 			return;
 		}
@@ -73,17 +76,6 @@ export default {
 		openDepositManagePage() {
 			const path = '/deposit/manage';
 			this.$router.push(path);
-		},
-		_loadAccount() {
-			const address = localStorage.getItem('address');
-			const auth = localStorage.getItem('auth') == 'true';
-			if (!address) {
-				return;
-			}
-			this.account = {
-				address,
-				auth,
-			};
 		},
 		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'seth'];

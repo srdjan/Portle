@@ -16,14 +16,18 @@
 import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 
+import { loadAccount } from '../../mixins/loadAccount.js';
+
 import tickers from '../../data/tickers.json';
 import decimals from '../../data/decimals.json';
 import coinIds from '../../data/coin-ids.json';
 
 export default {
+	mixins: [
+		loadAccount,
+	],
 	data() {
 		return {
-			account: undefined,
 			platformId: '',
 			assetId: '',
 			balance: 0,
@@ -32,8 +36,7 @@ export default {
 		}
 	},
 	mounted() {
-		this._loadAccount();
-		if (!this.account) {
+		if (!this.account.address) {
 			this.$router.push('/login');
 			return;
 		}
@@ -76,17 +79,6 @@ export default {
 		formatRate(rateString) {
 			const rate = new BigNumber(rateString);
 			return `${rate.times(100).toFixed(2)}%`;
-		},
-		_loadAccount() {
-			const address = localStorage.getItem('address');
-			const auth = localStorage.getItem('auth') == 'true';
-			if (!address) {
-				return;
-			}
-			this.account = {
-				address,
-				auth,
-			};
 		},
 		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];

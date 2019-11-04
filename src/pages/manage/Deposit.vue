@@ -43,6 +43,7 @@ import { ethers } from 'ethers';
 import TxStatus from '../../components/TxStatus.vue';
 
 import { sendTx } from '../../mixins/sendTx.js';
+import { loadAccount } from '../../mixins/loadAccount.js';
 
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
@@ -64,10 +65,10 @@ export default {
 	},
 	mixins: [
 		sendTx,
+		loadAccount,
 	],
 	data() {
 		return {
-			account: undefined,
 			assetId: 'dai',
 			platformId: 'compound',
 			action: 'deposit',
@@ -96,8 +97,7 @@ export default {
 		}
 	},
 	mounted() {
-		this._loadAccount();
-		if (!this.account) {
+		if (!this.account.address || !this.account.auth) {
 			this.$router.push('/login');
 			return;
 		}
@@ -185,17 +185,6 @@ export default {
 				const assetAmount = this._toAmount(amount, this.assetId);
 				this.assetAmount = assetAmount;
 			}
-		},
-		_loadAccount() {
-			const address = localStorage.getItem('address');
-			const auth = localStorage.getItem('auth') == 'true';
-			if (!address || !auth) {
-				return;
-			}
-			this.account = {
-				address,
-				auth,
-			};
 		},
 		_loadRouterState() {
 			const routerState = this.$router.state;
