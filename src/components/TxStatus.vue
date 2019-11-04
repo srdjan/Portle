@@ -1,7 +1,9 @@
 <template>
-	<div id="txStatus" :class="{'shown': status != 'none'}">
-		{{ text }}
-	</div>
+	<transition name='slide'>
+		<div id="txStatus" v-if="shown">
+			{{ text }}
+		</div>
+	</transition>
 </template>
 
 <script>
@@ -26,6 +28,9 @@ export default {
 		},
 	},
 	computed: {
+		shown() {
+			return this.status != 'none';
+		},
 		text() {
 			const textMap = {
 				'pending': 'Waiting for confirmation…',
@@ -44,17 +49,19 @@ export default {
 <style scoped>
 #txStatus {
 	position: absolute;
-	bottom: 0px;
+	bottom: 32px;
 	right: 32px;
 	font-size: 0.8em;
 	border: 1px solid black;
 	padding: 0.5em 1.5em;
-	opacity: 0;
-	transition: bottom 1s ease, opacity 1s ease;
 }
 
-#txStatus.shown {
-	bottom: 32px;
-	opacity: 1;
+.slide-enter-active, .slide-leave-active {
+	transition: all 1s ease;
+}
+
+.slide-enter, .slide-leave-to {
+	opacity: 0;
+	transform: translateY(32px);
 }
 </style>
