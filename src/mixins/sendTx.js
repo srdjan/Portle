@@ -7,8 +7,9 @@ export const sendTx = {
 	methods: {
 		async _sendTx(provider, txPromise) {
 			try {
-				this.txStatus = 'mining';
+				this.txStatus = 'pending';
 				const tx = await txPromise;
+				this.txStatus = 'mining';
 				const txReceipt = await provider.waitForTransaction(tx.hash);
 				if (txReceipt.status == 1) {
 					this.txStatus = 'success';
