@@ -9,7 +9,7 @@ export const sendTx = {
 			try {
 				this.txStatus = 'mining';
 				const tx = await txPromise;
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
+				const txReceipt = await provider.waitForTransaction(tx.hash);
 				if (txReceipt.status == 1) {
 					this.txStatus = 'success';
 				} else {
