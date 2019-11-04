@@ -42,6 +42,8 @@ import { ethers } from 'ethers';
 
 import TxStatus from '../../components/TxStatus.vue';
 
+import { sendTx } from '../../mixins/sendTx.js';
+
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
 import dydxAbi from '../../data/abi/dydx.json';
@@ -60,6 +62,9 @@ export default {
 	components: {
 		TxStatus,
 	},
+	mixins: [
+		sendTx,
+	],
 	data() {
 		return {
 			account: undefined,
@@ -212,18 +217,8 @@ export default {
 			const cToken = new ethers.Contract(cTokenAddress, compoundTokenAbi, signer);
 			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(cTokenAddress, assetAddress, mintBalance);
-			try {
-				this.txStatus = 'mining';
-				const tx = await cToken.mint(mintBalance);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const txPromise = cToken.mint(mintBalance);
+			await this._sendTx(txPromise);
 		},
 		async _depositDydx() {
 			const account = this.account.address;
@@ -232,37 +227,27 @@ export default {
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
 			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(dydxAddress, assetAddress, depositBalance);
-			try {
-				this.txStatus = 'mining';
-				const accounts = [{
-					owner: account,
-					number: 0,
-				}];
-				const actions = [{
-					actionType: 0,
-					accountId: 0,
-					amount: {
-						sign: true,
-						denomination: 0,
-						ref: 0,
-						value: depositBalance,
-					},
-					primaryMarketId: marketId,
-					secondaryMarketId: 0,
-					otherAddress: account,
-					otherAccountId: 0,
-					data: '0x',
-				}];
-				const tx = await dydx.operate(accounts, actions);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const accounts = [{
+				owner: account,
+				number: 0,
+			}];
+			const actions = [{
+				actionType: 0,
+				accountId: 0,
+				amount: {
+					sign: true,
+					denomination: 0,
+					ref: 0,
+					value: depositBalance,
+				},
+				primaryMarketId: marketId,
+				secondaryMarketId: 0,
+				otherAddress: account,
+				otherAccountId: 0,
+				data: '0x',
+			}];
+			const txPromise = dydx.operate(accounts, actions);
+			await this._sendTx(txPromise);
 		},
 		async _depositFulcrum() {
 			const assetAddress = addresses[this.assetId];
@@ -271,18 +256,8 @@ export default {
 			const account = this.account.address;
 			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(iTokenAddress, assetAddress, mintBalance);
-			try {
-				this.txStatus = 'mining';
-				const tx = await iToken.mint(account, mintBalance);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const txPromise = iToken.mint(account, mintBalance);
+			await this._sendTx(txPromise);
 		},
 		async _withdrawCompound() {
 			const assetAddress = addresses[this.assetId];
@@ -293,18 +268,8 @@ export default {
 			const tokenBalance = tokenBalanceNumber.toFixed(0);
 			const cTokenAddress = this.tokenAddresses.compound[this.assetId];
 			const cToken = new ethers.Contract(cTokenAddress, compoundTokenAbi, signer);
-			try {
-				this.txStatus = 'mining';
-				const tx = await cToken.redeem(tokenBalance);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const txPromise = cToken.redeem(tokenBalance);
+			await this._sendTx(txPromise);
 		},
 		async _withdrawDydx() {
 			const account = this.account.address;
@@ -313,37 +278,27 @@ export default {
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
 			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(dydxAddress, assetAddress, depositBalance);
-			try {
-				this.txStatus = 'mining';
-				const accounts = [{
-					owner: account,
-					number: 0,
-				}];
-				const actions = [{
-					actionType: 1,
-					accountId: 0,
-					amount: {
-						sign: false,
-						denomination: 0,
-						ref: 0,
-						value: depositBalance,
-					},
-					primaryMarketId: marketId,
-					secondaryMarketId: 0,
-					otherAddress: account,
-					otherAccountId: 0,
-					data: '0x',
-				}];
-				const tx = await dydx.operate(accounts, actions);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const accounts = [{
+				owner: account,
+				number: 0,
+			}];
+			const actions = [{
+				actionType: 1,
+				accountId: 0,
+				amount: {
+					sign: false,
+					denomination: 0,
+					ref: 0,
+					value: depositBalance,
+				},
+				primaryMarketId: marketId,
+				secondaryMarketId: 0,
+				otherAddress: account,
+				otherAccountId: 0,
+				data: '0x',
+			}];
+			const txPromise = dydx.operate(accounts, actions);
+			await this._sendTx(txPromise);
 		},
 		async _withdrawFulcrum() {
 			const account = this.account.address;
@@ -355,18 +310,8 @@ export default {
 			const tokenBalance = tokenBalanceNumber.toFixed(0);
 			const iTokenAddress = this.tokenAddresses.fulcrum[this.assetId];
 			const iToken = new ethers.Contract(iTokenAddress, fulcrumTokenAbi, signer);
-			try {
-				this.txStatus = 'mining';
-				const tx = await iToken.burn(account, tokenBalance);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const txPromise = iToken.burn(account, tokenBalance);
+			await this._sendTx(txPromise);
 		},
 		async _checkAllowance(spender, address, amount) {
 			const uintMax = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
@@ -376,18 +321,8 @@ export default {
 			if (inputTokenAllowance.gte(amount)) {
 				return;
 			}
-			try {
-				this.txStatus = 'mining';
-				const tx = await inputToken.approve(spender, uintMax);
-				const txReceipt = await provider.getTransactionReceipt(tx.hash);
-				if (txReceipt.status == 1) {
-					this.txStatus = 'success';
-				} else {
-					this.txStatus = 'failure';
-				}
-			} catch(e) {
-				this.txStatus = 'rejected';
-			}
+			const txPromise = inputToken.approve(spender, uintMax);
+			await this._sendTx(txPromise);
 		},
 		async _loadCompound() {
 			const url = "https://api.thegraph.com/subgraphs/name/destiner/compound";
