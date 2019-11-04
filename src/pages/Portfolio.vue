@@ -1,11 +1,11 @@
 <template>
 	<div id="view">
 		<TotalBalance :assets="assetBalances" :deposits="depositBalances" :prices="prices"/>
-		<div class="header">
+		<div class="category-header">
 			<h2>Assets</h2>
 		</div>
 		<AssetList :balances="assetBalances" :prices="prices"/>
-		<div class="header">
+		<div class="category-header">
 			<h2>Deposits</h2>
 		</div>
 		<DepositList :balances="depositBalances" :prices="prices" :rates="rates"/>
@@ -281,7 +281,7 @@ export default {
 </script>
 
 <style scoped>
-.header {
+.category-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
