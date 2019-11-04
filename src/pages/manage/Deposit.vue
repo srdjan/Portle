@@ -476,7 +476,10 @@ export default {
 			const data = json.data;
 			const markets = data.markets;
 			for (const market of markets) {
-				const assetId = market.token.symbol.toLowerCase();
+				const symbol = market.token.symbol;
+				const assetId = symbol == 'WETH'
+					? 'eth'
+					: symbol.toLowerCase();
 				const address = market.token.id;
 				const rawRate = market.supplyRate;
 				const index = market.supplyIndex;
@@ -492,7 +495,10 @@ export default {
 			}
 			const userBalances = data.users[0].balances;
 			for (const userBalance of userBalances) {
-				const assetId = userBalance.market.token.symbol.substr(1).toLowerCase();
+				const symbol = userBalance.market.token.symbol;
+				const assetId = symbol == 'WETH'
+					? 'eth'
+					: symbol.toLowerCase();
 				const balance = userBalance.balance;
 				Vue.set(this.balances.dydx, assetId, balance);
 			}
