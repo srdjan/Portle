@@ -16,7 +16,7 @@ export default {
 	watch: {
 		status(value) {
 			clearTimeout(this.timeoutId);
-			if (this.status == 'mining') {
+			if (this.status == 'mining' || this.status == 'pending') {
 				return;
 			}
 			if (this.status != 'none') {
@@ -28,6 +28,7 @@ export default {
 	computed: {
 		text() {
 			const textMap = {
+				'pending': 'Waiting for confirmation…',
 				'rejected': 'Transaction rejected.',
 				'mining': 'Mining the transaction…',
 				'success': 'Transaction complete.',
