@@ -2,7 +2,7 @@ export const sendTx = {
 	data() {
 		return {
 			txStatus: 'none',
-		}
+		};
 	},
 	methods: {
 		async _sendTx(provider, txPromise) {
@@ -21,4 +21,4 @@ export const sendTx = {
 			}
 		},
 	},
-}
+};

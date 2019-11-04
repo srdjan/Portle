@@ -1,5 +1,5 @@
 <template>
-	<transition name='slide'>
+	<transition name="slide">
 		<div id="txStatus" v-if="shown">
 			{{ text }}
 		</div>
@@ -13,10 +13,10 @@ export default {
 		return {
 			lastStatus: '',
 			timeoutId: 0,
-		}
+		};
 	},
 	watch: {
-		status(value) {
+		status() {
 			clearTimeout(this.timeoutId);
 			if (this.status == 'mining' || this.status == 'pending') {
 				return;
@@ -43,7 +43,7 @@ export default {
 			return text;
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

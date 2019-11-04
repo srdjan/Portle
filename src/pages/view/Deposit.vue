@@ -33,7 +33,7 @@ export default {
 			balance: 0,
 			rate: 0,
 			prices: {},
-		}
+		};
 	},
 	mounted() {
 		if (!this.account.address) {
@@ -85,7 +85,7 @@ export default {
 			const assetIds = assets.map((asset) => coinIds[asset]);
 			const assetIdString = assetIds.join('%2C');
 			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
- 			const response = await fetch(url);
+			const response = await fetch(url);
 			const prices = await response.json();
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
@@ -121,11 +121,11 @@ export default {
 			return value.toString();
 		},
 		async _loadCompoundDeposit() {
-			const url = "https://api.thegraph.com/subgraphs/name/destiner/compound";
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
 			const query = `
 				query {
 					userBalances(where: {
-						id: "${this.account.address}"
+						id: '${this.account.address}'
 					}) {
 						balances {
 							token {
@@ -138,8 +138,8 @@ export default {
 					}
 				}`;
 			const opts = {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ query })
 			};
 			const response = await fetch(url, opts);
@@ -170,11 +170,11 @@ export default {
 			}
 		},
 		async _loadDydxDeposit() {
-			const url = "https://api.thegraph.com/subgraphs/name/destiner/dydx";
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/dydx';
 			const query = `
 				query {
 					users(where: {
-						id: "${this.account.address}"
+						id: '${this.account.address}'
 					}) {
 						balances {
 							balance
@@ -189,8 +189,8 @@ export default {
 					}
 				}`;
 			const opts = {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ query })
 			};
 			const response = await fetch(url, opts);
@@ -224,11 +224,11 @@ export default {
 			}
 		},
 		async _loadFulcrumDeposit() {
-			const url = "https://api.thegraph.com/subgraphs/name/destiner/fulcrum";
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
 			const query = `
 				query {
 					userBalances(where: {
-						id: "${this.account.address}"
+						id: '${this.account.address}'
 					}) {
 						balances {
 							token {
@@ -241,8 +241,8 @@ export default {
 					}
 				}`;
 			const opts = {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ query })
 			};
 			const response = await fetch(url, opts);
@@ -296,7 +296,7 @@ export default {
 			return asset;
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

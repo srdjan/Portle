@@ -94,7 +94,7 @@ export default {
 				fulcrum: {},
 			},
 			txStatus: 'none',
-		}
+		};
 	},
 	mounted() {
 		if (!this.account.address || !this.account.auth) {
@@ -249,7 +249,6 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawCompound() {
-			const assetAddress = addresses[this.assetId];
 			const index = this.indices.compound[this.assetId];
 			const redeemBalance = this._toBalance(this.assetAmount, this.assetId);
 			const redeemBalanceNumber = new BigNumber(redeemBalance);
@@ -291,7 +290,6 @@ export default {
 		},
 		async _withdrawFulcrum() {
 			const account = this.account.address;
-			const assetAddress = addresses[this.assetId];
 			const index = this.indices.fulcrum[this.assetId];
 			const burnBalance = this._toBalance(this.assetAmount, this.assetId);
 			const burnBalanceNumber = new BigNumber(burnBalance);
@@ -314,7 +312,7 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _loadCompound() {
-			const url = "https://api.thegraph.com/subgraphs/name/destiner/compound";
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
 			const query = `
 				query {
 					tokens {
@@ -324,7 +322,7 @@ export default {
 						supplyIndex
 					}
 					userBalances(where: {
-						id: "${this.account.address}"
+						id: '${this.account.address}'
 					}) {
 						balances {
 							token {
@@ -335,8 +333,8 @@ export default {
 					}
 				}`;
 			const opts = {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ query }),
 			};
 			const response = await fetch(url, opts);
@@ -366,7 +364,7 @@ export default {
 			}
 		},
 		async _loadDydx() {
-			const url = "https://api.thegraph.com/subgraphs/name/destiner/dydx";
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/dydx';
 			const query = `
 				query {
 					markets {
@@ -378,7 +376,7 @@ export default {
 						supplyRate
 					}
 					users(where: {
-						id: "${this.account.address}"
+						id: '${this.account.address}'
 					}) {
 						balances {
 							balance
@@ -391,8 +389,8 @@ export default {
 					}
 				}`;
 			const opts = {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ query })
 			};
 			const response = await fetch(url, opts);
@@ -428,7 +426,7 @@ export default {
 			}
 		},
 		async _loadFulcrum() {
-			const url = "https://api.thegraph.com/subgraphs/name/destiner/fulcrum";
+			const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
 			const query = `
 				query {
 					tokens {
@@ -438,7 +436,7 @@ export default {
 						supplyRate
 					}
 					userBalances(where: {
-						id: "${this.account.address}"
+						id: '${this.account.address}'
 					}) {
 						balances {
 							token {
@@ -449,8 +447,8 @@ export default {
 					}
 				}`;
 			const opts = {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ query })
 			};
 			const response = await fetch(url, opts);
@@ -514,7 +512,7 @@ export default {
 			return [ 'compound', 'dydx', 'fulcrum', ];
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

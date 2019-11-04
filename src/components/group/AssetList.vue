@@ -80,11 +80,11 @@ export default {
 					: aValue.gt(bValue)
 						? -1
 						: 0;
-			})
+			});
 			return assets;
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

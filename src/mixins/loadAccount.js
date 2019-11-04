@@ -2,7 +2,7 @@ export const loadAccount = {
 	data() {
 		return {
 			account: {},
-		}
+		};
 	},
 	mounted() {
 		this._loadAccount();
@@ -17,4 +17,4 @@ export const loadAccount = {
 			};
 		},
 	},
-}
+};

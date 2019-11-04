@@ -105,7 +105,7 @@ export default {
 			return deposits;
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

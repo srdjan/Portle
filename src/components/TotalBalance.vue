@@ -62,7 +62,7 @@ export default {
 			return depositValue;
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

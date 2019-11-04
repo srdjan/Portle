@@ -26,7 +26,7 @@ export default {
 			assetId: '',
 			balance: 0,
 			price: 0,
-		}
+		};
 	},
 	mounted() {
 		if (!this.account.address) {
@@ -53,7 +53,7 @@ export default {
 		async _loadPrice() {
 			const coinId = coinIds[this.assetId];
 			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`;
- 			const response = await fetch(url);
+			const response = await fetch(url);
 			const prices = await response.json();
 			this.price = prices[coinId].usd;
 		},
@@ -68,7 +68,7 @@ export default {
 				const ten = new BigNumber(10);
 				const etherMultiplier = ten.pow(18);
 				const etherBalanceInWei = etherBalanceNumber.times(etherMultiplier);
-				this.balance = etherBalanceInWei.toString()
+				this.balance = etherBalanceInWei.toString();
 				return;
 			}
 			// ERC20
@@ -116,7 +116,7 @@ export default {
 			return asset;
 		},
 	},
-}
+};
 </script>
 
 <style scoped>

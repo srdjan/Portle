@@ -21,6 +21,7 @@
 </template>
 
 <script>
+// eslint-disable-next-line no-unused-vars
 import favicon from '../public/favicon.ico';
 import logo from '../public/img/logo.svg';
 
@@ -55,7 +56,7 @@ export default {
 			return logo;
 		},
 	},
-}
+};
 </script>
 
 <style>

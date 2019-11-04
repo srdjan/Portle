@@ -18,7 +18,7 @@ export default {
 	data() {
 		return {
 			address: '',
-		}
+		};
 	},
 	mounted() {
 		const address = localStorage.getItem('address');
@@ -28,6 +28,7 @@ export default {
 	},
 	methods: {
 		async login() {
+			// eslint-disable-next-line no-undef
 			const addresses = await ethereum.enable();
 			const address = addresses[0];
 			localStorage.setItem('address', address);
@@ -54,7 +55,7 @@ export default {
 			return !this.isAddressValid();
 		},
 	},
-}
+};
 </script>
 
 <style scoped>
