@@ -7,6 +7,7 @@
 		<AssetList :balances="assetBalances" :prices="prices"/>
 		<div class="category-header">
 			<h2>Deposits</h2>
+			<img :src="plusCircleIcon" class="icon" @click="openDepositManagePage()" />
 		</div>
 		<DepositList :balances="depositBalances" :prices="prices" :rates="rates"/>
 	</div>
@@ -19,6 +20,8 @@ import { ethers } from 'ethers';
 
 import addresses from '../data/addresses.json';
 import coinIds from '../data/coin-ids.json';
+
+import plusCircleIcon from '../../public/img/plus-circle.svg';
 
 import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
@@ -67,6 +70,10 @@ export default {
 		this._loadFulcrum();
 	},
 	methods: {
+		openDepositManagePage() {
+			const path = '/deposit/manage';
+			this.$router.push(path);
+		},
 		_loadAccount() {
 			const address = localStorage.getItem('address');
 			const auth = localStorage.getItem('auth') == 'true';
@@ -277,14 +284,28 @@ export default {
 			}
 		},
 	},
+	computed: {
+		plusCircleIcon() {
+			return plusCircleIcon;
+		},
+	},
 }
 </script>
 
 <style scoped>
 .category-header {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
+	align-items: baseline;
+}
+
+.icon {
+	width: 24px;
+	margin-left: 1em;
+	opacity: 0.7;
+}
+
+.icon:hover {
+	opacity: 1;
 }
 
 #swap-button {
