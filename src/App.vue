@@ -1,21 +1,42 @@
 <template>
-	<div id="app">
-		<header v-if="showNavigation()">
-			<div class="header-part" @click="openHomePage()">
-				<img id="logo" :src="logo">
-				<h1 id="title">Portle</h1>
+	<div
+		id="app"
+	>
+		<header
+			v-if="showNavigation()"
+		>
+			<div
+				class="header-part"
+				@click="openHomePage()"
+			>
+				<img
+					id="logo"
+					:src="logo"
+				>
+				<h1
+					id="title"
+				>
+					Portle
+				</h1>
 			</div>
-			<div class="header-part">
+			<div
+				class="header-part"
+			>
 				<span>{{ formatAddress() }}</span>
-				<button @click="logout()" id="logout-button">Logout</button>
+				<button
+					id="logout-button"
+					@click="logout()"
+				>
+					Logout
+				</button>
 			</div>
 		</header>
 		<main>
-			<aside></aside>
+			<aside />
 			<section>
-				<router-view/>
+				<router-view />
 			</section>
-			<aside></aside>
+			<aside />
 		</main>
 	</div>
 </template>

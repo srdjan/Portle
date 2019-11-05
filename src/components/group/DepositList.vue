@@ -1,14 +1,21 @@
 <template>
 	<div id="list">
-		<div class="card" v-for="deposit in deposits" v-if="isShown(deposit)" @click="openDeposit(deposit)">
-			<div class="balance">{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}</div>
+		<div
+			v-for="deposit in deposits"
+			v-if="isShown(deposit)"
+			class="card"
+			@click="openDeposit(deposit)"
+		>
+			<div class="balance">
+				{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}
+			</div>
 			<div class="platform sparse">
 				<div>{{ formatPlatform(deposit.platformId) }}</div>
-				<div>{{ formatRate(deposit.rate)}}</div>
+				<div>{{ formatRate(deposit.rate) }}</div>
 			</div>
 			<div class="details sparse">
 				<div>{{ formatMoney(deposit.price) }}</div>
-				<div>{{ formatMoney(deposit.value)}}</div>
+				<div>{{ formatMoney(deposit.value) }}</div>
 			</div>
 		</div>
 	</div>

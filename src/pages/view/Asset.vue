@@ -1,9 +1,20 @@
 <template>
-	<div id="view" v-if="asset">
-		<div id="type">Asset</div>
-		<div id="name">{{ asset.name }}</div>
-		<div id="amount">{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}</div>
-		<div id="value">{{ formatMoney(asset.value) }} @ {{ formatMoney(asset.price) }}/{{ formatAsset(asset.assetId) }}</div>
+	<div
+		v-if="asset"
+		id="view"
+	>
+		<div id="type">
+			Asset
+		</div>
+		<div id="name">
+			{{ asset.name }}
+		</div>
+		<div id="amount">
+			{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}
+		</div>
+		<div id="value">
+			{{ formatMoney(asset.value) }} @ {{ formatMoney(asset.price) }}/{{ formatAsset(asset.assetId) }}
+		</div>
 	</div>
 </template>
 

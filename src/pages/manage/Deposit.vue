@@ -3,35 +3,80 @@
 		<h2>Manage deposits</h2>
 		<div>
 			<div class="list">
-				<div v-for="asset in assets" class="asset-selector" :class="{ 'selected': asset == assetId }" @click="selectAsset(asset)">
+				<div
+					v-for="asset in assets"
+					class="asset-selector"
+					:class="{ 'selected': asset == assetId }"
+					@click="selectAsset(asset)"
+				>
 					{{ formatAsset(asset) }}
 				</div>
 			</div>
 		</div>
 		<div>
 			<div class="list">
-				<div v-for="platform in platforms" class="app-selector" :class="{ 'selected': platform == platformId }" @click="selectPlatform(platform)">
+				<div
+					v-for="platform in platforms"
+					class="app-selector"
+					:class="{ 'selected': platform == platformId }"
+					@click="selectPlatform(platform)"
+				>
 					<div>{{ formatPlatform(platform) }}</div>
 					<div>{{ formatRate(rates[platform][assetId]) }}</div>
 				</div>
 			</div>
 		</div>
 		<div id="action-selector-wrapper">
-			<span class="action-selector" @click="selectAction('deposit')" :class="{ 'selected': action == 'deposit' }">Deposit</span>
-			<span class="action-selector" @click="selectAction('withdraw')" :class="{ 'selected': action == 'withdraw' }">Withdraw</span>
+			<span
+				class="action-selector"
+				:class="{ 'selected': action == 'deposit' }"
+				@click="selectAction('deposit')"
+			>
+				Deposit
+			</span>
+			<span
+				class="action-selector"
+				:class="{ 'selected': action == 'withdraw' }"
+				@click="selectAction('withdraw')"
+			>
+				Withdraw
+			</span>
 		</div>
 		<div id="amount-wrapper">
 			<span class="input-group">
-				<span class="max-label" @click="setMax()">MAX</span>
-				<input class="amount" v-model="assetAmount">
+				<span
+					class="max-label"
+					@click="setMax()"
+				>
+					MAX
+				</span>
+				<input
+					v-model="assetAmount"
+					class="amount"
+				>
 				<span class="label label-ghost label-right inline">{{ formatAsset(assetId) }}</span>
 			</span>
 		</div>
 		<div id="button-wrapper">
-			<button class="primary big" @click="deposit()" v-if="action == 'deposit'">Deposit</button>
-			<button class="primary big" @click="withdraw()" v-if="action == 'withdraw'">Withdraw</button>
+			<button
+				v-if="action == 'deposit'"
+				class="primary big"
+				@click="deposit()"
+			>
+				Deposit
+			</button>
+			<button
+				v-if="action == 'withdraw'"
+				class="primary big"
+				@click="withdraw()"
+			>
+				Withdraw
+			</button>
 		</div>
-		<TxStatus :status="txStatus" :onHidden="hideStatus"/>
+		<TxStatus
+			:status="txStatus"
+			:on-hidden="hideStatus"
+		/>
 	</div>
 </template>
 

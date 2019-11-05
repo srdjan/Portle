@@ -1,11 +1,20 @@
 <template>
 	<div id="list">
-		<div class="card" v-for="asset in assets" v-if="isShown(asset)" @click="openAsset(asset)">
-			<div class="amount">{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}</div>
-			<div class="description">{{ asset.title }}</div>
+		<div
+			v-for="asset in assets"
+			v-if="isShown(asset)"
+			class="card"
+			@click="openAsset(asset)"
+		>
+			<div class="amount">
+				{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}
+			</div>
+			<div class="description">
+				{{ asset.title }}
+			</div>
 			<div class="price-value sparse">
 				<div>{{ formatMoney(asset.price) }}</div>
-				<div>{{ formatMoney(asset.value)}}</div>
+				<div>{{ formatMoney(asset.value) }}</div>
 			</div>
 		</div>
 	</div>

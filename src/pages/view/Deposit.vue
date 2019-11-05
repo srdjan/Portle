@@ -1,13 +1,39 @@
 <template>
-	<div id="view" v-if="deposit">
-		<div id="type">Deposit</div>
-		<div id="platform">{{ formatPlatform(deposit.platformId) }}</div>
-		<div id="amount">{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}</div>
-		<div id="rate">{{ formatRate(deposit.rate) }} annual rate</div>
-		<div id="value">{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ formatAsset(deposit.assetId) }}</div>
-		<div id="action-wrapper" v-if="account && account.auth">
-			<button class="action" @click="openDeposit('deposit')">Deposit</button>
-			<button class="action" @click="openDeposit('withdraw')">Withdraw</button>
+	<div
+		v-if="deposit"
+		id="view"
+	>
+		<div id="type">
+			Deposit
+		</div>
+		<div id="platform">
+			{{ formatPlatform(deposit.platformId) }}
+		</div>
+		<div id="amount">
+			{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}
+		</div>
+		<div id="rate">
+			{{ formatRate(deposit.rate) }} annual rate
+		</div>
+		<div id="value">
+			{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ formatAsset(deposit.assetId) }}
+		</div>
+		<div
+			v-if="account && account.auth"
+			id="action-wrapper"
+		>
+			<button
+				class="action"
+				@click="openDeposit('deposit')"
+			>
+				Deposit
+			</button>
+			<button
+				class="action"
+				@click="openDeposit('withdraw')"
+			>
+				Withdraw
+			</button>
 		</div>
 	</div>
 </template>

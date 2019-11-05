@@ -1,15 +1,30 @@
 <template>
 	<div id="view">
-		<TotalBalance :assets="assetBalances" :deposits="depositBalances" :prices="prices"/>
+		<TotalBalance
+			:assets="assetBalances"
+			:deposits="depositBalances"
+			:prices="prices"
+		/>
 		<div class="category-header">
 			<h2>Assets</h2>
 		</div>
-		<AssetList :balances="assetBalances" :prices="prices"/>
+		<AssetList
+			:balances="assetBalances"
+			:prices="prices"
+		/>
 		<div class="category-header">
 			<h2>Deposits</h2>
-			<img :src="plusCircleIcon" class="icon" @click="openDepositManagePage()" />
+			<img
+				:src="plusCircleIcon"
+				class="icon"
+				@click="openDepositManagePage()"
+			>
 		</div>
-		<DepositList :balances="depositBalances" :prices="prices" :rates="rates"/>
+		<DepositList
+			:balances="depositBalances"
+			:prices="prices"
+			:rates="rates"
+		/>
 	</div>
 </template>
 

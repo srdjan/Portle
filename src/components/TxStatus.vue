@@ -1,6 +1,9 @@
 <template>
 	<transition name="slide">
-		<div id="txStatus" v-if="shown">
+		<div
+			v-if="shown"
+			id="txStatus"
+		>
 			{{ text }}
 		</div>
 	</transition>

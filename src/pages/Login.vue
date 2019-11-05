@@ -1,15 +1,37 @@
 <template>
 	<div id="view">
-		<h1 id="title">Portle</h1>
+		<h1 id="title">
+			Portle
+		</h1>
 		<div>
 			<span class="input-group">
-				<input id="address" class="address" placeholder="Enter address" v-model="address" v-bind:class="{ invalid: !isAddressValid() }">
-				<span id="watch" @click="watch()" v-bind:class="{ disabled: isWatchButtonDisabled() }">Watch</span>
+				<input
+					id="address"
+					v-model="address"
+					:class="{ invalid: !isAddressValid() }"
+					class="address"
+					placeholder="Enter address"
+				>
+				<span
+					id="watch"
+					:class="{ disabled: isWatchButtonDisabled() }"
+					@click="watch()"
+				>
+					Watch
+				</span>
 			</span>
 		</div>
-		<div id="divider">or</div>
-		<button id="main" class="primary big" @click="login()">Login with Ethereum</button>
-		<div id="placeholder"></div>
+		<div id="divider">
+			or
+		</div>
+		<button
+			id="main"
+			class="primary big"
+			@click="login()"
+		>
+			Login with Ethereum
+		</button>
+		<div id="placeholder" />
 	</div>
 </template>
 
