@@ -250,6 +250,7 @@ export default {
 			}
 		},
 		async _depositCompound() {
+			const account = this._unlockAccount();
 			const assetAddress = addresses[this.assetId];
 			const cTokenAddress = this.tokenAddresses.compound[this.assetId];
 			const cToken = new ethers.Contract(cTokenAddress, compoundTokenAbi, signer);
@@ -259,7 +260,7 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _depositDydx() {
-			const account = this.account.address;
+			const account = this._unlockAccount();
 			const marketId = this._getDydxMarket(this.assetId);
 			const assetAddress = addresses[this.assetId];
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
@@ -288,16 +289,17 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _depositFulcrum() {
+			const account = this._unlockAccount();
 			const assetAddress = addresses[this.assetId];
 			const iTokenAddress = this.tokenAddresses.fulcrum[this.assetId];
 			const iToken = new ethers.Contract(iTokenAddress, fulcrumTokenAbi, signer);
-			const account = this.account.address;
 			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(iTokenAddress, assetAddress, mintBalance);
 			const txPromise = iToken.mint(account, mintBalance);
 			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawCompound() {
+			const account = this._unlockAccount();
 			const index = this.indices.compound[this.assetId];
 			const redeemBalance = this._toBalance(this.assetAmount, this.assetId);
 			const redeemBalanceNumber = new BigNumber(redeemBalance);
@@ -309,7 +311,7 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawDydx() {
-			const account = this.account.address;
+			const account = this._unlockAccount();
 			const marketId = this._getDydxMarket(this.assetId);
 			const assetAddress = addresses[this.assetId];
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
@@ -338,7 +340,7 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawFulcrum() {
-			const account = this.account.address;
+			const account = this._unlockAccount();
 			const index = this.indices.fulcrum[this.assetId];
 			const burnBalance = this._toBalance(this.assetAmount, this.assetId);
 			const burnBalanceNumber = new BigNumber(burnBalance);
@@ -350,8 +352,8 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _checkAllowance(spender, address, amount) {
+			const account = this._unlockAccount();
 			const uintMax = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
-			const account = this.account.address;
 			const inputToken = new ethers.Contract(address, erc20Abi, signer);
 			const inputTokenAllowance = await inputToken.allowance(account, spender);
 			if (inputTokenAllowance.gte(amount)) {
