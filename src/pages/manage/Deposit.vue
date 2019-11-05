@@ -45,19 +45,7 @@
 			</span>
 		</div>
 		<div id="amount-wrapper">
-			<span class="input-group">
-				<span
-					class="max-label"
-					@click="setMax()"
-				>
-					MAX
-				</span>
-				<input
-					v-model="assetAmount"
-					class="amount"
-				>
-				<span class="label label-ghost label-right inline">{{ formatAsset(assetId) }}</span>
-			</span>
+			<AssetInput :id="assetId" :amount="assetAmount" :setMax="setMax" :onChange="onAssetChange" />
 		</div>
 		<div id="button-wrapper">
 			<button
@@ -88,6 +76,7 @@ import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
 import TxStatus from '../../components/TxStatus.vue';
+import AssetInput from '../../components/AssetInput.vue';
 
 import { sendTx } from '../../mixins/sendTx.js';
 import { loadAccount } from '../../mixins/loadAccount.js';
@@ -109,6 +98,7 @@ const dydxAddress = '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e';
 export default {
 	components: {
 		TxStatus,
+		AssetInput,
 	},
 	mixins: [
 		sendTx,
@@ -240,6 +230,10 @@ export default {
 				const assetAmount = this._toAmount(amount, this.assetId);
 				this.assetAmount = assetAmount;
 			}
+		},
+		onAssetChange(id, amount) {
+			this.assetId = id;
+			this.assetAmount = amount;
 		},
 		_loadRouterState() {
 			const routerState = this.$router.state;
