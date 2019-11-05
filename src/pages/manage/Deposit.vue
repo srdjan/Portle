@@ -377,7 +377,7 @@ export default {
 						supplyIndex
 					}
 					userBalances(where: {
-						id: '${this.account.address}'
+						id: "${this.account.address}"
 					}) {
 						balances {
 							token {
@@ -431,7 +431,7 @@ export default {
 						supplyRate
 					}
 					users(where: {
-						id: '${this.account.address}'
+						id: "${this.account.address}"
 					}) {
 						balances {
 							balance
@@ -491,7 +491,7 @@ export default {
 						supplyRate
 					}
 					userBalances(where: {
-						id: '${this.account.address}'
+						id: "${this.account.address}"
 					}) {
 						balances {
 							token {

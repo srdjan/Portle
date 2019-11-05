@@ -143,7 +143,7 @@ export default {
 			const query = `
 				query {
 					userBalances(where: {
-						id: '${this.account.address}'
+						id: "${this.account.address}"
 					}) {
 						balances {
 							token {
@@ -196,7 +196,7 @@ export default {
 			const query = `
 				query {
 					users(where: {
-						id: '${this.account.address}'
+						id: "${this.account.address}"
 					}) {
 						balances {
 							balance
@@ -247,7 +247,7 @@ export default {
 			const query = `
 				query {
 					userBalances(where: {
-						id: '${this.account.address}'
+						id: "${this.account.address}"
 					}) {
 						balances {
 							token {
