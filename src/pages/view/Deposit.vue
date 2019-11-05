@@ -42,7 +42,7 @@
 import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 
-import { loadAccount } from '../../mixins/loadAccount.js';
+import { account } from '../../mixins/account.js';
 
 import tickers from '../../data/tickers.json';
 import decimals from '../../data/decimals.json';
@@ -50,7 +50,7 @@ import coinIds from '../../data/coin-ids.json';
 
 export default {
 	mixins: [
-		loadAccount,
+		account,
 	],
 	data() {
 		return {

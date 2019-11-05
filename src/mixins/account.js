@@ -1,4 +1,4 @@
-export const loadAccount = {
+export const account = {
 	data() {
 		return {
 			account: {},

@@ -79,7 +79,7 @@ import TxStatus from '../../components/TxStatus.vue';
 import AssetInput from '../../components/AssetInput.vue';
 
 import { sendTx } from '../../mixins/sendTx.js';
-import { loadAccount } from '../../mixins/loadAccount.js';
+import { account } from '../../mixins/account.js';
 
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
@@ -102,7 +102,7 @@ export default {
 	},
 	mixins: [
 		sendTx,
-		loadAccount,
+		account,
 	],
 	data() {
 		return {

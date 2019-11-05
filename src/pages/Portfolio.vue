@@ -32,7 +32,7 @@
 import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 
-import { loadAccount } from '../mixins/loadAccount.js';
+import { account } from '../mixins/account.js';
 
 import addresses from '../data/addresses.json';
 import coinIds from '../data/coin-ids.json';
@@ -50,7 +50,7 @@ export default {
 		DepositList,
 	},
 	mixins: [
-		loadAccount,
+		account,
 	],
 	data() {
 		return {
