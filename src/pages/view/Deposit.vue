@@ -170,11 +170,12 @@ export default {
 			return value.toString();
 		},
 		async _loadCompoundDeposit() {
+			const address = this.account.address.toLowerCase();
 			const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
 			const query = `
 				query {
 					userBalances(where: {
-						id: "${this.account.address}"
+						id: "${address}"
 					}) {
 						balances {
 							token {
@@ -219,11 +220,12 @@ export default {
 			}
 		},
 		async _loadDydxDeposit() {
+			const address = this.account.address.toLowerCase();
 			const url = 'https://api.thegraph.com/subgraphs/name/destiner/dydx';
 			const query = `
 				query {
 					users(where: {
-						id: "${this.account.address}"
+						id: "${address}"
 					}) {
 						balances {
 							balance
@@ -273,11 +275,12 @@ export default {
 			}
 		},
 		async _loadFulcrumDeposit() {
+			const address = this.account.address.toLowerCase();
 			const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
 			const query = `
 				query {
 					userBalances(where: {
-						id: "${this.account.address}"
+						id: "${address}"
 					}) {
 						balances {
 							token {
