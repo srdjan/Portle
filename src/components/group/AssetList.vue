@@ -3,6 +3,7 @@
 		<div
 			v-for="asset in assets"
 			v-if="isShown(asset)"
+			:key="asset.assetId"
 			class="card"
 			@click="openAsset(asset)"
 		>

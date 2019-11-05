@@ -3,6 +3,7 @@
 		<div
 			v-for="deposit in deposits"
 			v-if="isShown(deposit)"
+			:key="deposit.platformId + '-' + deposit.assetId"
 			class="card"
 			@click="openDeposit(deposit)"
 		>

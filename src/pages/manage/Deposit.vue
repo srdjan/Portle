@@ -5,6 +5,7 @@
 			<div class="list">
 				<div
 					v-for="asset in assets"
+					:key="asset"
 					class="asset-selector"
 					:class="{ 'selected': asset == assetId }"
 					@click="selectAsset(asset)"
@@ -17,6 +18,7 @@
 			<div class="list">
 				<div
 					v-for="platform in platforms"
+					:key="platform"
 					class="app-selector"
 					:class="{ 'selected': platform == platformId }"
 					@click="selectPlatform(platform)"
