@@ -316,7 +316,6 @@ export default {
 			const assetAddress = addresses[this.assetId];
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
 			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
-			await this._checkAllowance(dydxAddress, assetAddress, depositBalance);
 			const accounts = [{
 				owner: account,
 				number: 0,
