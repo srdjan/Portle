@@ -2,7 +2,6 @@
 	<div id="list">
 		<div
 			v-for="deposit in deposits"
-			v-if="isShown(deposit)"
 			:key="deposit.platformId + '-' + deposit.assetId"
 			class="card"
 			@click="openDeposit(deposit)"
@@ -58,7 +57,9 @@ export default {
 						rate: this.rates.supply[platformId][assetId],
 						value: this._getValueString(platformId, assetId),
 					};
-					deposits.push(deposit);
+					if (this._isShown(deposit)) {
+						deposits.push(deposit);
+					}
 				}
 			}
 			deposits.sort((a, b) => {
@@ -79,10 +80,6 @@ export default {
 			const assetId = deposit.assetId;
 			const path = `/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
-		},
-		isShown(deposit) {
-			const value = new BigNumber(deposit.value);
-			return value.gt(0);
 		},
 		formatAsset(assetId) {
 			const ticker = tickers[assetId];
@@ -108,6 +105,10 @@ export default {
 		formatMoney(priceString) {
 			const price = new BigNumber(priceString);
 			return `$${price.toFixed(2)}`;
+		},
+		_isShown(deposit) {
+			const value = new BigNumber(deposit.value);
+			return value.gt(0);
 		},
 		_getAmountString(platformId, assetId) {
 			const balance = this.balances[platformId][assetId];

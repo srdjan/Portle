@@ -2,7 +2,6 @@
 	<div id="list">
 		<div
 			v-for="asset in assets"
-			v-if="isShown(asset)"
 			:key="asset.assetId"
 			class="card"
 			@click="openAsset(asset)"
@@ -50,7 +49,9 @@ export default {
 					price: this.prices[assetId],
 					value: this._getValueString(assetId),
 				};
-				assets.push(asset);
+				if (this._isShown(asset)) {
+					assets.push(asset);
+				}
 			}
 			assets.sort((a, b) => {
 				const aValue = new BigNumber(a.value);
@@ -70,10 +71,6 @@ export default {
 			const path = `/asset/${assetId}`;
 			this.$router.push(path);
 		},
-		isShown(asset) {
-			const value = new BigNumber(asset.value);
-			return value.gt(1);
-		},
 		formatAsset(assetId) {
 			const ticker = tickers[assetId];
 			return ticker;
@@ -85,6 +82,10 @@ export default {
 		formatMoney(priceString) {
 			const price = new BigNumber(priceString);
 			return `$${price.toFixed(2)}`;
+		},
+		_isShown(asset) {
+			const value = new BigNumber(asset.value);
+			return value.gt(1);
 		},
 		_getAmountString(assetId) {
 			const balance = this.balances[assetId];
