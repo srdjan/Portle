@@ -8,8 +8,8 @@
 		</span>
 		<input
 			:value="amount"
-			@input="onAmountChange"
 			class="amount"
+			@input="onAmountChange"
 		>
 		<span class="label label-ghost label-right inline">{{ formatAsset(id) }}</span>
 	</span>

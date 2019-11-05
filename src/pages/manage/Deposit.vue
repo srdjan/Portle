@@ -45,7 +45,12 @@
 			</span>
 		</div>
 		<div id="amount-wrapper">
-			<AssetInput :id="assetId" :amount="assetAmount" :setMax="setMax" :onChange="onAssetChange" />
+			<AssetInput
+				:id="assetId"
+				:amount="assetAmount"
+				:set-max="setMax"
+				:on-change="onAssetChange"
+			/>
 		</div>
 		<div id="button-wrapper">
 			<button
