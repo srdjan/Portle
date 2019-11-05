@@ -14,7 +14,20 @@ import BigNumber from 'bignumber.js';
 import decimals from '../data/decimals.json';
 
 export default {
-	props: [ 'assets', 'deposits', 'prices' ],
+	props: {
+		assets: {
+			type: Array,
+			default: () => [],
+		},
+		deposits: {
+			type: Array,
+			default: () => [],
+		},
+		prices: {
+			type: Array,
+			default: () => [],
+		},
+	},
 	computed: {
 		totalBalance() {
 			const balance = this._assetValue

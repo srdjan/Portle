@@ -11,7 +11,16 @@
 
 <script>
 export default {
-	props: ['status', 'onHidden'],
+	props: {
+		status: {
+			type: String,
+			default: 'none'
+		},
+		onHidden: {
+			type: Function,
+			default: () => {},
+		},
+	},
 	data() {
 		return {
 			lastStatus: '',

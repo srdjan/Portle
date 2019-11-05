@@ -28,7 +28,16 @@ import tokens from '../../data/tokens.json';
 import decimals from '../../data/decimals.json';
 
 export default {
-	props: [ 'balances', 'prices' ],
+	props: {
+		balances: {
+			type: Array,
+			default: () => [],
+		},
+		prices: {
+			type: Array,
+			default: () => [],
+		},
+	},
 	computed: {
 		assets() {
 			const assets = [];

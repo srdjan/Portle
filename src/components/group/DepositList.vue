@@ -28,7 +28,20 @@ import tickers from '../../data/tickers.json';
 import decimals from '../../data/decimals.json';
 
 export default {
-	props: [ 'balances', 'rates', 'prices', ],
+	props: {
+		balances: {
+			type: Array,
+			default: () => [],
+		},
+		rates: {
+			type: Array,
+			default: () => [],
+		},
+		prices: {
+			type: Array,
+			default: () => [],
+		},
+	},
 	computed: {
 		deposits() {
 			const deposits = [];
