@@ -16,16 +16,16 @@ import decimals from '../data/decimals.json';
 export default {
 	props: {
 		assets: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => {},
 		},
 		deposits: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => {},
 		},
 		prices: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => {},
 		},
 	},
 	computed: {

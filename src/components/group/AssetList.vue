@@ -30,12 +30,12 @@ import decimals from '../../data/decimals.json';
 export default {
 	props: {
 		balances: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => {},
 		},
 		prices: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			default: () => {},
 		},
 	},
 	computed: {
