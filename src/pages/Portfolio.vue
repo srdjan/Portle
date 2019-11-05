@@ -304,12 +304,11 @@ export default {
 <style scoped>
 .category-header {
 	display: flex;
-	align-items: baseline;
 }
 
 .icon {
 	width: 24px;
-	margin-left: 1em;
+	margin: 1.25em 0 0 1em;
 	opacity: 0.7;
 }
 
