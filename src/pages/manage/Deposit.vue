@@ -255,7 +255,7 @@ export default {
 			}
 		},
 		async _depositCompound() {
-			const account = await this._unlockAccount();
+			await this._unlockAccount();
 			const assetAddress = addresses[this.assetId];
 			const cTokenAddress = this.tokenAddresses.compound[this.assetId];
 			const cToken = new ethers.Contract(cTokenAddress, compoundTokenAbi, signer);
@@ -304,7 +304,7 @@ export default {
 			await this._sendTx(provider, txPromise);
 		},
 		async _withdrawCompound() {
-			const account = await this._unlockAccount();
+			await this._unlockAccount();
 			const index = this.indices.compound[this.assetId];
 			const redeemBalance = this._toBalance(this.assetAmount, this.assetId);
 			const redeemBalanceNumber = new BigNumber(redeemBalance);
@@ -318,7 +318,6 @@ export default {
 		async _withdrawDydx() {
 			const account = await this._unlockAccount();
 			const marketId = this._getDydxMarket(this.assetId);
-			const assetAddress = addresses[this.assetId];
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
 			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
 			const accounts = [{
