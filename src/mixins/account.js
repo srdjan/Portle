@@ -19,7 +19,7 @@ export const account = {
 			};
 		},
 		async _unlockAccount() {
-			const addressList = await ethereum.enable();
+			const addressList = await window.ethereum.enable();
 			const uncheckedAddress = addressList[0];
 			const address = ethers.utils.getAddress(uncheckedAddress);
 			if (address != this.account.address) {
