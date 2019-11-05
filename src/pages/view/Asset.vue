@@ -39,6 +39,22 @@ export default {
 			price: 0,
 		};
 	},
+	computed: {
+		asset() {
+			if (!this.assetId) {
+				return;
+			}
+			const assetId = this.assetId;
+			const asset = {
+				name: tokens[assetId],
+				assetId,
+				amount: this._getAmountString(assetId),
+				price: this.price,
+				value: this._getValueString(assetId),
+			};
+			return asset;
+		},
+	},
 	mounted() {
 		if (!this.account.address) {
 			this.$router.push('/login');
@@ -109,22 +125,6 @@ export default {
 			const amount = this._getAmountString(assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
-		},
-	},
-	computed: {
-		asset() {
-			if (!this.assetId) {
-				return;
-			}
-			const assetId = this.assetId;
-			const asset = {
-				name: tokens[assetId],
-				assetId,
-				amount: this._getAmountString(assetId),
-				price: this.price,
-				value: this._getValueString(assetId),
-			};
-			return asset;
 		},
 	},
 };

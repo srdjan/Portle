@@ -141,6 +141,14 @@ export default {
 			txStatus: 'none',
 		};
 	},
+	computed: {
+		assets() {
+			return [ 'dai', 'usdc', ];
+		},
+		platforms() {
+			return [ 'compound', 'dydx', 'fulcrum', ];
+		},
+	},
 	mounted() {
 		if (!this.account.address || !this.account.auth) {
 			this.$router.push('/login');
@@ -547,14 +555,6 @@ export default {
 				'usdc': 2,
 			};
 			return markets[assetId];
-		},
-	},
-	computed: {
-		assets() {
-			return [ 'dai', 'usdc', ];
-		},
-		platforms() {
-			return [ 'compound', 'dydx', 'fulcrum', ];
 		},
 	},
 };

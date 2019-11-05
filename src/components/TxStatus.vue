@@ -18,18 +18,6 @@ export default {
 			timeoutId: 0,
 		};
 	},
-	watch: {
-		status() {
-			clearTimeout(this.timeoutId);
-			if (this.status == 'mining' || this.status == 'pending') {
-				return;
-			}
-			if (this.status != 'none') {
-				this.lastStatus = this.status;
-			}
-			this.timeoutId = setTimeout(this.onHidden, 10 * 1000);
-		},
-	},
 	computed: {
 		shown() {
 			return this.status != 'none';
@@ -44,6 +32,18 @@ export default {
 			};
 			const text = textMap[this.status] || textMap[this.lastStatus];
 			return text;
+		},
+	},
+	watch: {
+		status() {
+			clearTimeout(this.timeoutId);
+			if (this.status == 'mining' || this.status == 'pending') {
+				return;
+			}
+			if (this.status != 'none') {
+				this.lastStatus = this.status;
+			}
+			this.timeoutId = setTimeout(this.onHidden, 10 * 1000);
 		},
 	},
 };

@@ -29,6 +29,31 @@ import decimals from '../../data/decimals.json';
 
 export default {
 	props: [ 'balances', 'prices' ],
+	computed: {
+		assets() {
+			const assets = [];
+			for (const assetId in this.balances) {
+				const asset = {
+					assetId,
+					title: tokens[assetId],
+					amount: this._getAmountString(assetId),
+					price: this.prices[assetId],
+					value: this._getValueString(assetId),
+				};
+				assets.push(asset);
+			}
+			assets.sort((a, b) => {
+				const aValue = new BigNumber(a.value);
+				const bValue = new BigNumber(b.value);
+				return aValue.lt(bValue)
+					? 1
+					: aValue.gt(bValue)
+						? -1
+						: 0;
+			});
+			return assets;
+		},
+	},
 	methods: {
 		openAsset(asset) {
 			const assetId = asset.assetId;
@@ -66,31 +91,6 @@ export default {
 			const amount = this._getAmountString(assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
-		},
-	},
-	computed: {
-		assets() {
-			const assets = [];
-			for (const assetId in this.balances) {
-				const asset = {
-					assetId,
-					title: tokens[assetId],
-					amount: this._getAmountString(assetId),
-					price: this.prices[assetId],
-					value: this._getValueString(assetId),
-				};
-				assets.push(asset);
-			}
-			assets.sort((a, b) => {
-				const aValue = new BigNumber(a.value);
-				const bValue = new BigNumber(b.value);
-				return aValue.lt(bValue)
-					? 1
-					: aValue.gt(bValue)
-						? -1
-						: 0;
-			});
-			return assets;
 		},
 	},
 };

@@ -75,6 +75,11 @@ export default {
 			},
 		};
 	},
+	computed: {
+		plusCircleIcon() {
+			return plusCircleIcon;
+		},
+	},
 	mounted() {
 		if (!this.account.address) {
 			this.$router.push('/login');
@@ -288,11 +293,6 @@ export default {
 				Vue.set(this.rates.supply.fulcrum, assetId, supplyRate);
 				Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
 			}
-		},
-	},
-	computed: {
-		plusCircleIcon() {
-			return plusCircleIcon;
 		},
 	},
 };

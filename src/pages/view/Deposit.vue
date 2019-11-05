@@ -61,6 +61,29 @@ export default {
 			prices: {},
 		};
 	},
+	computed: {
+		deposit() {
+			if (this.balance == 0) {
+				return;
+			}
+			const assetId = this.assetId;
+			const platformId = this.platformId;
+			const rate = this.rate;
+			const price = this.prices[assetId];
+			if (!price) {
+				return;
+			}
+			const asset = {
+				platformId,
+				assetId,
+				amount: this._getAmountString(assetId),
+				rate,
+				price,
+				value: this._getValueString(assetId),
+			};
+			return asset;
+		},
+	},
 	mounted() {
 		if (!this.account.address) {
 			this.$router.push('/login');
@@ -297,29 +320,6 @@ export default {
 				const rate = rateNumber.toString();
 				this.rate = rate;
 			}
-		},
-	},
-	computed: {
-		deposit() {
-			if (this.balance == 0) {
-				return;
-			}
-			const assetId = this.assetId;
-			const platformId = this.platformId;
-			const rate = this.rate;
-			const price = this.prices[assetId];
-			if (!price) {
-				return;
-			}
-			const asset = {
-				platformId,
-				assetId,
-				amount: this._getAmountString(assetId),
-				rate,
-				price,
-				value: this._getValueString(assetId),
-			};
-			return asset;
 		},
 	},
 };

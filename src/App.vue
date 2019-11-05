@@ -47,6 +47,11 @@ import favicon from '../public/favicon.ico';
 import logo from '../public/img/logo.svg';
 
 export default {
+	computed: {
+		logo() {
+			return logo;
+		},
+	},
 	methods: {
 		showNavigation() {
 			const path = this.$route.path;
@@ -70,11 +75,6 @@ export default {
 			}
 			const ellipsizedAddress = `${address.substr(0, 6)}…${address.substr(38)}`;
 			return ellipsizedAddress;
-		},
-	},
-	computed: {
-		logo() {
-			return logo;
 		},
 	},
 };

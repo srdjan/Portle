@@ -29,6 +29,36 @@ import decimals from '../../data/decimals.json';
 
 export default {
 	props: [ 'balances', 'rates', 'prices', ],
+	computed: {
+		deposits() {
+			const deposits = [];
+			for (const platformId in this.balances) {
+				const platformBalances = this.balances[platformId];
+				for (const assetId in platformBalances) {
+					const price = this.prices[assetId];
+					const deposit = {
+						amount: this._getAmountString(platformId, assetId),
+						assetId,
+						platformId,
+						price,
+						rate: this.rates.supply[platformId][assetId],
+						value: this._getValueString(platformId, assetId),
+					};
+					deposits.push(deposit);
+				}
+			}
+			deposits.sort((a, b) => {
+				const aValue = new BigNumber(a.value);
+				const bValue = new BigNumber(b.value);
+				return aValue.lt(bValue)
+					? 1
+					: aValue.gt(bValue)
+						? -1
+						: 0;
+			});
+			return deposits;
+		},
+	},
 	methods: {
 		openDeposit(deposit) {
 			const platformId = deposit.platformId;
@@ -80,36 +110,6 @@ export default {
 			const amount = this._getAmountString(platformId, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
-		},
-	},
-	computed: {
-		deposits() {
-			const deposits = [];
-			for (const platformId in this.balances) {
-				const platformBalances = this.balances[platformId];
-				for (const assetId in platformBalances) {
-					const price = this.prices[assetId];
-					const deposit = {
-						amount: this._getAmountString(platformId, assetId),
-						assetId,
-						platformId,
-						price,
-						rate: this.rates.supply[platformId][assetId],
-						value: this._getValueString(platformId, assetId),
-					};
-					deposits.push(deposit);
-				}
-			}
-			deposits.sort((a, b) => {
-				const aValue = new BigNumber(a.value);
-				const bValue = new BigNumber(b.value);
-				return aValue.lt(bValue)
-					? 1
-					: aValue.gt(bValue)
-						? -1
-						: 0;
-			});
-			return deposits;
 		},
 	},
 };
