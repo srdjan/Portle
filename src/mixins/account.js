@@ -1,3 +1,5 @@
+import { ethers } from 'ethers';
+
 export const account = {
 	data() {
 		return {
@@ -15,6 +17,16 @@ export const account = {
 				address,
 				auth,
 			};
+		},
+		async _unlockAccount() {
+			const addressList = await ethereum.enable();
+			const uncheckedAddress = addressList[0];
+			const address = ethers.utils.getAddress(uncheckedAddress);
+			if (address != this.account.address) {
+				this.account.address = address;
+				localStorage.setItem('address', address);
+			}
+			return address;
 		},
 	},
 };
