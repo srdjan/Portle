@@ -35,7 +35,7 @@ export default {
 		totalBalance() {
 			const balance = this._assetValue
 				.plus(this._depositValue);
-			return balance;
+			return balance.toString();
 		},
 		_assetValue() {
 			let assetValue = new BigNumber(0);
