@@ -22,6 +22,6 @@ class Converter {
 		const longAmount = longAmountNumber.toFixed(0);
 		return longAmount;
 	}
-};
+}
 
 export default Converter;
