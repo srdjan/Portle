@@ -86,13 +86,14 @@ import AssetInput from '../../components/AssetInput.vue';
 import { sendTx } from '../../mixins/sendTx.js';
 import { account } from '../../mixins/account.js';
 
+import Converter from '../../utils/converter.js';
+
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
 import dydxAbi from '../../data/abi/dydx.json';
 import fulcrumTokenAbi from '../../data/abi/fulcrumInterestToken.json';
 
 import tickers from '../../data/tickers.json';
-import decimals from '../../data/decimals.json';
 import addresses from '../../data/addresses.json';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -218,7 +219,7 @@ export default {
 					const inputAddress = addresses[this.assetId];
 					const inputToken = new ethers.Contract(inputAddress, erc20Abi, provider);
 					const inputTokenBalance = await inputToken.balanceOf(account);
-					const assetAmount = this._toAmount(inputTokenBalance.toString(), this.assetId);
+					const assetAmount = Converter.toAmount(inputTokenBalance.toString(), this.assetId);
 					this.assetAmount = assetAmount;
 				}
 			}
@@ -232,7 +233,7 @@ export default {
 				const index = this.indices[this.platformId][this.assetId];
 				const amountNumber = tokenBalanceNumber.times(index).div('1e18');
 				const amount = amountNumber.toFixed(0);
-				const assetAmount = this._toAmount(amount, this.assetId);
+				const assetAmount = Converter.toAmount(amount, this.assetId);
 				this.assetAmount = assetAmount;
 			}
 		},
@@ -259,7 +260,7 @@ export default {
 			const assetAddress = addresses[this.assetId];
 			const cTokenAddress = this.tokenAddresses.compound[this.assetId];
 			const cToken = new ethers.Contract(cTokenAddress, compoundTokenAbi, signer);
-			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
+			const mintBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(cTokenAddress, assetAddress, mintBalance);
 			const txPromise = cToken.mint(mintBalance);
 			await this._sendTx(provider, txPromise);
@@ -269,7 +270,7 @@ export default {
 			const marketId = this._getDydxMarket(this.assetId);
 			const assetAddress = addresses[this.assetId];
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
-			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
+			const depositBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(dydxAddress, assetAddress, depositBalance);
 			const accounts = [{
 				owner: account,
@@ -298,7 +299,7 @@ export default {
 			const assetAddress = addresses[this.assetId];
 			const iTokenAddress = this.tokenAddresses.fulcrum[this.assetId];
 			const iToken = new ethers.Contract(iTokenAddress, fulcrumTokenAbi, signer);
-			const mintBalance = this._toBalance(this.assetAmount, this.assetId);
+			const mintBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			await this._checkAllowance(iTokenAddress, assetAddress, mintBalance);
 			const txPromise = iToken.mint(account, mintBalance);
 			await this._sendTx(provider, txPromise);
@@ -306,7 +307,7 @@ export default {
 		async _withdrawCompound() {
 			await this._unlockAccount();
 			const index = this.indices.compound[this.assetId];
-			const redeemBalance = this._toBalance(this.assetAmount, this.assetId);
+			const redeemBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			const redeemBalanceNumber = new BigNumber(redeemBalance);
 			const tokenBalanceNumber = redeemBalanceNumber.times('1e18').div(index);
 			const tokenBalance = tokenBalanceNumber.toFixed(0);
@@ -319,7 +320,7 @@ export default {
 			const account = await this._unlockAccount();
 			const marketId = this._getDydxMarket(this.assetId);
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
-			const depositBalance = this._toBalance(this.assetAmount, this.assetId);
+			const depositBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			const accounts = [{
 				owner: account,
 				number: 0,
@@ -345,7 +346,7 @@ export default {
 		async _withdrawFulcrum() {
 			const account = await this._unlockAccount();
 			const index = this.indices.fulcrum[this.assetId];
-			const burnBalance = this._toBalance(this.assetAmount, this.assetId);
+			const burnBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			const burnBalanceNumber = new BigNumber(burnBalance);
 			const tokenBalanceNumber = burnBalanceNumber.times('1e18').div(index);
 			const tokenBalance = tokenBalanceNumber.toFixed(0);
@@ -533,24 +534,6 @@ export default {
 				const balance = userBalance.balance;
 				Vue.set(this.balances.fulcrum, assetId, balance);
 			}
-		},
-		_toAmount(amount, assetId) {
-			const ten = new BigNumber(10);
-			const tickerDecimals = decimals[assetId];
-			const multiplier = ten.pow(tickerDecimals);
-			const amountNumber = new BigNumber(amount);
-			const shortAmountNumber = amountNumber.div(multiplier);
-			const shortAmount = shortAmountNumber.toString();
-			return shortAmount;
-		},
-		_toBalance(amount, assetId) {
-			const ten = new BigNumber(10);
-			const tickerDecimals = decimals[assetId];
-			const multiplier = ten.pow(tickerDecimals);
-			const amountNumber = new BigNumber(amount);
-			const longAmountNumber = amountNumber.times(multiplier);
-			const longAmount = longAmountNumber.toFixed(0);
-			return longAmount;
 		},
 		_getDydxMarket(assetId) {
 			const markets = {
