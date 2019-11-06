@@ -65,9 +65,7 @@ export default {
 						rate,
 						value,
 					};
-					if (this._isShown(deposit)) {
-						deposits.push(deposit);
-					}
+					deposits.push(deposit);
 				}
 			}
 			deposits.sort((a, b) => {
@@ -79,7 +77,11 @@ export default {
 						? -1
 						: 0;
 			});
-			return deposits;
+			const meaningfulDeposits = deposits.filter(deposit => {
+				const value = new BigNumber(deposit.value);
+				return value.gt(0);
+			});
+			return meaningfulDeposits;
 		},
 	},
 	methods: {
@@ -103,10 +105,6 @@ export default {
 		},
 		formatMoney(priceString) {
 			return Formatter.formatMoney(priceString);
-		},
-		_isShown(deposit) {
-			const value = new BigNumber(deposit.value);
-			return value.gt(0);
 		},
 	},
 };

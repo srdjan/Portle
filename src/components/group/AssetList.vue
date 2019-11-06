@@ -58,9 +58,7 @@ export default {
 					price,
 					value,
 				};
-				if (this._isShown(asset)) {
-					assets.push(asset);
-				}
+				assets.push(asset);
 			}
 			assets.sort((a, b) => {
 				const aValue = new BigNumber(a.value);
@@ -71,7 +69,11 @@ export default {
 						? -1
 						: 0;
 			});
-			return assets;
+			const meaningfulAssets = assets.filter(asset => {
+				const value = new BigNumber(asset.value);
+				return value.gt(1);
+			});
+			return meaningfulAssets;
 		},
 	},
 	methods: {
@@ -88,10 +90,6 @@ export default {
 		},
 		formatMoney(priceString) {
 			return Formatter.formatMoney(priceString);
-		},
-		_isShown(asset) {
-			const value = new BigNumber(asset.value);
-			return value.gt(1);
 		},
 	},
 };
