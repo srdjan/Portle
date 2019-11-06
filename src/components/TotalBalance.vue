@@ -11,6 +11,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import Converter from '../utils/converter.js';
 import Formatter from '../utils/formatter.js';
 
 import decimals from '../data/decimals.json';
@@ -61,21 +62,10 @@ export default {
 		formatMoney(moneyString) {
 			return Formatter.formatMoney(moneyString);
 		},
-		_getAmountString(balanceString, assetId) {
-			if (!balanceString) {
-				return new BigNumber(0);
-			}
-			const decimal = decimals[assetId];
-			const balanceNumber = new BigNumber(balanceString);
-			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimal);
-			const amount = balanceNumber.div(decimalNumber);
-			return amount.toString();
-		},
 		_getValueString(balanceString, assetId) {
 			const price = this.prices[assetId] || '0';
 			const priceNumber = new BigNumber(price);
-			const amount = this._getAmountString(balanceString, assetId);
+			const amount = Converter.toAmount(balanceString, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},

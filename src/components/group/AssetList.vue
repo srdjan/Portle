@@ -23,6 +23,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
 import tickers from '../../data/tickers.json';
@@ -44,12 +45,14 @@ export default {
 		assets() {
 			const assets = [];
 			for (const assetId in this.balances) {
+				const balance = this.balances[assetId];
+				const amount = Converter.toAmount(balance, assetId);
 				const asset = {
 					assetId,
 					title: tokens[assetId],
-					amount: this._getAmountString(assetId),
+					amount,
 					price: this.prices[assetId],
-					value: this._getValueString(assetId),
+					value: this._getValueString(balance, assetId),
 				};
 				if (this._isShown(asset)) {
 					assets.push(asset);
@@ -86,19 +89,10 @@ export default {
 			const value = new BigNumber(asset.value);
 			return value.gt(1);
 		},
-		_getAmountString(assetId) {
-			const balance = this.balances[assetId];
-			const decimal = decimals[assetId];
-			const balanceNumber = new BigNumber(balance);
-			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimal);
-			const amount = balanceNumber.div(decimalNumber);
-			return amount.toString();
-		},
-		_getValueString(assetId) {
+		_getValueString(balanceString, assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const amount = this._getAmountString(assetId);
+			const amount = Converter.toAmount(balanceString, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},

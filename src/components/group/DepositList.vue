@@ -24,6 +24,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
 import tickers from '../../data/tickers.json';
@@ -51,13 +52,15 @@ export default {
 				const platformBalances = this.balances[platformId];
 				for (const assetId in platformBalances) {
 					const price = this.prices[assetId];
+					const balance = platformBalances[assetId];
+					const amount = Converter.toAmount(balance, assetId);
 					const deposit = {
-						amount: this._getAmountString(platformId, assetId),
+						amount,
 						assetId,
 						platformId,
 						price,
 						rate: this.rates.supply[platformId][assetId],
-						value: this._getValueString(platformId, assetId),
+						value: this._getValueString(balance, assetId),
 					};
 					if (this._isShown(deposit)) {
 						deposits.push(deposit);
@@ -102,19 +105,10 @@ export default {
 			const value = new BigNumber(deposit.value);
 			return value.gt(0);
 		},
-		_getAmountString(platformId, assetId) {
-			const balance = this.balances[platformId][assetId];
-			const decimal = decimals[assetId];
-			const balanceNumber = new BigNumber(balance);
-			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimal);
-			const amount = balanceNumber.div(decimalNumber);
-			return amount.toString();
-		},
-		_getValueString(platformId, assetId) {
+		_getValueString(balanceString, assetId) {
 			const price = this.prices[assetId];
 			const priceNumber = new BigNumber(price);
-			const amount = this._getAmountString(platformId, assetId);
+			const amount = Converter.toAmount(balanceString, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},

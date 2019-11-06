@@ -23,6 +23,7 @@ import BigNumber from 'bignumber.js';
 
 import { account } from '../../mixins/account.js';
 
+import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
 import tickers from '../../data/tickers.json';
@@ -47,12 +48,14 @@ export default {
 				return;
 			}
 			const assetId = this.assetId;
+			const balance = this.balance;
+			const amount = Converter.toAmount(balance, assetId);
 			const asset = {
 				name: tokens[assetId],
 				assetId,
-				amount: this._getAmountString(assetId),
+				amount,
 				price: this.price,
-				value: this._getValueString(assetId),
+				value: this._getValueString(balance, assetId),
 			};
 			return asset;
 		},
@@ -110,18 +113,10 @@ export default {
 				}
 			}
 		},
-		_getAmountString(assetId) {
-			const decimal = decimals[assetId];
-			const balanceNumber = new BigNumber(this.balance);
-			const ten = new BigNumber(10);
-			const decimalNumber = ten.pow(decimal);
-			const amount = balanceNumber.div(decimalNumber);
-			return amount.toString();
-		},
-		_getValueString(assetId) {
+		_getValueString(balanceString, assetId) {
 			const price = this.price;
 			const priceNumber = new BigNumber(price);
-			const amount = this._getAmountString(assetId);
+			const amount = Converter.toAmount(balanceString, assetId);
 			const value = priceNumber.times(amount);
 			return value.toString();
 		},
