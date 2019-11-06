@@ -27,9 +27,6 @@ import BigNumber from 'bignumber.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
-import tickers from '../../data/tickers.json';
-import decimals from '../../data/decimals.json';
-
 export default {
 	props: {
 		balances: {

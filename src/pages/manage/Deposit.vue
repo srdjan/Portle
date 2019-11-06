@@ -94,7 +94,6 @@ import compoundTokenAbi from '../../data/abi/compoundToken.json';
 import dydxAbi from '../../data/abi/dydx.json';
 import fulcrumTokenAbi from '../../data/abi/fulcrumInterestToken.json';
 
-import tickers from '../../data/tickers.json';
 import addresses from '../../data/addresses.json';
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
