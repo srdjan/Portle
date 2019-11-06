@@ -10,7 +10,7 @@
 				{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}
 			</div>
 			<div class="description">
-				{{ asset.title }}
+				{{ asset.name }}
 			</div>
 			<div class="price-value sparse">
 				<div>{{ formatMoney(asset.price) }}</div>
@@ -45,7 +45,7 @@ export default {
 		assets() {
 			const assets = [];
 			for (const assetId in this.balances) {
-				const title = tokens[assetId];
+				const name = tokens[assetId];
 				const balance = this.balances[assetId];
 				const price = this.prices[assetId];
 				const amount = Converter.toAmount(balance, assetId);
@@ -53,7 +53,7 @@ export default {
 				const value = amountNumber.times(price).toString();
 				const asset = {
 					assetId,
-					title,
+					name,
 					amount,
 					price,
 					value,
