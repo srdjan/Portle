@@ -47,6 +47,7 @@ export default {
 			if (!this.assetId) {
 				return;
 			}
+			const name = tokens[assetId];
 			const assetId = this.assetId;
 			const balance = this.balance;
 			const price = this.price;
@@ -54,7 +55,7 @@ export default {
 			const amountNumber = new BigNumber(amount);
 			const value = amountNumber.times(price).toString();
 			const asset = {
-				name: tokens[assetId],
+				name,
 				assetId,
 				amount,
 				price,

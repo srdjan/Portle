@@ -45,6 +45,7 @@ export default {
 		assets() {
 			const assets = [];
 			for (const assetId in this.balances) {
+				const title = tokens[assetId];
 				const balance = this.balances[assetId];
 				const price = this.prices[assetId];
 				const amount = Converter.toAmount(balance, assetId);
@@ -52,7 +53,7 @@ export default {
 				const value = amountNumber.times(price).toString();
 				const asset = {
 					assetId,
-					title: tokens[assetId],
+					title,
 					amount,
 					price,
 					value,
