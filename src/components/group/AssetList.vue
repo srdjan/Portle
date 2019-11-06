@@ -46,13 +46,16 @@ export default {
 			const assets = [];
 			for (const assetId in this.balances) {
 				const balance = this.balances[assetId];
+				const price = this.prices[assetId];
 				const amount = Converter.toAmount(balance, assetId);
+				const amountNumber = new BigNumber(amount);
+				const value = amountNumber.times(price).toString();
 				const asset = {
 					assetId,
 					title: tokens[assetId],
 					amount,
-					price: this.prices[assetId],
-					value: this._getValueString(balance, assetId),
+					price,
+					value,
 				};
 				if (this._isShown(asset)) {
 					assets.push(asset);
@@ -88,13 +91,6 @@ export default {
 		_isShown(asset) {
 			const value = new BigNumber(asset.value);
 			return value.gt(1);
-		},
-		_getValueString(balanceString, assetId) {
-			const price = this.prices[assetId];
-			const priceNumber = new BigNumber(price);
-			const amount = Converter.toAmount(balanceString, assetId);
-			const value = priceNumber.times(amount);
-			return value.toString();
 		},
 	},
 };

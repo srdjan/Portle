@@ -52,15 +52,18 @@ export default {
 				const platformBalances = this.balances[platformId];
 				for (const assetId in platformBalances) {
 					const price = this.prices[assetId];
+					const rate = this.rates.supply[platformId][assetId];
 					const balance = platformBalances[assetId];
 					const amount = Converter.toAmount(balance, assetId);
+					const amountNumber = new BigNumber(amount);
+					const value = amountNumber.times(price).toString();
 					const deposit = {
 						amount,
 						assetId,
 						platformId,
 						price,
-						rate: this.rates.supply[platformId][assetId],
-						value: this._getValueString(balance, assetId),
+						rate,
+						value,
 					};
 					if (this._isShown(deposit)) {
 						deposits.push(deposit);
@@ -104,13 +107,6 @@ export default {
 		_isShown(deposit) {
 			const value = new BigNumber(deposit.value);
 			return value.gt(0);
-		},
-		_getValueString(balanceString, assetId) {
-			const price = this.prices[assetId];
-			const priceNumber = new BigNumber(price);
-			const amount = Converter.toAmount(balanceString, assetId);
-			const value = priceNumber.times(amount);
-			return value.toString();
 		},
 	},
 };

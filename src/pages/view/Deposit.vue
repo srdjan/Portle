@@ -78,13 +78,15 @@ export default {
 				return;
 			}
 			const amount = Converter.toAmount(balance, assetId);
+			const amountNumber = new BigNumber(amount);
+			const value = amountNumber.times(price).toString();
 			const asset = {
 				platformId,
 				assetId,
 				amount,
 				rate,
 				price,
-				value: this._getValueString(balance, assetId),
+				value,
 			};
 			return asset;
 		},
@@ -148,13 +150,6 @@ export default {
 			if (this.platformId == 'fulcrum') {
 				this._loadFulcrumDeposit();
 			}
-		},
-		_getValueString(balanceString, assetId) {
-			const price = this.prices[assetId];
-			const priceNumber = new BigNumber(price);
-			const amount = Converter.toAmount(balanceString, assetId);
-			const value = priceNumber.times(amount);
-			return value.toString();
 		},
 		async _loadCompoundDeposit() {
 			const address = this.account.address.toLowerCase();

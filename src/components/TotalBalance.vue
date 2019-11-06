@@ -40,8 +40,14 @@ export default {
 		_assetValue() {
 			let assetValue = new BigNumber(0);
 			for (const assetId in this.assets) {
+				const price = this.prices[assetId];
+				if (!price) {
+					continue;
+				}
 				const balance = this.assets[assetId];
-				const value = this._getValueString(balance, assetId);
+				const amount = Converter.toAmount(balance, assetId);
+				const amountNumber = new BigNumber(amount);
+				const value = amountNumber.times(price);
 				assetValue = assetValue.plus(value);
 			}
 			return assetValue;
@@ -50,8 +56,14 @@ export default {
 			let depositValue = new BigNumber(0);
 			for (const platformId in this.deposits) {
 				for (const assetId in this.deposits[platformId]) {
+					const price = this.prices[assetId];
+					if (!price) {
+						continue;
+					}
 					const balance = this.deposits[platformId][assetId];
-					const value = this._getValueString(balance, assetId);
+					const amount = Converter.toAmount(balance, assetId);
+					const amountNumber = new BigNumber(amount);
+					const value = amountNumber.times(price);
 					depositValue = depositValue.plus(value);
 				}
 			}
@@ -61,13 +73,6 @@ export default {
 	methods: {
 		formatMoney(moneyString) {
 			return Formatter.formatMoney(moneyString);
-		},
-		_getValueString(balanceString, assetId) {
-			const price = this.prices[assetId] || '0';
-			const priceNumber = new BigNumber(price);
-			const amount = Converter.toAmount(balanceString, assetId);
-			const value = priceNumber.times(amount);
-			return value.toString();
 		},
 	},
 };

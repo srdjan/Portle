@@ -49,13 +49,16 @@ export default {
 			}
 			const assetId = this.assetId;
 			const balance = this.balance;
+			const price = this.price;
 			const amount = Converter.toAmount(balance, assetId);
+			const amountNumber = new BigNumber(amount);
+			const value = amountNumber.times(price).toString();
 			const asset = {
 				name: tokens[assetId],
 				assetId,
 				amount,
-				price: this.price,
-				value: this._getValueString(balance, assetId),
+				price,
+				value,
 			};
 			return asset;
 		},
@@ -112,13 +115,6 @@ export default {
 					break;
 				}
 			}
-		},
-		_getValueString(balanceString, assetId) {
-			const price = this.price;
-			const priceNumber = new BigNumber(price);
-			const amount = Converter.toAmount(balanceString, assetId);
-			const value = priceNumber.times(amount);
-			return value.toString();
 		},
 	},
 };
