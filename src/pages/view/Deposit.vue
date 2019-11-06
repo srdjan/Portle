@@ -44,6 +44,8 @@ import BigNumber from 'bignumber.js';
 
 import { account } from '../../mixins/account.js';
 
+import Formatter from '../../utils/formatter.js';
+
 import tickers from '../../data/tickers.json';
 import decimals from '../../data/decimals.json';
 import coinIds from '../../data/coin-ids.json';
@@ -105,29 +107,19 @@ export default {
 			this.$router.push(path);
 		},
 		formatAsset(assetId) {
-			const ticker = tickers[assetId];
-			return ticker;
+			return Formatter.formatAsset(assetId);
 		},
 		formatPlatform(platformId) {
-			const platformMap = {
-				'compound': 'Compound',
-				'dydx': 'dYdX',
-				'fulcrum': 'Fulcrum',
-			};
-			const platform = platformMap[platformId];
-			return platform;
+			return Formatter.formatPlatform(platformId);
 		},
 		formatAmount(amountString) {
-			const amount = new BigNumber(amountString);
-			return `${amount.toFixed(2)}`;
+			return Formatter.formatAmount(amountString);
 		},
 		formatMoney(priceString) {
-			const price = new BigNumber(priceString);
-			return `$${price.toFixed(2)}`;
+			return Formatter.formatMoney(priceString);
 		},
 		formatRate(rateString) {
-			const rate = new BigNumber(rateString);
-			return `${rate.times(100).toFixed(2)}%`;
+			return Formatter.formatRate(rateString);
 		},
 		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];

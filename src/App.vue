@@ -22,7 +22,7 @@
 			<div
 				class="header-part"
 			>
-				<span>{{ formatAddress() }}</span>
+				<span>{{ formatAddress(getAddress()) }}</span>
 				<button
 					id="logout-button"
 					@click="logout()"
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import Formatter from './utils/formatter.js';
+
 // eslint-disable-next-line no-unused-vars
 import favicon from '../public/favicon.ico';
 import logo from '../public/img/logo.svg';
@@ -68,13 +70,12 @@ export default {
 			localStorage.removeItem('auth');
 			this.$router.push('/login');
 		},
-		formatAddress() {
+		getAddress() {
 			const address = localStorage.getItem('address');
-			if (!address) {
-				return '';
-			}
-			const ellipsizedAddress = `${address.substr(0, 6)}…${address.substr(38)}`;
-			return ellipsizedAddress;
+			return address;
+		},
+		formatAddress(address) {
+			return Formatter.formatAddress(address);
 		},
 	},
 };

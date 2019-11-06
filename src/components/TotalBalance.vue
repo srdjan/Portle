@@ -11,6 +11,8 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import Formatter from '../utils/formatter.js';
+
 import decimals from '../data/decimals.json';
 
 export default {
@@ -57,8 +59,7 @@ export default {
 	},
 	methods: {
 		formatMoney(moneyString) {
-			const money = new BigNumber(moneyString);
-			return `$${money.toFixed(2)}`;
+			return Formatter.formatMoney(moneyString);
 		},
 		_getAmountString(balanceString, assetId) {
 			if (!balanceString) {

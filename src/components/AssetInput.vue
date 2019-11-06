@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import tickers from '../data/tickers.json';
+import Formatter from '../utils/formatter.js';
 
 export default {
 	props: {
@@ -38,13 +38,12 @@ export default {
 		},
 	},
 	methods: {
-		formatAsset(id) {
-			const ticker = tickers[id];
-			return ticker;
-		},
 		onAmountChange(event) {
 			const amount = event.target.value;
 			this.onChange(this.id, amount);
+		},
+		formatAsset(id) {
+			return Formatter.formatAsset(id);
 		},
 	},
 };

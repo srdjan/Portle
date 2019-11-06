@@ -87,6 +87,7 @@ import { sendTx } from '../../mixins/sendTx.js';
 import { account } from '../../mixins/account.js';
 
 import Converter from '../../utils/converter.js';
+import Formatter from '../../utils/formatter.js';
 
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
@@ -193,24 +194,13 @@ export default {
 			}
 		},
 		formatAsset(assetId) {
-			const ticker = tickers[assetId];
-			return ticker;
+			return Formatter.formatAsset(assetId);
 		},
 		formatPlatform(platformId) {
-			const platformMap = {
-				'compound': 'Compound',
-				'dydx': 'dYdX',
-				'fulcrum': 'Fulcrum',
-			};
-			const platform = platformMap[platformId];
-			return platform;
+			return Formatter.formatPlatform(platformId);
 		},
 		formatRate(rateString) {
-			if (!rateString) {
-				return '…';
-			}
-			const rate = new BigNumber(rateString);
-			return `${rate.times(100).toFixed(2)}%`;
+			return Formatter.formatRate(rateString);
 		},
 		async setMax() {
 			const account = this.account.address;

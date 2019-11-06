@@ -23,6 +23,8 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import Formatter from '../../utils/formatter.js';
+
 import tickers from '../../data/tickers.json';
 import tokens from '../../data/tokens.json';
 import decimals from '../../data/decimals.json';
@@ -72,16 +74,13 @@ export default {
 			this.$router.push(path);
 		},
 		formatAsset(assetId) {
-			const ticker = tickers[assetId];
-			return ticker;
+			return Formatter.formatAsset(assetId);
 		},
 		formatAmount(amountString) {
-			const amount = new BigNumber(amountString);
-			return `${amount.toFixed(2)}`;
+			return Formatter.formatAmount(amountString);
 		},
 		formatMoney(priceString) {
-			const price = new BigNumber(priceString);
-			return `$${price.toFixed(2)}`;
+			return Formatter.formatMoney(priceString);
 		},
 		_isShown(asset) {
 			const value = new BigNumber(asset.value);

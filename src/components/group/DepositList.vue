@@ -24,6 +24,8 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import Formatter from '../../utils/formatter.js';
+
 import tickers from '../../data/tickers.json';
 import decimals from '../../data/decimals.json';
 
@@ -82,29 +84,19 @@ export default {
 			this.$router.push(path);
 		},
 		formatAsset(assetId) {
-			const ticker = tickers[assetId];
-			return ticker;
+			return Formatter.formatAsset(assetId);
 		},
 		formatPlatform(platformId) {
-			const platformMap = {
-				'compound': 'Compound',
-				'dydx': 'dYdX',
-				'fulcrum': 'Fulcrum',
-			};
-			const platform = platformMap[platformId];
-			return platform;
+			return Formatter.formatPlatform(platformId);
 		},
 		formatAmount(amountString) {
-			const amount = new BigNumber(amountString);
-			return `${amount.toFixed(2)}`;
+			return Formatter.formatAmount(amountString);
 		},
 		formatRate(rateString) {
-			const rate = new BigNumber(rateString);
-			return `${(rate * 100).toFixed(2)}%`;
+			return Formatter.formatRate(rateString);
 		},
 		formatMoney(priceString) {
-			const price = new BigNumber(priceString);
-			return `$${price.toFixed(2)}`;
+			return Formatter.formatMoney(priceString);
 		},
 		_isShown(deposit) {
 			const value = new BigNumber(deposit.value);

@@ -23,6 +23,8 @@ import BigNumber from 'bignumber.js';
 
 import { account } from '../../mixins/account.js';
 
+import Formatter from '../../utils/formatter.js';
+
 import tickers from '../../data/tickers.json';
 import tokens from '../../data/tokens.json';
 import decimals from '../../data/decimals.json';
@@ -66,16 +68,13 @@ export default {
 	},
 	methods: {
 		formatAsset(assetId) {
-			const ticker = tickers[assetId];
-			return ticker;
+			return Formatter.formatAsset(assetId);
 		},
 		formatAmount(amountString) {
-			const amount = new BigNumber(amountString);
-			return `${amount.toFixed(2)}`;
+			return Formatter.formatAmount(amountString);
 		},
 		formatMoney(priceString) {
-			const price = new BigNumber(priceString);
-			return `$${price.toFixed(2)}`;
+			return Formatter.formatMoney(priceString);
 		},
 		async _loadPrice() {
 			const coinId = coinIds[this.assetId];
