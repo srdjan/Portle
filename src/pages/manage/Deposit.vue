@@ -88,6 +88,7 @@ import { account } from '../../mixins/account.js';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
+import Loader from '../../utils/loader.js';
 
 import erc20Abi from '../../data/abi/erc20.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
@@ -357,34 +358,7 @@ export default {
 		},
 		async _loadCompound() {
 			const address = this.account.address.toLowerCase();
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
-			const query = `
-				query {
-					tokens {
-						symbol
-						address
-						supplyRate
-						supplyIndex
-					}
-					userBalances(where: {
-						id: "${address}"
-					}) {
-						balances {
-							token {
-								symbol
-							}
-							balance
-						}
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query }),
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			const data = json.data;
+			const data = await Loader.loadCompound(address);
 			const tokens = data.tokens;
 			for (const token of tokens) {
 				const assetId = token.symbol.substr(1).toLowerCase();

@@ -119,32 +119,7 @@ export default {
 		},
 		async _loadCompound() {
 			const address = this.account.address.toLowerCase();
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
-			const query = `
-				query {
-					userBalances(where: {
-						id: "${address}"
-					}) {
-						balances {
-							token {
-								symbol
-								supplyIndex
-								borrowIndex
-								supplyRate
-								borrowRate
-							}
-							balance
-						}
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query })
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			const data = json.data;
+			const data = await Loader.loadCompound(address);
 			if (data.userBalances.length == 0) {
 				return;
 			}
