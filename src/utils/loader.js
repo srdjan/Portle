@@ -38,6 +38,40 @@ class Loader {
 		}
 		return balances;
 	}
+
+	static async loadCompound(address) {
+		const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
+		const query = `
+			query {
+				tokens {
+					symbol
+					address
+					supplyRate
+					supplyIndex
+				}
+				userBalances(where: {
+					id: "${address}"
+				}) {
+					balances {
+						token {
+							symbol
+							supplyRate
+							supplyIndex
+						}
+						balance
+					}
+				}
+			}`;
+		const opts = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query }),
+		};
+		const response = await fetch(url, opts);
+		const json = await response.json();
+		const data = json.data;
+		return data;
+	}
 }
 
 export default Loader;
