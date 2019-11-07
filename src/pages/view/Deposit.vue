@@ -172,32 +172,7 @@ export default {
 		},
 		async _loadDydxDeposit() {
 			const address = this.account.address.toLowerCase();
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/dydx';
-			const query = `
-				query {
-					users(where: {
-						id: "${address}"
-					}) {
-						balances {
-							balance
-							market {
-								token {
-									symbol
-								}
-								supplyIndex
-								supplyRate
-							}
-						}
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query })
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			const data = json.data;
+			const data = await Loader.loadDydx(address);
 			if (data.users.length == 0) {
 				return;
 			}

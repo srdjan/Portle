@@ -384,38 +384,7 @@ export default {
 		},
 		async _loadDydx() {
 			const address = this.account.address.toLowerCase();
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/dydx';
-			const query = `
-				query {
-					markets {
-						token {
-							id
-							symbol
-						}
-						supplyIndex
-						supplyRate
-					}
-					users(where: {
-						id: "${address}"
-					}) {
-						balances {
-							balance
-							market {
-								token {
-									symbol
-								}
-							}
-						}
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query })
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			const data = json.data;
+			const data = await Loader.loadDydx(address);
 			const markets = data.markets;
 			for (const market of markets) {
 				const symbol = market.token.symbol;
