@@ -202,30 +202,7 @@ export default {
 		},
 		async _loadFulcrumDeposit() {
 			const address = this.account.address.toLowerCase();
-			const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
-			const query = `
-				query {
-					userBalances(where: {
-						id: "${address}"
-					}) {
-						balances {
-							token {
-								symbol
-								index
-								supplyRate
-							}
-							balance
-						}
-					}
-				}`;
-			const opts = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ query })
-			};
-			const response = await fetch(url, opts);
-			const json = await response.json();
-			const data = json.data;
+			const data = await Loader.loadFulcrum(address);
 			if (data.userBalances.length == 0) {
 				return;
 			}
