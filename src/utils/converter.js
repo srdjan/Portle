@@ -6,6 +6,9 @@ class Converter {
 	static toAmount(amount, assetId) {
 		const ten = new BigNumber(10);
 		const tickerDecimals = decimals[assetId];
+		if (!tickerDecimals) {
+			return '0';
+		}
 		const multiplier = ten.pow(tickerDecimals);
 		const amountNumber = new BigNumber(amount);
 		const shortAmountNumber = amountNumber.div(multiplier);
@@ -16,6 +19,9 @@ class Converter {
 	static toBalance(amount, assetId) {
 		const ten = new BigNumber(10);
 		const tickerDecimals = decimals[assetId];
+		if (!tickerDecimals) {
+			return '0';
+		}
 		const multiplier = ten.pow(tickerDecimals);
 		const amountNumber = new BigNumber(amount);
 		const longAmountNumber = amountNumber.times(multiplier);
