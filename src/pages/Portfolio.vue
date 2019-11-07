@@ -107,31 +107,14 @@ export default {
 			}
 		},
 		async _loadBalances() {
-			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
-			const response = await fetch(url);
-			const balance = await response.json();
-			// ETH
-			const etherBalance = balance.ETH.balance;
-			const etherBalanceNumber = new BigNumber(etherBalance);
-			const ten = new BigNumber(10);
-			const etherMultiplier = ten.pow(18);
-			const etherBalanceInWei = etherBalanceNumber.times(etherMultiplier);
-			Vue.set(this.assetBalances, 'eth', etherBalanceInWei.toString());
-			// ERC20
-			if (!balance.tokens) {
-				return;
-			}
-			for (const tokenData of balance.tokens) {
-				const assetId = tokenData.tokenInfo.symbol.toLowerCase();
-				const address = tokenData.tokenInfo.address;
-				const price = tokenData.tokenInfo.price;
-				const tickerAddress = addresses[assetId];
-				if (!tickerAddress || (address != tickerAddress.toLowerCase())) {
-					continue;
+			const address = this.account.address;
+			const balances = await Loader.loadBalance(address);
+			for (const assetId in balances) {
+				const balance = balances[assetId];
+				Vue.set(this.assetBalances, assetId, balance.balance);
+				if (balance.price) {
+					Vue.set(this.prices, assetId, balance.price);
 				}
-				const balance = tokenData.balance.toString();
-				Vue.set(this.assetBalances, assetId, balance);
-				Vue.set(this.prices, assetId, price.rate);
 			}
 		},
 		async _loadCompound() {

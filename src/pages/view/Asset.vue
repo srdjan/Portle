@@ -87,31 +87,10 @@ export default {
 			this.price = prices[0];
 		},
 		async _loadBalance() {
-			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
-			const response = await fetch(url);
-			const balance = await response.json();
-			if (this.assetId == 'eth') {
-				// ETH
-				const etherBalance = balance.ETH.balance;
-				const etherBalanceNumber = new BigNumber(etherBalance);
-				const ten = new BigNumber(10);
-				const etherMultiplier = ten.pow(18);
-				const etherBalanceInWei = etherBalanceNumber.times(etherMultiplier);
-				this.balance = etherBalanceInWei.toString();
-				return;
-			}
-			// ERC20
-			if (!balance.tokens) {
-				return;
-			}
-			for (const tokenData of balance.tokens) {
-				const assetId = tokenData.tokenInfo.symbol.toLowerCase();
-				if (assetId == this.assetId) {
-					const balance = tokenData.balance.toString();
-					this.balance = balance;
-					break;
-				}
-			}
+			const address = this.account.address;
+			const balances = await Loader.loadBalance(address);
+			const balance = balances[this.assetId];
+			this.balance = balance.balance;
 		},
 	},
 };
