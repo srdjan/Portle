@@ -125,7 +125,7 @@ export default {
 		},
 		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];
-			const prices = await Loader.loadPrices(assets);
+			const prices = await Loader.loadPrice(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
 				const price = prices[i];
