@@ -34,8 +34,9 @@ import BigNumber from 'bignumber.js';
 
 import { account } from '../mixins/account.js';
 
+import Loader from '../utils/loader.js';
+
 import addresses from '../data/addresses.json';
-import coinIds from '../data/coin-ids.json';
 
 import plusCircleIcon from '../../public/img/plus-circle.svg';
 
@@ -98,15 +99,10 @@ export default {
 		},
 		async _loadPrices() {
 			const assets = ['dai', 'usdc', 'eth', 'seth'];
-			const assetIds = assets.map((asset) => coinIds[asset]);
-			const assetIdString = assetIds.join('%2C');
-			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
-			const response = await fetch(url);
-			const prices = await response.json();
+			const prices = await Loader.loadPrices(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
-				const coinId = assetIds[i];
-				const price = prices[coinId].usd;
+				const price = prices[i];
 				Vue.set(this.prices, assetId, price);
 			}
 		},

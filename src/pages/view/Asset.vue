@@ -25,9 +25,9 @@ import { account } from '../../mixins/account.js';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
+import Loader from '../../utils/loader.js';
 
 import tokens from '../../data/tokens.json';
-import coinIds from '../../data/coin-ids.json';
 
 export default {
 	mixins: [
@@ -82,11 +82,9 @@ export default {
 			return Formatter.formatMoney(priceString);
 		},
 		async _loadPrice() {
-			const coinId = coinIds[this.assetId];
-			const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`;
-			const response = await fetch(url);
-			const prices = await response.json();
-			this.price = prices[coinId].usd;
+			const assets = [ this.assetId ];
+			const prices = await Loader.loadPrices(assets);
+			this.price = prices[0];
 		},
 		async _loadBalance() {
 			const url = `https://api.ethplorer.io/getAddressInfo/${this.account.address}?apiKey=freekey`;
