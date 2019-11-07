@@ -110,6 +110,40 @@ class Loader {
 		const data = json.data;
 		return data;
 	}
+
+	static async loadFulcrum(address) {
+		const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
+		const query = `
+			query {
+				tokens {
+					symbol
+					address
+					index
+					supplyRate
+				}
+				userBalances(where: {
+					id: "${address}"
+				}) {
+					balances {
+						token {
+							symbol
+							index
+							supplyRate
+						}
+						balance
+					}
+				}
+			}`;
+		const opts = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query })
+		};
+		const response = await fetch(url, opts);
+		const json = await response.json();
+		const data = json.data;
+		return data;
+	}
 }
 
 export default Loader;
