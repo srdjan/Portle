@@ -213,7 +213,7 @@ export default {
 .icon {
 	width: 24px;
 	margin: 1.25em 0 0 1em;
-	opacity: 0.7;
+	opacity: 0.5;
 }
 
 .icon:hover {
