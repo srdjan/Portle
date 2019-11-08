@@ -38,6 +38,7 @@
 			</section>
 			<aside />
 		</main>
+		<footer />
 	</div>
 </template>
 
@@ -101,7 +102,7 @@ header {
 }
 
 footer {
-	height: 64px;
+	height: 32px;
 }
 
 main {
