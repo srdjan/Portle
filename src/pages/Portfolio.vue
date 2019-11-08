@@ -15,6 +15,7 @@
 		<div class="category-header">
 			<h2>Deposits</h2>
 			<img
+				v-if="account && account.auth"
 				:src="plusCircleIcon"
 				class="icon"
 				@click="openDepositManagePage()"
