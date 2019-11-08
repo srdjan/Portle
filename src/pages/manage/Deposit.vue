@@ -310,7 +310,7 @@ export default {
 			const account = await this._unlockAccount();
 			const marketId = this._getDydxMarket(this.assetId);
 			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
-			const depositBalance = Converter.toBalance(this.assetAmount, this.assetId);
+			const withdrawBalance = Converter.toBalance(this.assetAmount, this.assetId);
 			const accounts = [{
 				owner: account,
 				number: 0,
@@ -322,7 +322,7 @@ export default {
 					sign: false,
 					denomination: 0,
 					ref: 0,
-					value: depositBalance,
+					value: withdrawBalance,
 				},
 				primaryMarketId: marketId,
 				secondaryMarketId: 0,
