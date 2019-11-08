@@ -36,8 +36,6 @@ import { account } from '../mixins/account.js';
 
 import Loader from '../utils/loader.js';
 
-import addresses from '../data/addresses.json';
-
 import plusCircleIcon from '../../public/img/plus-circle.svg';
 
 import TotalBalance from '../components/TotalBalance.vue';
