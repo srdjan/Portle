@@ -45,8 +45,8 @@ export default {
 			if (!this.assetId) {
 				return;
 			}
-			const name = tokens[assetId];
 			const assetId = this.assetId;
+			const name = tokens[assetId];
 			const balance = this.balance;
 			const price = this.price;
 			const amount = Converter.toAmount(balance, assetId);
