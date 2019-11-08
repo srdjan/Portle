@@ -22,7 +22,7 @@ class Loader {
 			balance: Converter.toBalance(balanceResponse.ETH.balance, 'eth'),
 		};
 		const tokens = balanceResponse.tokens || [];
-		for (const tokenData of balanceResponse.tokens) {
+		for (const tokenData of tokens) {
 			const assetId = tokenData.tokenInfo.symbol.toLowerCase();
 			if (assetId == '') {
 				continue;
