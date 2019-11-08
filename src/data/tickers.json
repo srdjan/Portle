@@ -4,16 +4,11 @@
 	"dai": "DAI",
 	"usdc": "USDC",
 	"knc": "KNC",
-	"snx": "SNX",
 	"wbtc": "WBTC",
 	"mkr": "MKR",
 	"zrx": "ZRX",
 	"mana": "MANA",
 	"rep": "REP",
 	"bat": "BAT",
-	"link": "LINK",
-	"omg": "OMG",
-	"aoa": "AOA",
-	"amb": "AMB",
-	"erc20": "ERC20"
+	"link": "LINK"
 }

@@ -4,16 +4,11 @@
 	"dai": 18,
 	"usdc": 6,
 	"knc": 18,
-	"snx": 18,
 	"wbtc": 8,
 	"mkr": 18,
 	"zrx": 18,
 	"mana": 18,
 	"rep": 18,
 	"bat": 18,
-	"link": 18,
-	"omg": 18,
-	"aoa": 18,
-	"amb": 18,
-	"erc20": 18
+	"link": 18
 }
