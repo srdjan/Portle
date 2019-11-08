@@ -97,8 +97,14 @@ import fulcrumTokenAbi from '../../data/abi/fulcrumInterestToken.json';
 
 import addresses from '../../data/addresses.json';
 
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const signer = provider.getSigner();
+const web3 = window.ethereum || window.web3;
+
+let provider;
+let signer;
+if (web3) {
+	provider = new ethers.providers.Web3Provider(web3);
+	signer = provider.getSigner();
+}
 
 const dydxAddress = '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e';
 
