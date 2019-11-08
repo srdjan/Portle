@@ -15,10 +15,5 @@
 	"omg": "OMG",
 	"aoa": "AOA",
 	"amb": "AMB",
-	"erc20": "ERC20",
-	"susd": "sUSD",
-	"seur": "sEUR",
-	"sgbp": "sGBP",
-	"seth": "sETH",
-	"sbtc": "sBTC"
+	"erc20": "ERC20"
 }
