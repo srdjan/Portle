@@ -53,13 +53,26 @@
 			/>
 		</div>
 		<div id="button-wrapper">
-			<button
+			<div
 				v-if="action == 'deposit'"
-				class="primary big"
-				@click="deposit()"
 			>
-				Deposit
-			</button>
+				<button
+					v-if="locked"
+					class="primary big"
+					@click="unlock()"
+				>
+					Unlock
+				</button>
+
+				<button
+					v-else
+					class="primary big"
+					@click="deposit()"
+				>
+					Deposit
+				</button>
+			</div>
+
 			<button
 				v-if="action == 'withdraw'"
 				class="primary big"
@@ -198,6 +211,20 @@ export default {
 		hideStatus() {
 			this.txStatus = 'none';
 		},
+		async unlock() {
+			const uintMax = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+			const assetAddress = addresses[this.assetId];
+			const spenderMap = {
+				'compound': this.tokenAddresses.compound[this.assetId],
+				'dydx': dydxAddress,
+				'fulcrum': this.tokenAddresses.fulcrum[this.assetId],
+			};
+			const spender = spenderMap[this.platformId];
+			const txResult = await this._unlock(assetAddress, spender);
+			if (txResult) {
+				Vue.set(this.allowances[this.platformId], this.assetId, uintMax);
+			}
+		},
 		deposit() {
 			if (this.platformId == 'compound') {
 				this._depositCompound();
@@ -313,6 +340,12 @@ export default {
 		},
 		_setDefaultAmount() {
 			this.assetAmount = '0';
+		},
+		async _unlock(token, spender) {
+			const uintMax = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+			const inputToken = new ethers.Contract(token, erc20Abi, signer);
+			const txPromise = inputToken.approve(spender, uintMax);
+			return await this._sendTx(provider, txPromise);
 		},
 		async _depositCompound() {
 			await this._unlockAccount();
