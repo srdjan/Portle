@@ -45,7 +45,7 @@ export default {
 			for (const assetId in this.balances) {
 				const name = tokens[assetId];
 				const balance = this.balances[assetId];
-				const price = this.prices[assetId];
+				const price = this.prices[assetId] || '0';
 				const amount = Converter.toAmount(balance, assetId);
 				const amountNumber = new BigNumber(amount);
 				const value = amountNumber.times(price).toString();
