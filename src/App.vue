@@ -187,6 +187,10 @@ input {
 	color: #282821;
 }
 
+input:focus {
+	outline: none;
+}
+
 input.address {
 	width: 480px;
 	margin-left: 8px;
