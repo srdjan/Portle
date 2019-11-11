@@ -13,11 +13,14 @@ export const sendTx = {
 				const txReceipt = await provider.waitForTransaction(tx.hash);
 				if (txReceipt.status == 1) {
 					this.txStatus = 'success';
+					return true;
 				} else {
 					this.txStatus = 'failure';
+					return false;
 				}
 			} catch(e) {
 				this.txStatus = 'rejected';
+				return false;
 			}
 		},
 	},
