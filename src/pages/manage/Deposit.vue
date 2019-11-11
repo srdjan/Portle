@@ -122,7 +122,7 @@ export default {
 			assetId: 'dai',
 			platformId: 'compound',
 			action: 'deposit',
-			assetAmount: '100',
+			assetAmount: '0',
 			rates: {
 				compound: {},
 				dydx: {},
