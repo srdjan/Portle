@@ -67,6 +67,9 @@ export default {
 			if (this.address.length == 0) {
 				return true;
 			}
+			if (this.address.length != 42) {
+				return false;
+			}
 			const addressRegex = /0x[0-9A-Fa-f]{40}/g;
 			return addressRegex.test(this.address);
 		},
