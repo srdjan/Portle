@@ -135,7 +135,6 @@ export default {
 			},
 			tokenAddresses: {
 				compound: {},
-				dydx: {},
 				fulcrum: {},
 			},
 			balances: {
@@ -409,7 +408,6 @@ export default {
 				const rawRateNumber = new BigNumber(rawRate);
 				const rateNumber = rawRateNumber.div('1e18');
 				const rate = rateNumber.toString();
-				Vue.set(this.tokenAddresses.dydx, assetId, address);
 				Vue.set(this.rates.dydx, assetId, rate);
 				Vue.set(this.indices.dydx, assetId, index);
 			}
