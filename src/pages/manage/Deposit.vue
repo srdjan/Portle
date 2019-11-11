@@ -167,12 +167,15 @@ export default {
 	methods: {
 		selectAsset(asset) {
 			this.assetId = asset;
+			this._setDefaultAmount();
 		},
 		selectPlatform(platform) {
 			this.platformId = platform;
+			this._setDefaultAmount();
 		},
 		selectAction(action) {
 			this.action = action;
+			this._setDefaultAmount();
 		},
 		hideStatus() {
 			this.txStatus = 'none';
@@ -250,6 +253,9 @@ export default {
 					this.action = routerState.action;
 				}
 			}
+		},
+		_setDefaultAmount() {
+			this.assetAmount = '0';
 		},
 		async _depositCompound() {
 			await this._unlockAccount();
