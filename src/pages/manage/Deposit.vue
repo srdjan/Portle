@@ -493,7 +493,6 @@ export default {
 				const assetId = symbol == 'WETH'
 					? 'eth'
 					: symbol.toLowerCase();
-				const address = market.token.id;
 				const rawRate = market.supplyRate;
 				const index = market.supplyIndex;
 				const rawRateNumber = new BigNumber(rawRate);
