@@ -91,6 +91,7 @@ import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
 
 import erc20Abi from '../../data/abi/erc20.json';
+import allowanceOracleAbi from '../../data/abi/allowanceOracle.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
 import dydxAbi from '../../data/abi/dydx.json';
 import fulcrumTokenAbi from '../../data/abi/fulcrumInterestToken.json';
@@ -106,6 +107,7 @@ if (web3) {
 	signer = provider.getSigner();
 }
 
+const allowanceOracleAddress = '0xB44bFbD3d55808222f0F44fE53b731d5003582cd';
 const dydxAddress = '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e';
 
 export default {
@@ -142,6 +144,11 @@ export default {
 				dydx: {},
 				fulcrum: {},
 			},
+			allowances: {
+				compound: {},
+				dydx: {},
+				fulcrum: {},
+			},
 			txStatus: 'none',
 		};
 	},
@@ -152,16 +159,28 @@ export default {
 		platforms() {
 			return [ 'compound', 'dydx', 'fulcrum', ];
 		},
+		locked() {
+			if (this.action == 'withdraw') {
+				return false;
+			}
+			const requiredAllowance = Converter.toBalance(this.assetAmount, this.assetId);
+			const requiredAllowanceNumber = new BigNumber(requiredAllowance);
+			const allowance = this.allowances[this.platformId][this.assetId];
+			const allowanceNumber = new BigNumber(allowance);
+			console.log(requiredAllowanceNumber.toString(), allowanceNumber.toString());
+			return allowanceNumber.isNaN()
+				|| allowanceNumber.isZero()
+				|| allowanceNumber.lt(requiredAllowanceNumber);
+		},
 	},
-	mounted() {
+	async mounted() {
 		if (!this.account.address || !this.account.auth) {
 			this.$router.push('/login');
 			return;
 		}
 		this._loadRouterState();
-		this._loadCompound();
-		this._loadDydx();
-		this._loadFulcrum();
+		await this._loadDeposits();
+		this._loadAllowances();
 	},
 	methods: {
 		selectAsset(asset) {
@@ -252,6 +271,45 @@ export default {
 					this.action = routerState.action;
 				}
 			}
+		},
+		async _loadDeposits() {
+			const depositPromises = [
+				this._loadCompound(),
+				this._loadDydx(),
+				this._loadFulcrum(),
+			];
+			await Promise.all(depositPromises);
+		},
+		async _loadAllowances() {
+			const address = this.account.address.toLowerCase();
+			const requests = [{
+				token: addresses['dai'],
+				spender: this.tokenAddresses.compound['dai'],
+			}, {
+				token: addresses['dai'],
+				spender: dydxAddress,
+			}, {
+				token: addresses['dai'],
+				spender: this.tokenAddresses.fulcrum['dai'],
+			}, {
+				token: addresses['usdc'],
+				spender: this.tokenAddresses.compound['usdc'],
+			}, {
+				token: addresses['usdc'],
+				spender: dydxAddress,
+			}, {
+				token: addresses['usdc'],
+				spender: this.tokenAddresses.fulcrum['usdc'],
+			}];
+			const allowanceOracle = new ethers.Contract(allowanceOracleAddress, allowanceOracleAbi, provider);
+			const allowances = await allowanceOracle.allowance(address, requests);
+
+			Vue.set(this.allowances.compound, 'dai', allowances[0].toString());
+			Vue.set(this.allowances.dydx, 'dai', allowances[1].toString());
+			Vue.set(this.allowances.fulcrum, 'dai', allowances[2].toString());
+			Vue.set(this.allowances.compound, 'usdc', allowances[3].toString());
+			Vue.set(this.allowances.dydx, 'usdc', allowances[4].toString());
+			Vue.set(this.allowances.fulcrum, 'usdc', allowances[5].toString());
 		},
 		_setDefaultAmount() {
 			this.assetAmount = '0';
