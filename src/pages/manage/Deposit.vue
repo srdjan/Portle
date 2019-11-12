@@ -48,6 +48,7 @@
 			<AssetInput
 				:id="assetId"
 				:amount="assetAmount"
+				:disabled="!loaded"
 				:set-max="setMax"
 				:on-change="onAssetChange"
 			/>
