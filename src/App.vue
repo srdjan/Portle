@@ -309,25 +309,6 @@ input.invalid {
 	border-color: #efb22d;
 }
 
-.fund-selector {
-	width: 200px;
-	margin: 0.5em 1em 0.5em 0;
-	padding: 0.5em 1em;
-	cursor: pointer;
-	color: grey;
-	background: white;
-	border: 2px solid #d3d3d3;
-}
-
-.fund-selector:hover {
-	color: #282821;
-}
-
-.fund-selector.selected {
-	color: #282821;
-	border-color: #efb22d;
-}
-
 .hidden {
 	opacity: 0;
 	cursor: inherit;
