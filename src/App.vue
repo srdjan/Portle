@@ -223,8 +223,8 @@ input.invalid {
 
 .label {
 	padding: 0.5em 1.25em 0.5em 1.25em;
-	color: #393939;
-	border-left: 1px solid #eeeeee;
+	color: #282821;
+	border-left: 1px solid #f4f8f9;
 	cursor: default;
 }
 
@@ -255,7 +255,7 @@ input.invalid {
 .action-selector {
 	padding: 0.25em 0.5em;
 	margin: 0.5em 1em 0.5em 0;
-	color: gray;
+	color: grey;
 	cursor: pointer;
 }
 
@@ -276,12 +276,12 @@ input.invalid {
 	font-size: 20px;
 	color: grey;
 	background: white;
-	border: 2px solid #d3d3d3;
+	border: 2px solid grey;
 }
 
 .asset-selector:hover {
 	color: #282821;
-	border-color: #a4a4a4;
+	border-color: #282821;
 }
 
 .asset-selector.selected {
@@ -296,12 +296,12 @@ input.invalid {
 	cursor: pointer;
 	color: grey;
 	background: white;
-	border: 2px solid #d3d3d3;
+	border: 2px solid grey;
 }
 
 .app-selector:hover {
 	color: #282821;
-	border-color: #a4a4a4;
+	border-color: #282821;
 }
 
 .app-selector.selected {
