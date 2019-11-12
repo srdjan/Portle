@@ -199,7 +199,7 @@ input.address {
 
 input.amount {
 	text-align: right;
-	font-family: 'Source Code Mono', monospace;
+	font-family: 'Source Code Pro', monospace;
 	width: 240px;
 }
 
