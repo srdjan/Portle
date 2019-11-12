@@ -11,7 +11,7 @@
 			class="amount"
 			@input="onAmountChange"
 		>
-		<span class="label label-ghost label-right inline">{{ formatAsset(id) }}</span>
+		<span class="label label-right inline">{{ formatAsset(id) }}</span>
 	</span>
 </template>
 

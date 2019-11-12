@@ -219,13 +219,8 @@ input.invalid {
 .label {
 	padding: 0.5em 1.25em 0.5em 1.25em;
 	color: #393939;
-	background: #d2d2d2;
-	cursor: default;
-}
-
-.label-ghost {
 	border-left: 1px solid #eeeeee;
-	background: white;
+	cursor: default;
 }
 
 .label-right {
