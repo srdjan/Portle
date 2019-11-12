@@ -191,6 +191,11 @@ input:focus {
 	outline: none;
 }
 
+input:disabled {
+	background: none;
+	color: grey;
+}
+
 input.address {
 	width: 480px;
 	margin-left: 8px;
@@ -223,6 +228,10 @@ input.invalid {
 	cursor: default;
 }
 
+.label-disabled {
+	color: grey;
+}
+
 .label-right {
 	margin-left: 1em;
 }
@@ -236,6 +245,11 @@ input.invalid {
 
 .max-label:hover {
 	color: #282821;
+}
+
+.max-label-disabled {
+	color: grey;
+	pointer-events: none;
 }
 
 .action-selector {
