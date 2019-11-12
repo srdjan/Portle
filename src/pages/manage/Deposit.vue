@@ -68,7 +68,7 @@
 
 				<button
 					v-else
-					:disabled="!loaded"
+					:disabled="!loaded || zeroAmount"
 					class="primary big"
 					@click="deposit()"
 				>
@@ -78,7 +78,7 @@
 
 			<button
 				v-if="action == 'withdraw'"
-				:disabled="!loaded"
+				:disabled="!loaded || zeroAmount"
 				class="primary big"
 				@click="withdraw()"
 			>
@@ -175,6 +175,13 @@ export default {
 		},
 		platforms() {
 			return [ 'compound', 'dydx', 'fulcrum', ];
+		},
+		zeroAmount() {
+			if (this.assetAmount == '') {
+				return true;
+			}
+			const amount = new BigNumber(this.assetAmount);
+			return amount.isZero();
 		},
 		loaded() {
 			const rates = this.rates[this.platformId][this.assetId];
