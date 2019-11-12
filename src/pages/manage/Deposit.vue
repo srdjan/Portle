@@ -58,6 +58,7 @@
 			>
 				<button
 					v-if="locked"
+					:disabled="!loaded"
 					class="primary big"
 					@click="unlock()"
 				>
@@ -66,6 +67,7 @@
 
 				<button
 					v-else
+					:disabled="!loaded"
 					class="primary big"
 					@click="deposit()"
 				>
@@ -75,6 +77,7 @@
 
 			<button
 				v-if="action == 'withdraw'"
+				:disabled="!loaded"
 				class="primary big"
 				@click="withdraw()"
 			>
@@ -171,6 +174,12 @@ export default {
 		},
 		platforms() {
 			return [ 'compound', 'dydx', 'fulcrum', ];
+		},
+		loaded() {
+			const rates = this.rates[this.platformId][this.assetId];
+			const balances = this.balances[this.platformId][this.assetId];
+			const allowance = this.allowances[this.platformId][this.assetId];
+			return rates && balances && allowance;
 		},
 		locked() {
 			const requiredAllowance = Converter.toBalance(this.assetAmount, this.assetId);
