@@ -2,16 +2,23 @@
 	<span class="input-group">
 		<span
 			class="max-label"
+			:class="{ 'max-label-disabled': disabled }"
 			@click="setMax()"
 		>
 			MAX
 		</span>
 		<input
 			:value="amount"
+			:disabled="disabled"
 			class="amount"
 			@input="onAmountChange"
 		>
-		<span class="label label-right inline">{{ formatAsset(id) }}</span>
+		<span
+			class="label label-right inline"
+			:class="{ 'label-disabled': disabled }"
+		>
+			{{ formatAsset(id) }}
+		</span>
 	</span>
 </template>
 
@@ -27,6 +34,10 @@ export default {
 		amount: {
 			type: String,
 			default: '0',
+		},
+		disabled: {
+			type: Boolean,
+			default: false,
 		},
 		setMax: {
 			type: Function,
