@@ -180,7 +180,6 @@ export default {
 			const requiredAllowanceNumber = new BigNumber(requiredAllowance);
 			const allowance = this.allowances[this.platformId][this.assetId];
 			const allowanceNumber = new BigNumber(allowance);
-			console.log(requiredAllowanceNumber.toString(), allowanceNumber.toString());
 			return allowanceNumber.isNaN()
 				|| allowanceNumber.isZero()
 				|| allowanceNumber.lt(requiredAllowanceNumber);
