@@ -173,9 +173,6 @@ export default {
 			return [ 'compound', 'dydx', 'fulcrum', ];
 		},
 		locked() {
-			if (this.action == 'withdraw') {
-				return false;
-			}
 			const requiredAllowance = Converter.toBalance(this.assetAmount, this.assetId);
 			const requiredAllowanceNumber = new BigNumber(requiredAllowance);
 			const allowance = this.allowances[this.platformId][this.assetId];
