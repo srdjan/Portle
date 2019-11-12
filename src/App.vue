@@ -233,7 +233,7 @@ input.invalid {
 }
 
 .max-label {
-	margin-left: 1.25em;
+	margin: 0 1em 0 1em;
 	font-size: 0.75em;
 	cursor: pointer;
 	color: grey;
