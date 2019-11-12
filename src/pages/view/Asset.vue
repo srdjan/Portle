@@ -108,7 +108,7 @@ export default {
 	padding: 0.25em 0.5em;
 	color: grey;
 	font-size: 0.8em;
-	border: 1px solid gray;
+	border: 1px solid grey;
 }
 
 #name {

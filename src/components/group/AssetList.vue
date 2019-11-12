@@ -130,7 +130,7 @@ export default {
 
 .description,
 .price-value {
-	color: gray;
+	color: grey;
 }
 
 .sparse {

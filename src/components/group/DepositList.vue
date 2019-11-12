@@ -144,7 +144,7 @@ export default {
 
 .platform,
 .details {
-	color: gray;
+	color: grey;
 }
 
 .sparse {
