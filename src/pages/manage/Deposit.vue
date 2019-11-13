@@ -275,13 +275,10 @@ export default {
 			return Formatter.formatRate(rateString);
 		},
 		async setMax() {
-			const account = this.account.address;
 			if (this.action == 'deposit') {
 				if (this.assetId != 'eth') {
-					const inputAddress = addresses[this.assetId];
-					const inputToken = new ethers.Contract(inputAddress, erc20Abi, provider);
-					const inputTokenBalance = await inputToken.balanceOf(account);
-					const assetAmount = Converter.toAmount(inputTokenBalance.toString(), this.assetId);
+					const assetBalance = this.balances[this.assetId];
+					const assetAmount = Converter.toAmount(assetBalance, this.assetId);
 					this.assetAmount = assetAmount;
 				}
 			}
