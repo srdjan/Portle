@@ -29,7 +29,7 @@
 			class="primary big"
 			@click="login()"
 		>
-			Login with Ethereum
+			Log in with Ethereum
 		</button>
 		<div id="placeholder" />
 	</div>
