@@ -195,11 +195,28 @@ export default {
 			if (amountNumber.isNegative()) {
 				return true;
 			}
-			const amountBalance = Converter.toBalance(this.assetAmount, this.assetId);
-			const amountBalanceNumber = new BigNumber(amountBalance);
-			const balance = this.balances[this.assetId];
-			if (amountBalanceNumber.gt(balance)) {
-				return true;
+			if (this.action == 'deposit') {
+				const amountBalance = Converter.toBalance(this.assetAmount, this.assetId);
+				const amountBalanceNumber = new BigNumber(amountBalance);
+				const balance = this.balances[this.assetId];
+				if (amountBalanceNumber.gt(balance)) {
+					return true;
+				}
+			}
+			if (this.action == 'withdraw') {
+				const amountBalance = Converter.toBalance(this.assetAmount, this.assetId);
+				const amountBalanceNumber = new BigNumber(amountBalance);
+				const tokenBalance = this.depositBalances[this.platformId][this.assetId];
+				let depositBalance = '0';
+				if (tokenBalance) {
+					const tokenBalanceNumber = new BigNumber(tokenBalance);
+					const index = this.indices[this.platformId][this.assetId];
+					const amountNumber = tokenBalanceNumber.times(index).div('1e18');
+					depositBalance = amountNumber.toFixed(0);
+				}
+				if (amountBalanceNumber.gt(depositBalance)) {
+					return true;
+				}
 			}
 			return false;
 		},
