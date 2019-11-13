@@ -186,6 +186,22 @@ export default {
 			const amount = new BigNumber(this.assetAmount);
 			return amount.isZero();
 		},
+		invalidAmount() {
+			const amountNumber = new BigNumber(this.assetAmount);
+			if (amountNumber.isNaN()) {
+				return true;
+			}
+			if (amountNumber.isNegative()) {
+				return true;
+			}
+			const amountBalance = Converter.toBalance(this.assetAmount, this.assetId);
+			const amountBalanceNumber = new BigNumber(amountBalance);
+			const balance = this.balances[this.assetId];
+			if (amountBalanceNumber.gt(balance)) {
+				return true;
+			}
+			return false;
+		},
 		loaded() {
 			const rates = this.rates[this.platformId][this.assetId];
 			const depositBalance = this.depositBalances[this.platformId][this.assetId];
