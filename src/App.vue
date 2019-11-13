@@ -27,7 +27,7 @@
 					id="logout-button"
 					@click="logout()"
 				>
-					Logout
+					Log out
 				</button>
 			</div>
 		</header>
