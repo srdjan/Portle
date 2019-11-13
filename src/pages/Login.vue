@@ -8,13 +8,13 @@
 				<input
 					id="address"
 					v-model="address"
-					:class="{ invalid: !isAddressValid() }"
+					:class="{ invalid: !isAddressValid }"
 					class="address"
 					placeholder="Enter address"
 				>
 				<span
 					id="watch"
-					:class="{ disabled: isWatchButtonDisabled() }"
+					:class="{ disabled: isWatchButtonDisabled }"
 					@click="watch()"
 				>
 					Watch
@@ -27,7 +27,7 @@
 		<button
 			id="main"
 			class="primary big"
-			:disabled="!isWeb3Available()"
+			:disabled="!isWeb3Available"
 			@click="login()"
 		>
 			Log in with Ethereum
@@ -42,6 +42,28 @@ export default {
 		return {
 			address: '',
 		};
+	},
+	computed: {
+		isAddressValid() {
+			if (this.address.length == 0) {
+				return true;
+			}
+			if (this.address.length != 42) {
+				return false;
+			}
+			const addressRegex = /0x[0-9A-Fa-f]{40}/g;
+			return addressRegex.test(this.address);
+		},
+		isWatchButtonDisabled() {
+			if (this.address.length == 0) {
+				return true;
+			}
+			return !this.isAddressValid;
+		},
+		isWeb3Available() {
+			const web3 = window.ethereum || window.web3;
+			return web3;
+		},
 	},
 	mounted() {
 		const address = localStorage.getItem('address');
@@ -63,26 +85,6 @@ export default {
 			localStorage.setItem('address', address);
 			localStorage.setItem('auth', false);
 			this.$router.push('/');
-		},
-		isAddressValid() {
-			if (this.address.length == 0) {
-				return true;
-			}
-			if (this.address.length != 42) {
-				return false;
-			}
-			const addressRegex = /0x[0-9A-Fa-f]{40}/g;
-			return addressRegex.test(this.address);
-		},
-		isWatchButtonDisabled() {
-			if (this.address.length == 0) {
-				return true;
-			}
-			return !this.isAddressValid();
-		},
-		isWeb3Available() {
-			const web3 = window.ethereum || window.web3;
-			return web3;
 		},
 	},
 };
