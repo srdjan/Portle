@@ -27,6 +27,7 @@
 		<button
 			id="main"
 			class="primary big"
+			:disabled="!isWeb3Available()"
 			@click="login()"
 		>
 			Log in with Ethereum
@@ -78,6 +79,10 @@ export default {
 				return true;
 			}
 			return !this.isAddressValid();
+		},
+		isWeb3Available() {
+			const web3 = window.ethereum || window.web3;
+			return web3;
 		},
 	},
 };
