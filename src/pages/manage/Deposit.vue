@@ -68,7 +68,7 @@
 
 				<button
 					v-else
-					:disabled="!loaded || zeroAmount"
+					:disabled="!loaded || zeroAmount || invalidAmount"
 					class="primary big"
 					@click="deposit()"
 				>
@@ -78,7 +78,7 @@
 
 			<button
 				v-if="action == 'withdraw'"
-				:disabled="!loaded || zeroAmount"
+				:disabled="!loaded || zeroAmount || invalidAmount"
 				class="primary big"
 				@click="withdraw()"
 			>
