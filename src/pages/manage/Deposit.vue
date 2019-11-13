@@ -156,7 +156,7 @@ export default {
 				compound: {},
 				fulcrum: {},
 			},
-			balances: {
+			depositBalances: {
 				compound: {},
 				dydx: {},
 				fulcrum: {},
@@ -185,9 +185,9 @@ export default {
 		},
 		loaded() {
 			const rates = this.rates[this.platformId][this.assetId];
-			const balances = this.balances[this.platformId][this.assetId];
+			const depositBalance = this.depositBalances[this.platformId][this.assetId];
 			const allowance = this.allowances[this.platformId][this.assetId];
-			return rates && balances && allowance;
+			return rates && depositBalance && allowance;
 		},
 		locked() {
 			const requiredAllowance = Converter.toBalance(this.assetAmount, this.assetId);
@@ -281,7 +281,7 @@ export default {
 				}
 			}
 			if (this.action == 'withdraw') {
-				const tokenBalance = this.balances[this.platformId][this.assetId];
+				const tokenBalance = this.depositBalances[this.platformId][this.assetId];
 				if (!tokenBalance) {
 					this.assetAmount = '0';
 					return;
@@ -477,7 +477,7 @@ export default {
 			for (const userBalance of userBalances) {
 				const assetId = userBalance.token.symbol.substr(1).toLowerCase();
 				const balance = userBalance.balance;
-				Vue.set(this.balances.compound, assetId, balance);
+				Vue.set(this.depositBalances.compound, assetId, balance);
 			}
 		},
 		async _loadDydx() {
@@ -507,7 +507,7 @@ export default {
 					? 'eth'
 					: symbol.toLowerCase();
 				const balance = userBalance.balance;
-				Vue.set(this.balances.dydx, assetId, balance);
+				Vue.set(this.depositBalances.dydx, assetId, balance);
 			}
 		},
 		async _loadFulcrum() {
@@ -533,7 +533,7 @@ export default {
 			for (const userBalance of userBalances) {
 				const assetId = userBalance.token.symbol.substr(1).toLowerCase();
 				const balance = userBalance.balance;
-				Vue.set(this.balances.fulcrum, assetId, balance);
+				Vue.set(this.depositBalances.fulcrum, assetId, balance);
 			}
 		},
 		_getDydxMarket(assetId) {
