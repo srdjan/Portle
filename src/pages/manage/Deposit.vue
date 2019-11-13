@@ -49,6 +49,7 @@
 				:id="assetId"
 				:amount="assetAmount"
 				:disabled="!loaded"
+				:invalid="invalidAmount"
 				:set-max="setMax"
 				:on-change="onAssetChange"
 			/>
