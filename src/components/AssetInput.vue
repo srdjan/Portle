@@ -11,6 +11,7 @@
 			:value="amount"
 			:disabled="disabled"
 			class="amount"
+			:class="{ 'invalid': invalid }"
 			@input="onAmountChange"
 		>
 		<span
@@ -36,6 +37,10 @@ export default {
 			default: '0',
 		},
 		disabled: {
+			type: Boolean,
+			default: false,
+		},
+		invalid: {
 			type: Boolean,
 			default: false,
 		},
