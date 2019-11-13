@@ -22,7 +22,16 @@
 			<div
 				class="header-part"
 			>
-				<span>{{ formatAddress(getAddress()) }}</span>
+				<div class="tooltip-trigger">
+					<span
+						id="address"
+						@click="copyAddress()"
+						@mouseleave="resetTooltip()"
+					>
+						{{ formatAddress(getAddress()) }}
+					</span>
+					<span class="tooltip">{{ copyTooltipText }}</span>
+				</div>
 				<button
 					id="logout-button"
 					@click="logout()"
@@ -52,9 +61,19 @@ import card from '../public/img/card.png';
 import logo from '../public/img/logo.svg';
 
 export default {
+	data() {
+		return {
+			copied: false,
+		};
+	},
 	computed: {
 		logo() {
 			return logo;
+		},
+		copyTooltipText() {
+			return this.copied
+				? 'Copied'
+				: 'Click to copy';
 		},
 	},
 	methods: {
@@ -80,6 +99,14 @@ export default {
 		formatAddress(address) {
 			return Formatter.formatAddress(address);
 		},
+		copyAddress() {
+			const address = localStorage.getItem('address');
+			navigator.clipboard.writeText(address);
+			this.copied = true;
+		},
+		resetTooltip() {
+			this.copied = false;
+		}
 	},
 };
 </script>
@@ -332,5 +359,28 @@ h1#title {
 
 #logout-button {
 	margin-left: 16px;
+}
+
+#address {
+	cursor: pointer;
+}
+
+.tooltip-trigger .tooltip {
+	position: absolute;
+	margin-top: 10px;
+	margin-left: 10px;
+	padding: 4px 8px;
+	font-size: 0.75em;
+	color: #fff;
+	background-color: #555;
+	border-radius: 4px;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.tooltip-trigger:hover .tooltip {
+	visibility: visible;
+	opacity: 1;
 }
 </style>
