@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js';
-
 import tickers from '../data/tickers.json';
 
 class Formatter {
@@ -27,21 +25,36 @@ class Formatter {
 	}
 
 	static formatAmount(amountString) {
-		const amount = new BigNumber(amountString);
-		return `${amount.toFixed(2)}`;
+		const amount = new Number(amountString);
+		const options = {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+		};
+		return amount.toLocaleString(undefined, options);
 	}
 
 	static formatMoney(priceString) {
-		const price = new BigNumber(priceString);
-		return `$${price.toFixed(2)}`;
+		const amount = new Number(priceString);
+		const options = {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+			style: 'currency',
+			currency: 'USD',
+		};
+		return amount.toLocaleString(undefined, options);
 	}
 
 	static formatRate(rateString) {
 		if (!rateString) {
 			return '…';
 		}
-		const rate = new BigNumber(rateString);
-		return `${(rate * 100).toFixed(2)}%`;
+		const rate = new Number(rateString);
+		const options = {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2,
+			style: 'percent',
+		};
+		return rate.toLocaleString(undefined, options);
 	}
 }
 
