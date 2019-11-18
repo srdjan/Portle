@@ -45,9 +45,8 @@ class Loader {
 		}
 
 		const tokenOracle = getTokenOracle();
-		const wethAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 		const balanceRequest = [{
-			token: wethAddress,
+			token: addresses['weth'],
 		}];
 		const oracleResponse = await tokenOracle.balances(address, balanceRequest);
 		balances['weth'] = {
