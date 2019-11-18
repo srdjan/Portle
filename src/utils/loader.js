@@ -4,6 +4,7 @@ import Converter from './converter.js';
 
 import erc20Abi from '../data/abi/erc20.json';
 
+import addresses from '../data/addresses.json';
 import coinIds from '../data/coin-ids.json';
 
 class Loader {
@@ -25,13 +26,12 @@ class Loader {
 		balances['eth'] = {
 			balance: Converter.toBalance(balanceResponse.ETH.balance, 'eth'),
 		};
+		const addressMap = getAddressMap();
 		const tokens = balanceResponse.tokens || [];
 		for (const tokenData of tokens) {
-			const assetId = tokenData.tokenInfo.symbol.toLowerCase();
-			if (assetId == '') {
-				continue;
-			}
-			if (assetId in balances) {
+			const assetAddress = tokenData.tokenInfo.address;
+			const assetId = addressMap[assetAddress];
+			if (!assetId) {
 				continue;
 			}
 			const balance = tokenData.balance.toString();
@@ -162,6 +162,15 @@ class Loader {
 		const data = json.data;
 		return data;
 	}
+}
+
+function getAddressMap() {
+	const addressMap = {};
+	for (const assetId in addresses) {
+		const assetAddress = addresses[assetId].toLowerCase();
+		addressMap[assetAddress] = assetId;
+	}
+	return addressMap;
 }
 
 export default Loader;
