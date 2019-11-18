@@ -97,7 +97,7 @@ export default {
 			this.$router.push(path);
 		},
 		async _loadPrices() {
-			const assets = ['dai', 'usdc', 'eth'];
+			const assets = ['dai', 'usdc', 'eth', 'rep'];
 			const prices = await Loader.loadPrice(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
