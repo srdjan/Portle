@@ -230,7 +230,6 @@ input.address {
 }
 
 input.amount {
-	text-align: right;
 	font-family: 'Source Code Pro', monospace;
 	width: 240px;
 }
@@ -277,6 +276,10 @@ input.invalid {
 .max-label-disabled {
 	color: grey;
 	pointer-events: none;
+}
+
+.max-label-active {
+	color: #282821;
 }
 
 .action-selector {
