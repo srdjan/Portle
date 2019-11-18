@@ -47,10 +47,15 @@ class Loader {
 		const tokenOracle = getTokenOracle();
 		const balanceRequest = [{
 			token: addresses['weth'],
+		}, {
+			token: addresses['ampl'],
 		}];
 		const oracleResponse = await tokenOracle.balances(address, balanceRequest);
 		balances['weth'] = {
 			balance: oracleResponse[0].toString(),
+		};
+		balances['ampl'] = {
+			balance: oracleResponse[1].toString(),
 		};
 
 		return balances;
