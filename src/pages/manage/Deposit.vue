@@ -111,8 +111,7 @@ import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
 
 import erc20Abi from '../../data/abi/erc20.json';
-import allowanceOracleAbi from '../../data/abi/allowanceOracle.json';
-import balanceOracleAbi from '../../data/abi/balanceOracle.json';
+import tokenOracleAbi from '../../data/abi/tokenOracle.json';
 import compoundTokenAbi from '../../data/abi/compoundToken.json';
 import dydxAbi from '../../data/abi/dydx.json';
 import fulcrumTokenAbi from '../../data/abi/fulcrumInterestToken.json';
@@ -128,8 +127,7 @@ if (web3) {
 	signer = provider.getSigner();
 }
 
-const allowanceOracleAddress = '0xB44bFbD3d55808222f0F44fE53b731d5003582cd';
-const balanceOracleAddress = '0x2E41E8b2a610cC362D4e747bd274c501bd4093FD';
+const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
 const dydxAddress = '0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e';
 
 export default {
@@ -247,8 +245,7 @@ export default {
 		}
 		this._loadRouterState();
 		await this._loadDeposits();
-		this._loadAllowances();
-		this._loadBalances();
+		this._loadTokens();
 	},
 	methods: {
 		selectAsset(asset) {
@@ -361,9 +358,10 @@ export default {
 			];
 			await Promise.all(depositPromises);
 		},
-		async _loadAllowances() {
+		async _loadTokens() {
 			const address = this.account.address.toLowerCase();
-			const requests = [{
+
+			const allowanceRequests = [{
 				token: addresses['dai'],
 				spender: this.tokenAddresses.compound['dai'],
 			}, {
@@ -382,8 +380,16 @@ export default {
 				token: addresses['usdc'],
 				spender: this.tokenAddresses.fulcrum['usdc'],
 			}];
-			const allowanceOracle = new ethers.Contract(allowanceOracleAddress, allowanceOracleAbi, provider);
-			const allowances = await allowanceOracle.allowance(address, requests);
+			const balanceRequests = [{
+				token: addresses['dai'],
+			}, {
+				token: addresses['usdc'],
+			}];
+
+			const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
+			const response = await tokenOracle.account(address, allowanceRequests, balanceRequests);
+			const allowances = response._allowances;
+			const balances = response._balances;
 
 			Vue.set(this.allowances.compound, 'dai', allowances[0].toString());
 			Vue.set(this.allowances.dydx, 'dai', allowances[1].toString());
@@ -391,15 +397,6 @@ export default {
 			Vue.set(this.allowances.compound, 'usdc', allowances[3].toString());
 			Vue.set(this.allowances.dydx, 'usdc', allowances[4].toString());
 			Vue.set(this.allowances.fulcrum, 'usdc', allowances[5].toString());
-		},
-		async _loadBalances() {
-			const address = this.account.address.toLowerCase();
-			const tokens = [
-				addresses['dai'],
-				addresses['usdc'],
-			];
-			const balanceOracle = new ethers.Contract(balanceOracleAddress, balanceOracleAbi, provider);
-			const balances = await balanceOracle.balances(address, tokens);
 
 			Vue.set(this.balances, 'dai', balances[0].toString());
 			Vue.set(this.balances, 'usdc', balances[1].toString());
