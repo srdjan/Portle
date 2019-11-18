@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 import Converter from './converter.js';
 
-import erc20Abi from '../data/abi/erc20.json';
+import tokenOracleAbi from '../data/abi/tokenOracle.json';
 
 import addresses from '../data/addresses.json';
 import coinIds from '../data/coin-ids.json';
@@ -46,11 +46,14 @@ class Loader {
 
 		const provider = getProvider();
 		const wethAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-		const wethContract = new ethers.Contract(wethAddress, erc20Abi, provider);
-		const wethBalanceResponse = await wethContract.balanceOf(address);
-		const wethBalance = wethBalanceResponse.toString();
+		const balanceRequest = [{
+			token: wethAddress,
+		}];
+		const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
+		const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
+		const oracleResponse = await tokenOracle.balances(address, balanceRequest);
 		balances['weth'] = {
-			balance: wethBalance,
+			balance: oracleResponse[0].toString(),
 		};
 
 		return balances;
