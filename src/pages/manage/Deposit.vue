@@ -50,6 +50,8 @@
 				:amount="assetAmount"
 				:disabled="!loaded"
 				:invalid="invalidAmount"
+				:estimate="action == 'withdraw'"
+				:is-max="isMax"
 				:set-max="setMax"
 				:on-change="onAssetChange"
 			/>
@@ -145,6 +147,7 @@ export default {
 			platformId: 'compound',
 			action: 'deposit',
 			assetAmount: '0',
+			isMax: false,
 			rates: {
 				compound: {},
 				dydx: {},
@@ -309,6 +312,7 @@ export default {
 			return Formatter.formatRate(rateString);
 		},
 		async setMax() {
+			this.isMax = true;
 			if (this.action == 'deposit') {
 				if (this.assetId != 'eth') {
 					const assetBalance = this.balances[this.assetId];
@@ -333,6 +337,7 @@ export default {
 		onAssetChange(id, amount) {
 			this.assetId = id;
 			this.assetAmount = amount;
+			this.isMax = false;
 		},
 		_loadRouterState() {
 			const routerState = this.$router.state;
@@ -401,6 +406,7 @@ export default {
 		},
 		_setDefaultAmount() {
 			this.assetAmount = '0';
+			this.isMax = false;
 		},
 		async _unlock(token, spender) {
 			const uintMax = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
