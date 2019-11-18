@@ -16,11 +16,6 @@
 				<div>{{ formatMoney(asset.price) }}</div>
 				<div>{{ formatMoney(asset.value) }}</div>
 			</div>
-			<img
-				:src="assetImagePath(asset.assetId)"
-				height="24px"
-				class="logo"
-			>
 		</div>
 	</div>
 </template>
@@ -85,9 +80,6 @@ export default {
 			const path = `/asset/${assetId}`;
 			this.$router.push(path);
 		},
-		assetImagePath(assetId) {
-			return `../../../public/img/assets/${assetId}.svg`;
-		},
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
@@ -144,13 +136,5 @@ export default {
 .sparse {
 	display: flex;
 	justify-content: space-between;
-}
-
-.logo {
-	position: absolute;
-	margin-top: -100px;
-	margin-left: 150px;
-	height: 64px;
-	opacity: 0.2;
 }
 </style>
