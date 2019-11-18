@@ -44,13 +44,11 @@ class Loader {
 			};
 		}
 
-		const provider = getProvider();
+		const tokenOracle = getTokenOracle();
 		const wethAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 		const balanceRequest = [{
 			token: wethAddress,
 		}];
-		const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
-		const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
 		const oracleResponse = await tokenOracle.balances(address, balanceRequest);
 		balances['weth'] = {
 			balance: oracleResponse[0].toString(),
@@ -166,10 +164,12 @@ class Loader {
 	}
 }
 
-function getProvider() {
+function getTokenOracle() {
 	const web3Endpoint = 'https://mainnet.infura.io/v3/93e3393c76ed4e1f940d0266e2fdbda2';
 	const provider = new ethers.providers.JsonRpcProvider(web3Endpoint);
-	return provider;
+	const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
+	const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
+	return tokenOracle;
 }
 
 function getAddressMap() {
