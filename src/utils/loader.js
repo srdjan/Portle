@@ -44,9 +44,8 @@ class Loader {
 			};
 		}
 
+		const provider = getProvider();
 		const wethAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-		const web3Endpoint = 'https://mainnet.infura.io/v3/93e3393c76ed4e1f940d0266e2fdbda2';
-		const provider = new ethers.providers.JsonRpcProvider(web3Endpoint);
 		const wethContract = new ethers.Contract(wethAddress, erc20Abi, provider);
 		const wethBalanceResponse = await wethContract.balanceOf(address);
 		const wethBalance = wethBalanceResponse.toString();
@@ -162,6 +161,12 @@ class Loader {
 		const data = json.data;
 		return data;
 	}
+}
+
+function getProvider() {
+	const web3Endpoint = 'https://mainnet.infura.io/v3/93e3393c76ed4e1f940d0266e2fdbda2';
+	const provider = new ethers.providers.JsonRpcProvider(web3Endpoint);
+	return provider;
 }
 
 function getAddressMap() {
