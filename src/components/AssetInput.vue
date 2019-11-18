@@ -2,11 +2,12 @@
 	<span class="input-group">
 		<span
 			class="max-label"
-			:class="{ 'max-label-disabled': disabled }"
+			:class="{ 'max-label-disabled': disabled, 'max-label-active': isMax }"
 			@click="setMax()"
 		>
 			MAX
 		</span>
+		<span :class="{ 'hidden': !isMax || !estimate }">~</span>
 		<input
 			:value="amount"
 			:disabled="disabled"
@@ -41,6 +42,14 @@ export default {
 			default: false,
 		},
 		invalid: {
+			type: Boolean,
+			default: false,
+		},
+		estimate: {
+			type: Boolean,
+			default: false
+		},
+		isMax: {
 			type: Boolean,
 			default: false,
 		},
