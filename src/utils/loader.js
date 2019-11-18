@@ -27,6 +27,9 @@ class Loader {
 			if (assetId == '') {
 				continue;
 			}
+			if (assetId in balances) {
+				continue;
+			}
 			const balance = tokenData.balance.toString();
 			const price = tokenData.tokenInfo.price
 				? tokenData.tokenInfo.price.rate
