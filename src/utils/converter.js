@@ -28,6 +28,15 @@ class Converter {
 		const longAmount = longAmountNumber.toFixed(0);
 		return longAmount;
 	}
+
+	static reverseMap(map) {
+		const reversed = {};
+		for (const key in map) {
+			const value = map[key];
+			reversed[value] = key;
+		}
+		return reversed;
+	}
 }
 
 export default Converter;
