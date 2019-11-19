@@ -568,7 +568,6 @@ export default {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(token.underlying.address);
 				const assetId = addressMap[assetAddress];
-				console.log(assetAddress, assetId);
 				const address = token.address;
 				const rawRate = token.supplyRate;
 				const index = token.index;
