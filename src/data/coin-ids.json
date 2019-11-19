@@ -1,6 +1,7 @@
 {
 	"eth": "ethereum",
 	"weth": "weth",
+	"dai": "dai",
 	"sai": "sai",
 	"usdc": "usd-coin",
 	"knc": "kyber-network",
