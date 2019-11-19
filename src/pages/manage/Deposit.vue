@@ -566,7 +566,10 @@ export default {
 			const data = await Loader.loadFulcrum(address);
 			const tokens = data.tokens;
 			for (const token of tokens) {
-				const assetId = token.symbol.substr(1).toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(token.underlying.address);
+				const assetId = addressMap[assetAddress];
+				console.log(assetAddress, assetId);
 				const address = token.address;
 				const rawRate = token.supplyRate;
 				const index = token.index;
@@ -582,7 +585,9 @@ export default {
 			}
 			const userBalances = data.userBalances[0].balances;
 			for (const userBalance of userBalances) {
-				const assetId = userBalance.token.symbol.substr(1).toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
+				const assetId = addressMap[assetAddress];
 				const balance = userBalance.balance;
 				Vue.set(this.depositBalances.fulcrum, assetId, balance);
 			}

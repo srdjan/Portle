@@ -41,12 +41,15 @@
 <script>
 import Vue from 'vue';
 import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
 
 import { account } from '../../mixins/account.js';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
+
+import addresses from '../../data/addresses.json';
 
 export default {
 	mixins: [
@@ -208,7 +211,9 @@ export default {
 			}
 			const balances = data.userBalances[0].balances;
 			for (const balance of balances) {
-				const assetId = balance.token.symbol.substr(1).toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
+				const assetId = addressMap[assetAddress];
 				if (this.assetId != assetId) {
 					continue;
 				}
