@@ -105,7 +105,7 @@ class Loader {
 				markets {
 					token {
 						id
-						symbol
+						address
 					}
 					supplyIndex
 					supplyRate
@@ -117,7 +117,7 @@ class Loader {
 						balance
 						market {
 							token {
-								symbol
+								address
 							}
 							supplyIndex
 							supplyRate
