@@ -127,7 +127,7 @@ export default {
 			return Formatter.formatRate(rateString);
 		},
 		async _loadPrices() {
-			const assets = ['dai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];
+			const assets = ['dai', 'sai', 'usdc', 'eth', 'wbtc', 'rep', 'bat', 'zrx', 'link', 'knc'];
 			const prices = await Loader.loadPrice(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
