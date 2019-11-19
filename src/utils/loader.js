@@ -1,7 +1,6 @@
 import { ethers } from 'ethers';
 
 import Converter from './converter.js';
-import Data from './data.js';
 
 import tokenOracleAbi from '../data/abi/tokenOracle.json';
 
@@ -27,10 +26,13 @@ class Loader {
 		balances['eth'] = {
 			balance: Converter.toBalance(balanceResponse.ETH.balance, 'eth'),
 		};
-		const addressMap = Data.getAddressMap();
+		const addressMap = Converter.reverseMap(addresses);
 		const tokens = balanceResponse.tokens || [];
 		for (const tokenData of tokens) {
-			const assetAddress = tokenData.tokenInfo.address;
+			const assetAddress = ethers.utils.getAddress(tokenData.tokenInfo.address);
+			if (!assetAddress) {
+				continue;
+			}
 			const assetId = addressMap[assetAddress];
 			if (!assetId) {
 				continue;
