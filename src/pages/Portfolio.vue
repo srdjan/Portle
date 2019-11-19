@@ -160,23 +160,22 @@ export default {
 			}
 			const balances = data.users[0].balances;
 			for (const balance of balances) {
-				const symbol = balance.market.token.symbol;
-				const id = symbol == 'WETH'
-					? 'eth'
-					: symbol.toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
+				const assetId = addressMap[assetAddress];
 				const index = balance.market.supplyIndex;
 				const tokenRawBalance = balance.balance;
 				// Set balances
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.dydx, id, tokenBalance);
+				Vue.set(this.depositBalances.dydx, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.market.supplyRate;
 				const supplyRawRateNumber = new BigNumber(supplyRawRate);
 				const supplyRateNumber = supplyRawRateNumber.div('1e18');
 				const supplyRate = supplyRateNumber.toString();
-				Vue.set(this.rates.supply.dydx, id, supplyRate);
+				Vue.set(this.rates.supply.dydx, assetId, supplyRate);
 			}
 		},
 		async _loadFulcrum() {

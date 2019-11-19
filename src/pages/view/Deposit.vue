@@ -181,10 +181,9 @@ export default {
 			}
 			const balances = data.users[0].balances;
 			for (const balance of balances) {
-				const symbol = balance.market.token.symbol;
-				const assetId = symbol == 'WETH'
-					? 'eth'
-					: symbol.toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
+				const assetId = addressMap[assetAddress];
 				if (this.assetId != assetId) {
 					continue;
 				}

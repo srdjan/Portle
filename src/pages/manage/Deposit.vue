@@ -536,10 +536,9 @@ export default {
 			const data = await Loader.loadDydx(address);
 			const markets = data.markets;
 			for (const market of markets) {
-				const symbol = market.token.symbol;
-				const assetId = symbol == 'WETH'
-					? 'eth'
-					: symbol.toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(market.token.address);
+				const assetId = addressMap[assetAddress];
 				const rawRate = market.supplyRate;
 				const index = market.supplyIndex;
 				const rawRateNumber = new BigNumber(rawRate);
