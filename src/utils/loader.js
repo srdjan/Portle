@@ -140,7 +140,7 @@ class Loader {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
 		const query = `
 			query {
-				tokens {
+				iTokens {
 					symbol
 					address
 					index
@@ -154,6 +154,9 @@ class Loader {
 							symbol
 							index
 							supplyRate
+							underlying {
+								address
+							}
 						}
 						balance
 					}
