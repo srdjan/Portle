@@ -150,6 +150,9 @@ class Loader {
 					address
 					index
 					supplyRate
+					underlying {
+						address
+					}
 				}
 				userBalances(where: {
 					id: "${address}"
