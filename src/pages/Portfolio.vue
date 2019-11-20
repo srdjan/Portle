@@ -131,7 +131,9 @@ export default {
 			}
 			const balances = data.userBalances[0].balances;
 			for (const balance of balances) {
-				const assetId = balance.token.symbol.substr(1).toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
+				const assetId = addressMap[assetAddress];
 				const supplyIndex = balance.token.supplyIndex;
 				const tokenRawBalance = balance.balance;
 				// Set balances
