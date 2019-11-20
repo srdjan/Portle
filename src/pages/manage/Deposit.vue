@@ -508,7 +508,7 @@ export default {
 		async _loadCompound() {
 			const address = this.account.address.toLowerCase();
 			const data = await Loader.loadCompound(address);
-			const tokens = data.tokens;
+			const tokens = data.cTokens;
 			for (const token of tokens) {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(token.underlying.address);
@@ -556,10 +556,9 @@ export default {
 			}
 			const userBalances = data.users[0].balances;
 			for (const userBalance of userBalances) {
-				const symbol = userBalance.market.token.symbol;
-				const assetId = symbol == 'WETH'
-					? 'eth'
-					: symbol.toLowerCase();
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(userBalance.market.token.address);
+				const assetId = addressMap[assetAddress];
 				const balance = userBalance.balance;
 				Vue.set(this.depositBalances.dydx, assetId, balance);
 			}
@@ -567,7 +566,7 @@ export default {
 		async _loadFulcrum() {
 			const address = this.account.address.toLowerCase();
 			const data = await Loader.loadFulcrum(address);
-			const tokens = data.tokens;
+			const tokens = data.iTokens;
 			for (const token of tokens) {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(token.underlying.address);
@@ -588,7 +587,7 @@ export default {
 			const userBalances = data.userBalances[0].balances;
 			for (const userBalance of userBalances) {
 				const addressMap = Converter.reverseMap(addresses);
-				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
+				const assetAddress = ethers.utils.getAddress(userBalance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
 				const balance = userBalance.balance;
 				Vue.set(this.depositBalances.fulcrum, assetId, balance);
