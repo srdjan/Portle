@@ -68,20 +68,25 @@ class Loader {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
 		const query = `
 			query {
-				tokens {
+				cTokens {
 					symbol
 					address
 					supplyRate
 					supplyIndex
+					underlying {
+						address
+					}
 				}
 				userBalances(where: {
 					id: "${address}"
 				}) {
 					balances {
 						token {
-							symbol
 							supplyRate
 							supplyIndex
+							underlying {
+								address
+							}
 						}
 						balance
 					}
