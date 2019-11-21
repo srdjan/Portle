@@ -47,7 +47,9 @@ class Loader {
 			};
 		}
 
-		const tokenOracle = getTokenOracle();
+		const provider = getProvider();
+		const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
+		const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
 		const balanceRequest = [{
 			token: addresses['weth'],
 		}, {
@@ -182,12 +184,10 @@ class Loader {
 	}
 }
 
-function getTokenOracle() {
+function getProvider() {
 	const web3Endpoint = 'https://mainnet.infura.io/v3/93e3393c76ed4e1f940d0266e2fdbda2';
 	const provider = new ethers.providers.JsonRpcProvider(web3Endpoint);
-	const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
-	const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
-	return tokenOracle;
+	return provider;
 }
 
 export default Loader;
