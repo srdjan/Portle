@@ -551,16 +551,30 @@ export default {
 				Vue.set(this.rates.dydx, assetId, rate);
 				Vue.set(this.indices.dydx, assetId, index);
 			}
+
 			if (data.users.length == 0) {
 				return;
 			}
-			const userBalances = data.users[0].balances;
-			for (const userBalance of userBalances) {
+
+			const balances = data.users[0].balances;
+			const marketBalances = balances.reduce((map, balance) => {
 				const addressMap = Converter.reverseMap(addresses);
-				const assetAddress = ethers.utils.getAddress(userBalance.market.token.address);
+				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
 				const assetId = addressMap[assetAddress];
-				const balance = userBalance.balance;
-				Vue.set(this.depositBalances.dydx, assetId, balance);
+
+				const accountRawBalance = balance.balance;
+				const accountRawBalanceNumber = new BigNumber(accountRawBalance);
+				const accountBalanceNumber = accountRawBalanceNumber;
+
+				const prevMarketBalance = map[assetId] || '0';
+				const marketBalanceNumber = accountBalanceNumber.plus(prevMarketBalance);
+				const marketBalance = marketBalanceNumber.toString();
+				map[assetId] = marketBalance;
+				return map;
+			}, {});
+			for (const assetId in marketBalances) {
+				const marketBalance = marketBalances[assetId];
+				Vue.set(this.depositBalances.dydx, assetId, marketBalance);
 			}
 		},
 		async _loadFulcrum() {

@@ -160,24 +160,40 @@ export default {
 			if (data.users.length == 0) {
 				return;
 			}
-			const balances = data.users[0].balances;
-			for (const balance of balances) {
+
+			const markets = data.markets;
+			for (const market of markets) {
 				const addressMap = Converter.reverseMap(addresses);
-				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
+				const assetAddress = ethers.utils.getAddress(market.token.address);
 				const assetId = addressMap[assetAddress];
-				const index = balance.market.supplyIndex;
-				const tokenRawBalance = balance.balance;
-				// Set balances
-				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
-				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
-				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.dydx, assetId, tokenBalance);
-				// Set rates
-				const supplyRawRate = balance.market.supplyRate;
+
+				const supplyRawRate = market.supplyRate;
 				const supplyRawRateNumber = new BigNumber(supplyRawRate);
 				const supplyRateNumber = supplyRawRateNumber.div('1e18');
 				const supplyRate = supplyRateNumber.toString();
 				Vue.set(this.rates.supply.dydx, assetId, supplyRate);
+			}
+
+			const balances = data.users[0].balances;
+			const marketBalances = balances.reduce((map, balance) => {
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
+				const assetId = addressMap[assetAddress];
+
+				const index = balance.market.supplyIndex;
+				const accountRawBalance = balance.balance;
+				const accountRawBalanceNumber = new BigNumber(accountRawBalance);
+				const accountBalanceNumber = accountRawBalanceNumber.times(index).div('1e18');
+
+				const prevMarketBalance = map[assetId] || '0';
+				const marketBalanceNumber = accountBalanceNumber.plus(prevMarketBalance);
+				const marketBalance = marketBalanceNumber.toString();
+				map[assetId] = marketBalance;
+				return map;
+			}, {});
+			for (const assetId in marketBalances) {
+				const marketBalance = marketBalances[assetId];
+				Vue.set(this.depositBalances.dydx, assetId, marketBalance);
 			}
 		},
 		async _loadFulcrum() {

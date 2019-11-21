@@ -181,28 +181,36 @@ export default {
 			if (data.users.length == 0) {
 				return;
 			}
+			const markets = data.markets;
+			const market = markets.find(market => { 
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(market.token.address);
+				const assetId = addressMap[assetAddress];
+				return assetId == this.assetId;
+			});
+			const rawRate = market.supplyRate;
+			const rawRateNumber = new BigNumber(rawRate);
+			const rate = rawRateNumber.div('1e18');
+			this.rate = rate;
+
 			const balances = data.users[0].balances;
-			for (const balance of balances) {
+			const marketBalances = balances.reduce((map, balance) => {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
 				const assetId = addressMap[assetAddress];
-				if (this.assetId != assetId) {
-					continue;
-				}
+
 				const index = balance.market.supplyIndex;
-				const tokenRawBalance = balance.balance;
-				// Set balances
-				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
-				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
-				const tokenBalance = tokenBalanceNumber.toString();
-				this.balance = tokenBalance;
-				// Set rates
-				const supplyRawRate = balance.market.supplyRate;
-				const supplyRawRateNumber = new BigNumber(supplyRawRate);
-				const supplyRateNumber = supplyRawRateNumber.div('1e18');
-				const supplyRate = supplyRateNumber.toString();
-				this.rate = supplyRate;
-			}
+				const accountRawBalance = balance.balance;
+				const accountRawBalanceNumber = new BigNumber(accountRawBalance);
+				const accountBalanceNumber = accountRawBalanceNumber.times(index).div('1e18');
+
+				const prevMarketBalance = map[assetId] || '0';
+				const marketBalanceNumber = accountBalanceNumber.plus(prevMarketBalance);
+				const marketBalance = marketBalanceNumber.toString();
+				map[assetId] = marketBalance;
+				return map;
+			}, {});
+			this.balance = marketBalances[this.assetId] || '0';
 		},
 		async _loadFulcrumDeposit() {
 			const address = this.account.address.toLowerCase();
