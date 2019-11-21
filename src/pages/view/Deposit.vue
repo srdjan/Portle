@@ -203,6 +203,9 @@ export default {
 				const accountRawBalance = balance.balance;
 				const accountRawBalanceNumber = new BigNumber(accountRawBalance);
 				const accountBalanceNumber = accountRawBalanceNumber.times(index).div('1e18');
+				if (accountBalanceNumber.isNegative()) {
+					return map;
+				}
 
 				const prevMarketBalance = map[assetId] || '0';
 				const marketBalanceNumber = accountBalanceNumber.plus(prevMarketBalance);
