@@ -244,12 +244,15 @@ export default {
 			const pot = data.pots[0];
 			const user = data.users[0];
 
+			const rawRate = pot.rate;
+			const rawRateNumber = parseFloat(rawRate);
+			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
 			const index = pot.index;
 			const rawBalance = user.proxy.balance;
 			const rawBalanceNumber = new BigNumber(rawBalance);
 			const balanceNumber = rawBalanceNumber.times(index).div('1e27');
 			const balance = balanceNumber.toString();
-			const rate = 0.02;
+			const rate = rateNumber.toString();
 			Vue.set(this.depositBalances.maker, 'dai', balance);
 			Vue.set(this.rates.supply.maker, 'dai', rate);
 		}
