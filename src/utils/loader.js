@@ -199,6 +199,7 @@ class Loader {
 				}
 				pots {
 					index
+					rate
 				}
 			}
 		`;
