@@ -63,6 +63,7 @@ export default {
 				compound: {},
 				dydx: {},
 				fulcrum: {},
+				maker: {},
 			},
 			prices: {},
 			rates: {
@@ -70,11 +71,13 @@ export default {
 					compound: {},
 					dydx: {},
 					fulcrum: {},
+					maker: {},
 				},
 				borrow: {
 					compound: {},
 					dydx: {},
 					fulcrum: {},
+					maker: {},
 				},
 			},
 		};
@@ -94,6 +97,7 @@ export default {
 		this._loadCompound();
 		this._loadDydx();
 		this._loadFulcrum();
+		this._loadMaker();
 	},
 	methods: {
 		openDepositManagePage() {
@@ -230,6 +234,25 @@ export default {
 				Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
 			}
 		},
+		async _loadMaker() {
+			const address = this.account.address.toLowerCase();
+			// const proxyAddress = await Loader.getMakerProxyAddress(address);
+			const data = await Loader.loadMaker(address);
+			if (data.users.length == 0) {
+				return;
+			}
+			const pot = data.pots[0];
+			const user = data.users[0];
+
+			const index = pot.index;
+			const rawBalance = user.proxy.balance;
+			const rawBalanceNumber = new BigNumber(rawBalance);
+			const balanceNumber = rawBalanceNumber.times(index).div('1e27');
+			const balance = balanceNumber.toString();
+			const rate = 0.02;
+			Vue.set(this.depositBalances.maker, 'dai', balance);
+			Vue.set(this.rates.supply.maker, 'dai', rate);
+		}
 	},
 };
 </script>
