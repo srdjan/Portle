@@ -145,6 +145,9 @@ export default {
 			if (this.platformId == 'fulcrum') {
 				this._loadFulcrumDeposit();
 			}
+			if (this.platformId == 'maker') {
+				this._loadMakerDeposit();
+			}
 		},
 		async _loadCompoundDeposit() {
 			const address = this.account.address.toLowerCase();
@@ -243,6 +246,23 @@ export default {
 				const rate = rateNumber.toString();
 				this.rate = rate;
 			}
+		},
+		async _loadMakerDeposit() {
+			const address = this.account.address.toLowerCase();
+			const data = await Loader.loadMaker(address);
+			if (data.users.length == 0) {
+				return;
+			}
+			const pot = data.pots[0];
+			const user = data.users[0];
+
+			const index = pot.index;
+			const rawBalance = user.proxy.balance;
+			const rawBalanceNumber = new BigNumber(rawBalance);
+			const balanceNumber = rawBalanceNumber.times(index).div('1e27');
+			const balance = balanceNumber.toString();
+			this.balance = balance;
+			this.rate = 0.02;
 		},
 	},
 };
