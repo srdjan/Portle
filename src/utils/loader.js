@@ -182,6 +182,36 @@ class Loader {
 		const data = json.data;
 		return data;
 	}
+
+	static async loadMaker(address) {
+		const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
+		const query = `
+			query {
+				users(where: {
+					id: "${address}"
+				}) {
+					id
+					balance
+					proxy {
+						id
+						balance
+					}
+				}
+				pots {
+					index
+				}
+			}
+		`;
+		const opts = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query })
+		};
+		const response = await fetch(url, opts);
+		const json = await response.json();
+		const data = json.data;
+		return data;
+	}
 }
 
 function getProvider() {
