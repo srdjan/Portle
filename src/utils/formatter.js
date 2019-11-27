@@ -25,11 +25,11 @@ class Formatter {
 		return platform;
 	}
 
-	static formatAmount(amountString) {
+	static formatAmount(amountString, decimals = 2) {
 		const amount = new Number(amountString);
 		const options = {
-			minimumFractionDigits: 2,
-			maximumFractionDigits: 2,
+			minimumFractionDigits: decimals,
+			maximumFractionDigits: decimals,
 		};
 		return amount.toLocaleString(undefined, options);
 	}
