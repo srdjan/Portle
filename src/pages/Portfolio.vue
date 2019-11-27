@@ -27,6 +27,13 @@
 			:prices="prices"
 			:rates="rates"
 		/>
+		<div class="category-header">
+			<h2>Pools</h2>
+		</div>
+		<PoolList
+			:balances="poolBalances"
+			:prices="prices"
+		/>
 	</div>
 </template>
 
@@ -47,12 +54,14 @@ import plusCircleIcon from '../../public/img/plus-circle.svg';
 import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
+import PoolList from '../components/group/PoolList.vue';
 
 export default {
 	components: {
 		TotalBalance,
 		AssetList,
 		DepositList,
+		PoolList,
 	},
 	mixins: [
 		account,
