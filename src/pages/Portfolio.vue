@@ -3,6 +3,7 @@
 		<TotalBalance
 			:assets="assetBalances"
 			:deposits="depositBalances"
+			:pools="poolBalances"
 			:prices="prices"
 		/>
 		<div class="category-header">
