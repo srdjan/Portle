@@ -213,6 +213,36 @@ class Loader {
 		const data = json.data;
 		return data;
 	}
+
+	static async loadUniswap(address) {
+		const url = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
+		const query = `
+			query {
+				userExchangeDatas(where: {
+					userAddress: "${address}",
+					uniTokenBalance_gt: 0
+				}) {
+					uniTokenBalance
+					exchange {
+						id
+						tokenAddress
+						totalUniToken
+						ethBalance
+						tokenBalance
+					}
+				}
+			}
+		`;
+		const opts = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query })
+		};
+		const response = await fetch(url, opts);
+		const json = await response.json();
+		const data = json.data;
+		return data;
+	}
 }
 
 function getProvider() {
