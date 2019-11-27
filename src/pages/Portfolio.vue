@@ -65,6 +65,9 @@ export default {
 				fulcrum: {},
 				maker: {},
 			},
+			poolBalances: {
+				uniswap: {},
+			},
 			prices: {},
 			rates: {
 				supply: {
@@ -98,6 +101,7 @@ export default {
 		this._loadDydx();
 		this._loadFulcrum();
 		this._loadMaker();
+		this._loadUniswap();
 	},
 	methods: {
 		openDepositManagePage() {
@@ -255,7 +259,37 @@ export default {
 			const rate = rateNumber.toString();
 			Vue.set(this.depositBalances.maker, 'dai', balance);
 			Vue.set(this.rates.supply.maker, 'dai', rate);
-		}
+		},
+		async _loadUniswap() {
+			const address = this.account.address.toLowerCase();
+			const data = await Loader.loadUniswap(address);
+			if (data.userExchangeDatas.length == 0) {
+				return;
+			}
+			const pools = data.userExchangeDatas;
+
+			for (const pool of pools) {
+				const addressMap = Converter.reverseMap(addresses);
+				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
+				const assetId = addressMap[assetAddress];
+
+				const uniTokenBalanceNumber = new BigNumber(pool.uniTokenBalance);
+				const totalUniTokenBalanceNumber = new BigNumber(pool.exchange.totalUniToken);
+				const rawEtherBalanceNumber = new BigNumber(pool.exchange.ethBalance);
+				const rawTokenBalanceNumber = new BigNumber(pool.exchange.tokenBalance);
+
+				const etherBalanceNumber = rawEtherBalanceNumber.times(uniTokenBalanceNumber).div(totalUniTokenBalanceNumber);
+				const tokenBalanceNumber = rawTokenBalanceNumber.times(uniTokenBalanceNumber).div(totalUniTokenBalanceNumber);
+				const etherBalance = Converter.toBalance(etherBalanceNumber, 'eth');
+				const tokenBalance = Converter.toBalance(tokenBalanceNumber, assetId);
+
+				const poolBalance = {
+					'ether': etherBalance.toString(),
+					'token': tokenBalance.toString(),
+				};
+				Vue.set(this.poolBalances.uniswap, assetId, poolBalance);
+			}
+		},
 	},
 };
 </script>
