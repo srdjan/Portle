@@ -13,7 +13,7 @@
 				<div>{{ formatPlatform(pool.platformId) }}</div>
 			</div>
 			<div class="details sparse">
-				<div></div>
+				<div />
 				<div>{{ formatMoney(pool.value) }}</div>
 			</div>
 		</div>
