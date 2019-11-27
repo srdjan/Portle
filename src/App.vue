@@ -106,7 +106,7 @@ export default {
 		},
 		resetTooltip() {
 			this.copied = false;
-		}
+		},
 	},
 };
 </script>

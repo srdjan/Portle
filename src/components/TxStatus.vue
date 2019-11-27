@@ -14,7 +14,7 @@ export default {
 	props: {
 		status: {
 			type: String,
-			default: 'none'
+			default: 'none',
 		},
 		onHidden: {
 			type: Function,

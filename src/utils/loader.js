@@ -135,7 +135,7 @@ class Loader {
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ query })
+			body: JSON.stringify({ query }),
 		};
 		const response = await fetch(url, opts);
 		const json = await response.json();
@@ -175,7 +175,7 @@ class Loader {
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ query })
+			body: JSON.stringify({ query }),
 		};
 		const response = await fetch(url, opts);
 		const json = await response.json();
@@ -206,7 +206,7 @@ class Loader {
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ query })
+			body: JSON.stringify({ query }),
 		};
 		const response = await fetch(url, opts);
 		const json = await response.json();
@@ -236,7 +236,7 @@ class Loader {
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ query })
+			body: JSON.stringify({ query }),
 		};
 		const response = await fetch(url, opts);
 		const json = await response.json();

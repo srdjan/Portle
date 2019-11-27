@@ -47,7 +47,7 @@ export default {
 		},
 		estimate: {
 			type: Boolean,
-			default: false
+			default: false,
 		},
 		isMax: {
 			type: Boolean,
