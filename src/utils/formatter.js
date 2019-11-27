@@ -20,6 +20,7 @@ class Formatter {
 			'dydx': 'dYdX',
 			'fulcrum': 'Fulcrum',
 			'maker': 'MakerDAO',
+			'uniswap': 'Uniswap',
 		};
 		const platform = platformMap[platformId];
 		return platform;
