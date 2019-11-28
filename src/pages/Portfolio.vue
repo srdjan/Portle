@@ -292,10 +292,12 @@ export default {
 				const tokenBalanceNumber = rawTokenBalanceNumber.times(uniTokenBalanceNumber).div(totalUniTokenBalanceNumber);
 				const etherBalance = Converter.toBalance(etherBalanceNumber, 'eth');
 				const tokenBalance = Converter.toBalance(tokenBalanceNumber, assetId);
+				const uniTokenBalance = Converter.toBalance(uniTokenBalanceNumber, 'eth');
 
 				const poolBalance = {
 					'ether': etherBalance.toString(),
 					'token': tokenBalance.toString(),
+					'pool': uniTokenBalance.toString(),
 				};
 				Vue.set(this.poolBalances.uniswap, assetId, poolBalance);
 			}
