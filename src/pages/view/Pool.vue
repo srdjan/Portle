@@ -10,10 +10,13 @@
 			{{ formatPlatform(pool.platformId) }}
 		</div>
 		<div id="amount">
+			{{ formatAmount(pool.poolAmount) }} {{ uniTokenAssetId }}
+		</div>
+		<div id="detailedAmount">
 			{{ formatAmount(pool.tokenAmount) }} {{ formatAsset(pool.assetId) }} + {{ formatAmount(pool.etherAmount) }} {{ formatAsset('eth') }}
 		</div>
 		<div id="value">
-			{{ formatMoney(pool.value) }}
+			{{ formatMoney(pool.value) }}  @ {{ formatMoney(pool.price) }}/{{ uniTokenAssetId }}
 		</div>
 	</div>
 </template>
@@ -63,19 +66,27 @@ export default {
 			const tokenAmount = Converter.toAmount(tokenBalance, assetId);
 			const tokenAmountNumber = new BigNumber(tokenAmount);
 			const etherBalance = balance.ether;
-			const etherAmount = Converter.toAmount(etherBalance, assetId);
+			const etherAmount = Converter.toAmount(etherBalance, 'eth');
 			const etherAmountNumber = new BigNumber(etherAmount);
-			const value = (tokenAmountNumber.times(tokenPrice))
-				.plus(etherAmountNumber.times(etherPrice))
-				.toString();
+			const poolBalance = balance.pool;
+			const poolAmount = Converter.toAmount(poolBalance, 'eth');
+			const valueNumber = (tokenAmountNumber.times(tokenPrice))
+				.plus(etherAmountNumber.times(etherPrice));
+			const value = valueNumber.toString();
+			const price = valueNumber.div(poolAmount);
 			const asset = {
 				platformId,
 				assetId,
 				tokenAmount,
 				etherAmount,
+				poolAmount,
 				value,
+				price,
 			};
 			return asset;
+		},
+		uniTokenAssetId() {
+			return `UNI-${this.formatAsset(this.assetId)}`;
 		},
 	},
 	mounted() {
@@ -143,10 +154,12 @@ export default {
 				const tokenBalanceNumber = rawTokenBalanceNumber.times(uniTokenBalanceNumber).div(totalUniTokenBalanceNumber);
 				const etherBalance = Converter.toBalance(etherBalanceNumber, 'eth');
 				const tokenBalance = Converter.toBalance(tokenBalanceNumber, assetId);
+				const uniTokenBalance = Converter.toBalance(uniTokenBalanceNumber, 'eth');
 
 				const poolBalance = {
 					'ether': etherBalance.toString(),
 					'token': tokenBalance.toString(),
+					'pool': uniTokenBalance.toString(),
 				};
 				this.balance = poolBalance;
 			}
@@ -180,7 +193,7 @@ export default {
 }
 
 #value,
-#rate {
+#detailedAmount {
 	font-size: 1.15em;
 }
 
