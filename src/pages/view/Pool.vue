@@ -71,7 +71,7 @@ export default {
 				.plus(etherAmountNumber.times(etherPrice));
 			const value = valueNumber.toString();
 			const price = valueNumber.div(poolAmount);
-			const asset = {
+			const pool = {
 				platformId,
 				assetId,
 				tokenAmount,
@@ -80,7 +80,7 @@ export default {
 				value,
 				price,
 			};
-			return asset;
+			return pool;
 		},
 		uniTokenAssetId() {
 			return `UNI-${this.formatAsset(this.assetId)}`;
