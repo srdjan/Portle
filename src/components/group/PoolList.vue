@@ -7,13 +7,13 @@
 			@click="openPool(pool)"
 		>
 			<div class="balance">
-				{{ formatAmount(pool.tokenAmount) }} {{ formatAsset(pool.assetId) }} + {{ formatAmount(pool.etherAmount) }} {{ formatAsset('eth') }}
+				{{ formatAmount(pool.amount) }} ({{ formatAsset(pool.assetId) }} + {{ formatAsset('eth') }})
 			</div>
 			<div class="platform sparse">
 				<div>{{ formatPlatform(pool.platformId) }}</div>
 			</div>
 			<div class="details sparse">
-				<div />
+				<div>{{ formatMoney(pool.price) }}</div>
 				<div>{{ formatMoney(pool.value) }}</div>
 			</div>
 		</div>
@@ -50,17 +50,20 @@ export default {
 					const tokenAmount = Converter.toAmount(tokenBalance, assetId);
 					const tokenAmountNumber = new BigNumber(tokenAmount);
 					const etherBalance = balance.ether;
-					const etherAmount = Converter.toAmount(etherBalance, assetId);
+					const etherAmount = Converter.toAmount(etherBalance, 'eth');
 					const etherAmountNumber = new BigNumber(etherAmount);
-					const value = (tokenAmountNumber.times(tokenPrice))
-						.plus(etherAmountNumber.times(etherPrice))
-						.toString();
+					const poolBalance = balance.pool;
+					const amount = Converter.toAmount(poolBalance, 'eth');
+					const valueNumber = (tokenAmountNumber.times(tokenPrice))
+						.plus(etherAmountNumber.times(etherPrice));
+					const value = valueNumber.toString();
+					const price = valueNumber.div(amount);
 					const pool = {
-						tokenAmount,
-						etherAmount,
+						amount,
 						etherPrice,
 						assetId,
 						platformId,
+						price,
 						value,
 					};
 					pools.push(pool);
@@ -96,7 +99,7 @@ export default {
 			return Formatter.formatPlatform(platformId);
 		},
 		formatAmount(amountString) {
-			return Formatter.formatAmount(amountString, 0);
+			return Formatter.formatAmount(amountString);
 		},
 		formatMoney(priceString) {
 			return Formatter.formatMoney(priceString);
