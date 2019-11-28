@@ -250,7 +250,6 @@ export default {
 		},
 		async _loadMaker() {
 			const address = this.account.address.toLowerCase();
-			// const proxyAddress = await Loader.getMakerProxyAddress(address);
 			const data = await Loader.loadMaker(address);
 			if (data.users.length == 0) {
 				return;

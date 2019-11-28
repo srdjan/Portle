@@ -59,9 +59,6 @@ export default {
 			if (!tokenPrice) {
 				return;
 			}
-			// const amount = Converter.toAmount(balance, assetId);
-			// const amountNumber = new BigNumber(amount);
-			// const value = amountNumber.times(price).toString();
 			const tokenBalance = balance.token;
 			const tokenAmount = Converter.toAmount(tokenBalance, assetId);
 			const tokenAmountNumber = new BigNumber(tokenAmount);
