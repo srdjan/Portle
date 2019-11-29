@@ -84,7 +84,7 @@ export default {
 		async _loadPrice() {
 			const assets = [ this.assetId ];
 			const prices = await Loader.loadPrice(assets);
-			this.price = prices[0];
+			this.price = prices[this.assetId];
 		},
 		async _loadBalance() {
 			const address = this.account.address;

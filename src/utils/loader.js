@@ -5,17 +5,14 @@ import Converter from './converter.js';
 import tokenOracleAbi from '../data/abi/tokenOracle.json';
 
 import addresses from '../data/addresses.json';
-import coinIds from '../data/coin-ids.json';
 
 class Loader {
 	static async loadPrice(assets) {
-		const assetIds = assets.map((asset) => coinIds[asset]);
-		const assetIdString = assetIds.join('%2C');
-		const url = `https://api.coingecko.com/api/v3/simple/price?ids=${assetIdString}&vs_currencies=usd`;
+		const assetString = assets.join('%2C');
+		const url = `https://api.portle.io/price?assets=${assetString}`;
 		const response = await fetch(url);
 		const prices = await response.json();
-		const usdPrices = assetIds.map((assetId) => prices[assetId].usd);
-		return usdPrices; 
+		return prices; 
 	}
 
 	static async loadBalance(address) {

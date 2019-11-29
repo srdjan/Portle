@@ -123,7 +123,7 @@ export default {
 			const prices = await Loader.loadPrice(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
-				const price = prices[i];
+				const price = prices[assetId];
 				Vue.set(this.prices, assetId, price);
 			}
 			const etherPriceIndex = assets.indexOf('eth');
