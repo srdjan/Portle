@@ -126,8 +126,7 @@ export default {
 				const price = prices[assetId];
 				Vue.set(this.prices, assetId, price);
 			}
-			const etherPriceIndex = assets.indexOf('eth');
-			const etherPrice = prices[etherPriceIndex];
+			const etherPrice = prices['eth'];
 			Vue.set(this.prices, 'weth', etherPrice);
 		},
 		async _loadBalances() {
