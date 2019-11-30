@@ -48,7 +48,7 @@ export default {
 			for (const platformId in this.balances) {
 				const platformBalances = this.balances[platformId];
 				for (const assetId in platformBalances) {
-					const price = this.prices[assetId];
+					const price = this.prices[assetId] || '0';
 					const rate = this.rates.supply[platformId][assetId];
 					const balance = platformBalances[assetId];
 					const amount = Converter.toAmount(balance, assetId);
