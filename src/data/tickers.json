@@ -1,5 +1,4 @@
 {
-	"eth": "ETH",
 	"weth": "WETH",
 	"dai": "DAI",
 	"sai": "SAI",
@@ -60,5 +59,6 @@
 	"ast": "AST",
 	"ampl": "AMPL",
 	"ocean": "OCEAN",
-	"spank": "SPANK"
+	"spank": "SPANK",
+	"eth": "ETH"
 }
