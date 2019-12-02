@@ -154,7 +154,7 @@ export default {
 			return;
 		}
 		this._loadPrices();
-		this._loadBalances();
+		this._loadAssets();
 		this._loadCompound();
 		this._loadDydx();
 		this._loadFulcrum();
@@ -177,7 +177,7 @@ export default {
 			const etherPrice = prices['eth'];
 			Vue.set(this.prices, 'weth', etherPrice);
 		},
-		async _loadBalances() {
+		async _loadAssets() {
 			const address = this.account.address;
 			const balances = await Loader.loadBalance(address);
 			for (const assetId in balances) {
