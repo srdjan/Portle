@@ -348,6 +348,9 @@ export default {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
 				const assetId = addressMap[assetAddress];
+				if (!assetId) {
+					continue;
+				}
 
 				const uniTokenBalanceNumber = new BigNumber(pool.uniTokenBalance);
 				const totalUniTokenBalanceNumber = new BigNumber(pool.exchange.totalUniToken);
