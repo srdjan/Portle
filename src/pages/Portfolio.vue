@@ -148,34 +148,54 @@ export default {
 			return plusCircleIcon;
 		},
 	},
-	mounted() {
+	async mounted() {
 		if (!this.account.address) {
 			this.$router.push('/login');
 			return;
 		}
+		await this._loadBalances();
 		this._loadPrices();
-		this._loadAssets();
-		this._loadCompound();
-		this._loadDydx();
-		this._loadFulcrum();
-		this._loadMaker();
-		this._loadUniswap();
 	},
 	methods: {
 		openDepositManagePage() {
 			const path = '/deposit/manage';
 			this.$router.push(path);
 		},
+		async _loadBalances() {
+			const balancePromises = [
+				this._loadAssets(),
+				this._loadCompound(),
+				this._loadDydx(),
+				this._loadFulcrum(),
+				this._loadMaker(),
+				this._loadUniswap(),
+			];
+			await Promise.all(balancePromises);
+		},
 		async _loadPrices() {
-			const assets = ['dai', 'usdc', 'eth', 'rep', 'ampl'];
+			const assetMap = {};
+			for (const assetId in this.assetBalances) {
+				assetMap[assetId] = true;
+			}
+			for (const platformId in this.depositBalances) {
+				const platformBalance = this.depositBalances[platformId];
+				for (const assetId in platformBalance) {
+					assetMap[assetId] = true;
+				}
+			}
+			for (const platformId in this.poolBalances) {
+				const platformBalance = this.poolBalances[platformId];
+				for (const assetId in platformBalance) {
+					assetMap[assetId] = true;
+				}
+			}
+			const assets = Object.keys(assetMap);
 			const prices = await Loader.loadPrice(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
 				const price = prices[assetId];
 				Vue.set(this.prices, assetId, price);
 			}
-			const etherPrice = prices['eth'];
-			Vue.set(this.prices, 'weth', etherPrice);
 		},
 		async _loadAssets() {
 			const address = this.account.address;
