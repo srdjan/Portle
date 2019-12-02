@@ -6,34 +6,49 @@
 			:pools="poolBalances"
 			:prices="prices"
 		/>
-		<div class="category-header">
-			<h2>Assets</h2>
+		<div
+			v-if="hasAssets"
+			class="category"
+		>
+			<div class="category-header">
+				<h2>Assets</h2>
+			</div>
+			<AssetList
+				:balances="assetBalances"
+				:prices="prices"
+			/>
 		</div>
-		<AssetList
-			:balances="assetBalances"
-			:prices="prices"
-		/>
-		<div class="category-header">
-			<h2>Deposits</h2>
-			<img
-				v-if="account && account.auth"
-				:src="plusCircleIcon"
-				class="icon"
-				@click="openDepositManagePage()"
-			>
+		<div
+			v-if="hasDeposits"
+			class="category"
+		>
+			<div class="category-header">
+				<h2>Deposits</h2>
+				<img
+					v-if="account && account.auth"
+					:src="plusCircleIcon"
+					class="icon"
+					@click="openDepositManagePage()"
+				>
+			</div>
+			<DepositList
+				:balances="depositBalances"
+				:prices="prices"
+				:rates="rates"
+			/>
 		</div>
-		<DepositList
-			:balances="depositBalances"
-			:prices="prices"
-			:rates="rates"
-		/>
-		<div class="category-header">
-			<h2>Pools</h2>
+		<div
+			v-if="hasPools"
+			class="category"
+		>
+			<div class="category-header">
+				<h2>Pools</h2>
+			</div>
+			<PoolList
+				:balances="poolBalances"
+				:prices="prices"
+			/>
 		</div>
-		<PoolList
-			:balances="poolBalances"
-			:prices="prices"
-		/>
 	</div>
 </template>
 
@@ -96,6 +111,39 @@ export default {
 		};
 	},
 	computed: {
+		hasAssets() {
+			for (const assetId in this.assetBalances) {
+				const assetBalance = this.assetBalances[assetId];
+				if (assetBalance != '0') {
+					return true;
+				}
+			}
+			return false;
+		},
+		hasDeposits() {
+			for (const platformId in this.depositBalances) {
+				const platformBalance = this.depositBalances[platformId];
+				for (const assetId in platformBalance) {
+					const depositBalance = platformBalance[assetId];
+					if (depositBalance != '0') {
+						return true;
+					}
+				}
+			}
+			return false;
+		},
+		hasPools() {
+			for (const platformId in this.poolBalances) {
+				const platformBalance = this.poolBalances[platformId];
+				for (const assetId in platformBalance) {
+					const poolBalance = platformBalance[assetId].pool;
+					if (poolBalance != '0') {
+						return true;
+					}
+				}
+			}
+			return false;
+		},
 		plusCircleIcon() {
 			return plusCircleIcon;
 		},
