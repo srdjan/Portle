@@ -223,10 +223,9 @@ export default {
 		},
 		loaded() {
 			const rates = this.rates[this.platformId][this.assetId];
-			const depositBalance = this.depositBalances[this.platformId][this.assetId];
 			const allowance = this.allowances[this.platformId][this.assetId];
 			const balance = this.balances[this.assetId];
-			return rates && depositBalance && allowance && balance;
+			return rates && allowance && balance;
 		},
 		locked() {
 			const requiredAllowance = Converter.toBalance(this.assetAmount, this.assetId);
