@@ -86,7 +86,7 @@ export default {
 					const tokenAmount = Converter.toAmount(tokenBalance, assetId);
 					const tokenAmountNumber = new BigNumber(tokenAmount);
 					const etherBalance = balance.ether;
-					const etherAmount = Converter.toAmount(etherBalance, assetId);
+					const etherAmount = Converter.toAmount(etherBalance, 'eth');
 					const etherAmountNumber = new BigNumber(etherAmount);
 					const value = (tokenAmountNumber.times(tokenPrice))
 						.plus(etherAmountNumber.times(etherPrice));
