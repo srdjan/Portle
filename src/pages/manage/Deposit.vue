@@ -141,7 +141,7 @@ export default {
 	],
 	data() {
 		return {
-			assetId: 'sai',
+			assetId: 'dai',
 			platformId: 'compound',
 			action: 'deposit',
 			assetAmount: '0',
@@ -176,7 +176,7 @@ export default {
 	},
 	computed: {
 		assets() {
-			return [ 'sai', 'usdc', ];
+			return [ 'dai', 'usdc', 'sai', ];
 		},
 		platforms() {
 			return [ 'compound', 'dydx', 'fulcrum', ];
@@ -362,14 +362,14 @@ export default {
 			const address = this.account.address.toLowerCase();
 
 			const allowanceRequests = [{
-				token: addresses['sai'],
-				spender: this.tokenAddresses.compound['sai'],
+				token: addresses['dai'],
+				spender: this.tokenAddresses.compound['dai'],
 			}, {
-				token: addresses['sai'],
+				token: addresses['dai'],
 				spender: dydxAddress,
 			}, {
-				token: addresses['sai'],
-				spender: this.tokenAddresses.fulcrum['sai'],
+				token: addresses['dai'],
+				spender: this.tokenAddresses.fulcrum['dai'],
 			}, {
 				token: addresses['usdc'],
 				spender: this.tokenAddresses.compound['usdc'],
@@ -379,11 +379,22 @@ export default {
 			}, {
 				token: addresses['usdc'],
 				spender: this.tokenAddresses.fulcrum['usdc'],
+			}, {
+				token: addresses['sai'],
+				spender: this.tokenAddresses.compound['sai'],
+			}, {
+				token: addresses['sai'],
+				spender: dydxAddress,
+			}, {
+				token: addresses['sai'],
+				spender: this.tokenAddresses.fulcrum['sai'],
 			}];
 			const balanceRequests = [{
-				token: addresses['sai'],
+				token: addresses['dai'],
 			}, {
 				token: addresses['usdc'],
+			}, {
+				token: addresses['sai'],
 			}];
 
 			const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
@@ -391,15 +402,19 @@ export default {
 			const allowances = response._allowances;
 			const balances = response._balances;
 
-			Vue.set(this.allowances.compound, 'sai', allowances[0].toString());
-			Vue.set(this.allowances.dydx, 'sai', allowances[1].toString());
-			Vue.set(this.allowances.fulcrum, 'sai', allowances[2].toString());
+			Vue.set(this.allowances.compound, 'dai', allowances[0].toString());
+			Vue.set(this.allowances.dydx, 'dai', allowances[1].toString());
+			Vue.set(this.allowances.fulcrum, 'dai', allowances[2].toString());
 			Vue.set(this.allowances.compound, 'usdc', allowances[3].toString());
 			Vue.set(this.allowances.dydx, 'usdc', allowances[4].toString());
 			Vue.set(this.allowances.fulcrum, 'usdc', allowances[5].toString());
+			Vue.set(this.allowances.compound, 'sai', allowances[6].toString());
+			Vue.set(this.allowances.dydx, 'sai', allowances[7].toString());
+			Vue.set(this.allowances.fulcrum, 'sai', allowances[8].toString());
 
-			Vue.set(this.balances, 'sai', balances[0].toString());
+			Vue.set(this.balances, 'dai', balances[0].toString());
 			Vue.set(this.balances, 'usdc', balances[1].toString());
+			Vue.set(this.balances, 'sai', balances[2].toString());
 		},
 		_setDefaultAmount() {
 			this.assetAmount = '0';
@@ -615,6 +630,7 @@ export default {
 				'eth': 0,
 				'sai': 1,
 				'usdc': 2,
+				'dai': 3,
 			};
 			return markets[assetId];
 		},
