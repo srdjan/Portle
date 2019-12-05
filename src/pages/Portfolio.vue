@@ -49,6 +49,19 @@
 				:prices="prices"
 			/>
 		</div>
+		<div
+			v-if="hasSets"
+			class="category"
+		>
+			<div class="category-header">
+				<h2>Sets</h2>
+			</div>
+			<SetList
+				:balances="setBalances"
+				:components="setComponents"
+				:prices="prices"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -70,6 +83,7 @@ import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
 import PoolList from '../components/group/PoolList.vue';
+import SetList from '../components/group/SetList.vue';
 
 export default {
 	components: {
@@ -77,6 +91,7 @@ export default {
 		AssetList,
 		DepositList,
 		PoolList,
+		SetList,
 	},
 	mixins: [
 		account,
@@ -144,6 +159,18 @@ export default {
 				for (const assetId in platformBalance) {
 					const poolBalance = platformBalance[assetId].pool;
 					if (poolBalance != '0') {
+						return true;
+					}
+				}
+			}
+			return false;
+		},
+		hasSets() {
+			for (const platformId in this.setBalances) {
+				const platformBalance = this.setBalances[platformId];
+				for (const assetId in platformBalance) {
+					const setBalance = platformBalance[assetId];
+					if (setBalance != '0') {
 						return true;
 					}
 				}
