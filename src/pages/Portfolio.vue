@@ -93,6 +93,12 @@ export default {
 			poolBalances: {
 				uniswap: {},
 			},
+			setBalances: {
+				tokensets: {},
+			},
+			setComponents: {
+				tokensets: {},
+			},
 			prices: {},
 			rates: {
 				supply: {
@@ -169,6 +175,7 @@ export default {
 				this._loadFulcrum(),
 				this._loadMaker(),
 				this._loadUniswap(),
+				this._loadTokenSets(),
 			];
 			await Promise.all(balancePromises);
 		},
@@ -369,6 +376,41 @@ export default {
 					'pool': uniTokenBalance.toString(),
 				};
 				Vue.set(this.poolBalances.uniswap, assetId, poolBalance);
+			}
+		},
+		async _loadTokenSets() {
+			const address = this.account.address.toLowerCase();
+			const data = await Loader.loadTokenSets(address);
+			if (data.users.length == 0) {
+				return;
+			}
+			const addressMap = Converter.reverseMap(addresses);
+			const sets = data.users[0].balances;
+			for (const set of sets) {
+				const setId = set.set_.set_.symbol.toLowerCase();
+				const setBalance = set.balance;
+				const units = set.set_.set_.units;
+				const unitsNumber = new BigNumber(units);
+				const naturalUnit = set.set_.set_.naturalUnit;
+				const underlyingComponents = set.set_.underlyingSet.components;
+				const underlyingUnits = set.set_.underlyingSet.units;
+				const underlyingNaturalUnit = set.set_.underlyingSet.naturalUnit;
+				const componentCount = underlyingComponents.length;
+				const components = [];
+				for (let i = 0; i < componentCount; i++) {
+					const componentAddress = ethers.utils.getAddress(underlyingComponents[i]);
+					const componentAssetId = addressMap[componentAddress];
+					const componentUnit = underlyingUnits[i];
+					const componentBalance = unitsNumber.times(componentUnit).div(underlyingNaturalUnit).div(naturalUnit).times('1e18');
+					const componentAmount = Converter.toAmount(componentBalance, componentAssetId);
+					const component = {
+						assetId: componentAssetId,
+						amount: componentAmount,
+					};
+					components.push(component);
+				}
+				Vue.set(this.setBalances.tokensets, setId, setBalance);
+				Vue.set(this.setComponents.tokensets, setId, components);
 			}
 		},
 	},
