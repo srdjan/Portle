@@ -196,6 +196,16 @@ export default {
 					assetMap[assetId] = true;
 				}
 			}
+			for (const platformId in this.setComponents) {
+				const platformComponents = this.setComponents[platformId];
+				for (const setId in platformComponents) {
+					const setComponents = platformComponents[setId];
+					for (const setComponent of setComponents) {
+						const assetId = setComponent.assetId;
+						assetMap[assetId] = true;
+					}
+				}
+			}
 			const assets = Object.keys(assetMap);
 			const prices = await Loader.loadPrice(assets);
 			for (let i = 0; i < assets.length; i++) {
