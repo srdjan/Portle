@@ -4,6 +4,7 @@
 			v-for="set in sets"
 			:key="set.setId"
 			class="card"
+			@click="openSet(set)"
 		>
 			<div class="amount">
 				{{ formatAmount(set.amount) }} {{ formatSet(set.setId) }}
@@ -82,6 +83,12 @@ export default {
 		},
 	},
 	methods: {
+		openSet(set) {
+			const setId = set.setId;
+			const platformId = set.platformId;
+			const path = `/set/${platformId}/${setId}`;
+			this.$router.push(path);
+		},
 		formatSet(setId) {
 			return Formatter.formatSet(setId);
 		},
