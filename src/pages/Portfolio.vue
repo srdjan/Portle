@@ -4,6 +4,8 @@
 			:assets="assetBalances"
 			:deposits="depositBalances"
 			:pools="poolBalances"
+			:set-balances="setBalances"
+			:set-components="setComponents"
 			:prices="prices"
 		/>
 		<div
