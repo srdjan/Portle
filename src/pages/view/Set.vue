@@ -14,7 +14,11 @@
 		</div>
 		<div id="underlying">
 			<span>Underlying assets:</span>
-			<span class="component" v-for="component in components">
+			<span
+				v-for="component in components"
+				:key="component.assetId"
+				class="component"
+			>
 				{{ formatAmount(getUnderlyingAmount(component)) }} {{ formatAsset(component.assetId) }}
 			</span>
 		</div>
