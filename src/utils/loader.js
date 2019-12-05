@@ -240,6 +240,42 @@ class Loader {
 		const data = json.data;
 		return data;
 	}
+
+	static async loadTokenSets(address) {
+		const url = 'https://api.thegraph.com/subgraphs/name/destiner/token-sets';
+		const query = `
+			query {
+				users(where: {
+					id: "${address}"
+				}) {
+					balances {
+						balance
+						set_ {
+							set_ {
+								symbol
+								units
+								naturalUnit
+							}
+							underlyingSet {
+								components
+								units
+								naturalUnit
+							}
+						}
+					}
+				}
+			}
+		`;
+		const opts = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query }),
+		};
+		const response = await fetch(url, opts);
+		const json = await response.json();
+		const data = json.data;
+		return data;	
+	}
 }
 
 function getProvider() {
