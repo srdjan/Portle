@@ -260,11 +260,18 @@ export default {
 			const rawRateNumber = parseFloat(rawRate);
 			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
 			const index = pot.index;
-			const rawBalance = user.proxy.balance;
+			const rawBalance = user.balance;
+			const rawChaiBalance = user.chaiBalance;
+			const rawProxyBalance = user.proxy.balance;
 			const rawBalanceNumber = new BigNumber(rawBalance);
-			const balanceNumber = rawBalanceNumber.times(index).div('1e27');
-			const balance = balanceNumber.toString();
-			this.balance = balance;
+			const rawChaiBalanceNumber = new BigNumber(rawChaiBalance);
+			const rawProxyBalanceNumber = new BigNumber(rawProxyBalance);
+			const rawTotalBalanceNumber = rawBalanceNumber
+				.plus(rawChaiBalanceNumber)
+				.plus(rawProxyBalanceNumber);
+			const totalBalanceNumber = rawTotalBalanceNumber.times(index).div('1e27');
+			const totalBalance = totalBalanceNumber.toString();
+			this.balance = totalBalance;
 			this.rate = rateNumber.toString();
 		},
 	},

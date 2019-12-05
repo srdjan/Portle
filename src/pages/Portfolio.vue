@@ -374,12 +374,19 @@ export default {
 			const rawRateNumber = parseFloat(rawRate);
 			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
 			const index = pot.index;
-			const rawBalance = user.proxy.balance;
+			const rawBalance = user.balance;
+			const rawChaiBalance = user.chaiBalance;
+			const rawProxyBalance = user.proxy.balance;
 			const rawBalanceNumber = new BigNumber(rawBalance);
-			const balanceNumber = rawBalanceNumber.times(index).div('1e27');
-			const balance = balanceNumber.toString();
+			const rawChaiBalanceNumber = new BigNumber(rawChaiBalance);
+			const rawProxyBalanceNumber = new BigNumber(rawProxyBalance);
+			const rawTotalBalanceNumber = rawBalanceNumber
+				.plus(rawChaiBalanceNumber)
+				.plus(rawProxyBalanceNumber);
+			const totalBalanceNumber = rawTotalBalanceNumber.times(index).div('1e27');
+			const totalBalance = totalBalanceNumber.toString();
 			const rate = rateNumber.toString();
-			Vue.set(this.depositBalances.maker, 'dai', balance);
+			Vue.set(this.depositBalances.maker, 'dai', totalBalance);
 			Vue.set(this.rates.supply.maker, 'dai', rate);
 		},
 		async _loadUniswap() {

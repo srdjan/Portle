@@ -189,6 +189,7 @@ class Loader {
 				}) {
 					id
 					balance
+					chaiBalance
 					proxy {
 						id
 						balance
