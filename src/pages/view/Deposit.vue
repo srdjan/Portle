@@ -19,7 +19,7 @@
 			{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ formatAsset(deposit.assetId) }}
 		</div>
 		<div
-			v-if="account && account.auth"
+			v-if="account && account.auth && deposit.platformId != 'maker'"
 			id="action-wrapper"
 		>
 			<button
