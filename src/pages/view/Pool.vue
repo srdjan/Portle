@@ -193,8 +193,4 @@ export default {
 #detailedAmount {
 	font-size: 1.15em;
 }
-
-#action-wrapper {
-	margin-top: 3em;
-}
 </style>
