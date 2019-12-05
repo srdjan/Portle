@@ -21,6 +21,7 @@ class Formatter {
 			'fulcrum': 'Fulcrum',
 			'maker': 'Maker DSR',
 			'uniswap': 'Uniswap',
+			'tokensets': 'TokenSets',
 		};
 		const platform = platformMap[platformId];
 		return platform;
