@@ -83,6 +83,30 @@ class Formatter {
 		};
 		return sets[setId];
 	}
+
+	static formatSetName(setId) {
+		const sets = {
+			'btcdai': 'BTC Range Bound High Volatility',
+			'btceth2575': 'ETH BTC 75%/25% Weight',
+			'btceth5050': 'BTC ETH Equal Weight',
+			'btceth7525': 'BTC ETH 75%/25% Weight',
+			'btcminvol': 'BTC Range Bound Min Volatility',
+			'eth12emaco': 'ETH 12 Day EMA Crossover',
+			'eth20smaco': 'ETH 20 Day Moving Average Crossover',
+			'eth26emaco': 'ETH 26 Day EMA Crossover',
+			'eth50smaco': 'ETH 50 Day Moving Average Crossover',
+			'ethbtc26emaco': 'ETH/BTC EMA Ratio Trading',
+			'ethdai': 'ETH Range Bound High Volatility',
+			'ethminvol': 'ETH Range Bound Min Volatility',
+			'ethrsi6040': 'ETH RSI 60/40 Crossover',
+			'ethbtcrsi7030': 'ETH/BTC RSI Ratio Trading',
+			'ieth20smaco': 'Inverse ETH 20 Day MA Crossover',
+			'ieth50smaco': 'Inverse ETH 50 Day MA Crossover',
+			'stbtcdai': 'BTC Range Bound Low Volatility',
+			'stethdai': 'ETH Range Bound Low Volatility',
+		};
+		return sets[setId];
+	}
 }
 
 export default Formatter;
