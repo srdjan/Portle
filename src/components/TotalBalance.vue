@@ -87,7 +87,7 @@ export default {
 				for (const assetId in this.pools[platformId]) {
 					const tokenPrice = this.prices[assetId];
 					const etherPrice = this.prices.eth;
-					if (!tokenPrice) {
+					if (!tokenPrice || !etherPrice) {
 						continue;
 					}
 					const balance = this.pools[platformId][assetId];
