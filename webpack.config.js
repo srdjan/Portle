@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
-const isDev = process.env.DEV;
+const isDev = process.argv.some(v => v.includes('webpack-dev-server'));
 
 module.exports =
 {

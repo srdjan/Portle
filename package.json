@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "serve": "DEV=true webpack-dev-server",
+    "serve": "webpack-dev-server",
     "lint": "eslint \"src/**/*.{js,vue}\""
   },
   "dependencies": {
