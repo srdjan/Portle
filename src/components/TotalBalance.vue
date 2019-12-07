@@ -45,8 +45,7 @@ export default {
 		totalBalance() {
 			const balance = this._assetValue
 				.plus(this._depositValue)
-				.plus(this._poolValue)
-				.plus(this._setValue);
+				.plus(this._poolValue);
 			return balance.toString();
 		},
 		_assetValue() {
