@@ -51,19 +51,6 @@
 				:prices="prices"
 			/>
 		</div>
-		<div
-			v-if="hasSets"
-			class="category"
-		>
-			<div class="category-header">
-				<h2>Sets</h2>
-			</div>
-			<SetList
-				:balances="setBalances"
-				:components="setComponents"
-				:prices="prices"
-			/>
-		</div>
 	</div>
 </template>
 
