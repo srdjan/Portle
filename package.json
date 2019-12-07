@@ -1,14 +1,17 @@
 {
-  "name": "Portle-App",
+  "name": "portle-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Portle app",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Destiner/Portle.git"
+  },
   "scripts": {
+    "build": "webpack",
     "serve": "DEV=true webpack-dev-server",
     "lint": "eslint \"src/**/*.{js,vue}\""
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.6.3",
     "bignumber.js": "^9.0.0",
