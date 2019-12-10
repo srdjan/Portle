@@ -483,8 +483,11 @@ export default {
 		async _withdrawDydx() {
 			const account = await this._unlockAccount();
 			const marketId = this._getDydxMarket(this.assetId);
-			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
+			const index = this.indices.dydx[this.assetId];
 			const withdrawBalance = Converter.toBalance(this.assetAmount, this.assetId);
+			const withdrawBalanceNumber = new BigNumber(withdrawBalance);
+			const withdrawParBalanceNumber = withdrawBalanceNumber.times('1e18').div(index);
+			const withdrawParBalance = withdrawParBalanceNumber.toFixed(0);
 			const accounts = [{
 				owner: account,
 				number: 0,
@@ -494,9 +497,9 @@ export default {
 				accountId: 0,
 				amount: {
 					sign: false,
-					denomination: 0,
+					denomination: 1,
 					ref: 0,
-					value: withdrawBalance,
+					value: withdrawParBalance,
 				},
 				primaryMarketId: marketId,
 				secondaryMarketId: 0,
@@ -504,6 +507,7 @@ export default {
 				otherAccountId: 0,
 				data: '0x',
 			}];
+			const dydx = new ethers.Contract(dydxAddress, dydxAbi, signer);
 			const txPromise = dydx.operate(accounts, actions);
 			await this._sendTx(provider, txPromise);
 		},
