@@ -56,7 +56,7 @@
 			class="category"
 		>
 			<div class="category-header">
-				<h2>Sets</h2>
+				<h2>Investments</h2>
 			</div>
 			<SetList
 				:balances="setBalances"
