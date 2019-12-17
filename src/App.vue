@@ -387,4 +387,12 @@ h1#title {
 	visibility: visible;
 	opacity: 1;
 }
+
+/* Mobile */
+
+@media all and (max-width: 767px) {
+	#title {
+		display: none;
+	}
+}
 </style>
