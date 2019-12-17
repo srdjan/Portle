@@ -1,27 +1,21 @@
 <template>
 	<div id="list">
-		<div
+		<Card
 			v-for="asset in assets"
 			:key="asset.assetId"
-			class="card"
-			@click="openAsset(asset)"
-		>
-			<div class="amount">
-				{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}
-			</div>
-			<div class="description">
-				{{ asset.name }}
-			</div>
-			<div class="price-value sparse">
-				<div>{{ formatMoney(asset.price) }}</div>
-				<div>{{ formatMoney(asset.value) }}</div>
-			</div>
-		</div>
+			:amount="asset.amount"
+			:ticker="formatAsset(asset.assetId)"
+			:title="asset.name"
+			:price="asset.price"
+			@click.native="openAsset(asset)"
+		/>
 	</div>
 </template>
 
 <script>
 import BigNumber from 'bignumber.js';
+
+import Card from '../Card.vue';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
@@ -38,6 +32,9 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+	},
+	components: {
+		Card,
 	},
 	computed: {
 		assets() {
@@ -83,12 +80,6 @@ export default {
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
-		formatAmount(amountString) {
-			return Formatter.formatAmount(amountString);
-		},
-		formatMoney(priceString) {
-			return Formatter.formatMoney(priceString);
-		},
 	},
 };
 </script>
@@ -97,44 +88,5 @@ export default {
 #list {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.card {
-	width: 10em;
-	height: 4.5em;
-	margin: 0.5em;
-	padding: 0.75em 1em;
-	background: white;
-	border-radius: 8px;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;
-	cursor: pointer;
-}
-
-.card:hover {
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-}
-
-.amount {
-	font-size: 1.25em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.description {
-	margin-top: 0.25em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.description,
-.price-value {
-	color: grey;
-}
-
-.sparse {
-	display: flex;
-	justify-content: space-between;
 }
 </style>

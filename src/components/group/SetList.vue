@@ -1,27 +1,21 @@
 <template>
 	<div id="list">
-		<div
+		<Card
 			v-for="set in sets"
 			:key="set.setId"
-			class="card"
-			@click="openSet(set)"
-		>
-			<div class="amount">
-				{{ formatAmount(set.amount) }} {{ formatSet(set.setId) }}
-			</div>
-			<div class="platform">
-				{{ formatPlatform(set.platformId) }}
-			</div>
-			<div class="price-value sparse">
-				<div>{{ formatMoney(set.price) }}</div>
-				<div>{{ formatMoney(set.value) }}</div>
-			</div>
-		</div>
+			:amount="set.amount"
+			:ticker="formatSet(set.setId)"
+			:title="formatPlatform(set.platformId)"
+			:price="set.price"
+			@click.native="openSet(set)"
+		/>
 	</div>
 </template>
 
 <script>
 import BigNumber from 'bignumber.js';
+
+import Card from '../Card.vue';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
@@ -40,6 +34,9 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+	},
+	components: {
+		Card,
 	},
 	computed: {
 		sets() {
@@ -92,14 +89,8 @@ export default {
 		formatSet(setId) {
 			return Formatter.formatSet(setId);
 		},
-		formatAmount(amountString) {
-			return Formatter.formatAmount(amountString);
-		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);
-		},
-		formatMoney(priceString) {
-			return Formatter.formatMoney(priceString);
 		},
 		_getPrice(components) {
 			let price = new BigNumber(0);
@@ -113,7 +104,7 @@ export default {
 				const componentPrice = amountNumber.times(assetPrice);
 				price = price.plus(componentPrice);
 			}
-			return price;
+			return price.toNumber();
 		}
 	},
 };
@@ -123,44 +114,5 @@ export default {
 #list {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.card {
-	width: 10em;
-	height: 4.5em;
-	margin: 0.5em;
-	padding: 0.75em 1em;
-	background: white;
-	border-radius: 8px;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;
-	cursor: pointer;
-}
-
-.card:hover {
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-}
-
-.amount {
-	font-size: 1.25em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.platform {
-	margin-top: 0.25em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.platform,
-.price-value {
-	color: grey;
-}
-
-.sparse {
-	display: flex;
-	justify-content: space-between;
 }
 </style>

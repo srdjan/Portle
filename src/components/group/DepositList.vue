@@ -1,28 +1,22 @@
 <template>
 	<div id="list">
-		<div
+		<Card
 			v-for="deposit in deposits"
 			:key="deposit.platformId + '-' + deposit.assetId"
-			class="card"
-			@click="openDeposit(deposit)"
-		>
-			<div class="balance">
-				{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}
-			</div>
-			<div class="platform sparse">
-				<div>{{ formatPlatform(deposit.platformId) }}</div>
-				<div>{{ formatRate(deposit.rate) }}</div>
-			</div>
-			<div class="details sparse">
-				<div>{{ formatMoney(deposit.price) }}</div>
-				<div>{{ formatMoney(deposit.value) }}</div>
-			</div>
-		</div>
+			:amount="deposit.amount"
+			:ticker="formatAsset(deposit.assetId)"
+			:title="formatPlatform(deposit.platformId)"
+			:rate="deposit.rate"
+			:price="deposit.price"
+			@click.native="openDeposit(deposit)"
+		/>
 	</div>
 </template>
 
 <script>
 import BigNumber from 'bignumber.js';
+
+import Card from '../Card.vue';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
@@ -41,6 +35,9 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+	},
+	components: {
+		Card,
 	},
 	computed: {
 		deposits() {
@@ -94,15 +91,6 @@ export default {
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);
 		},
-		formatAmount(amountString) {
-			return Formatter.formatAmount(amountString);
-		},
-		formatRate(rateString) {
-			return Formatter.formatRate(rateString);
-		},
-		formatMoney(priceString) {
-			return Formatter.formatMoney(priceString);
-		},
 	},
 };
 </script>
@@ -111,44 +99,5 @@ export default {
 #list {
 	display: flex;
 	flex-wrap: wrap;
-}
-
-.card {
-	width: 10em;
-	height: 4.5em;
-	margin: 0.5em;
-	padding: 0.75em 1em;
-	background: white;
-	border-radius: 8px;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;
-	cursor: pointer;
-}
-
-.card:hover {
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
-}
-
-.balance {
-	font-size: 1.25em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.platform {
-	margin-top: 0.25em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
-.platform,
-.details {
-	color: grey;
-}
-
-.sparse {
-	display: flex;
-	justify-content: space-between;
 }
 </style>
