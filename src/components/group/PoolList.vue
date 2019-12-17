@@ -1,14 +1,27 @@
 <template>
-	<div id="list">
-		<Card
-			v-for="pool in pools"
-			:key="pool.platformId + '-' + pool.assetId"
-			:amount="pool.amount"
-			:ticker="formatTitle(pool.assetId)"
-			:title="formatPlatform(pool.platformId)"
-			:price="pool.price"
-			@click.native="openPool(pool)"
-		/>
+	<div>
+		<div id="list">
+			<Card
+				v-for="pool in pools"
+				:key="pool.platformId + '-' + pool.assetId"
+				:amount="pool.amount"
+				:ticker="formatTitle(pool.assetId)"
+				:title="formatPlatform(pool.platformId)"
+				:price="pool.price"
+				@click.native="openPool(pool)"
+			/>
+		</div>
+		<div id="table">
+			<Row
+				v-for="pool in pools"
+				:key="pool.platformId + '-' + pool.assetId"
+				:amount="pool.amount"
+				:ticker="formatTitle(pool.assetId)"
+				:title="formatPlatform(pool.platformId)"
+				:price="pool.price"
+				@click.native="openPool(pool)"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -16,6 +29,7 @@
 import BigNumber from 'bignumber.js';
 
 import Card from '../Card.vue';
+import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
@@ -33,6 +47,7 @@ export default {
 	},
 	components: {
 		Card,
+		Row,
 	},
 	computed: {
 		pools() {
@@ -106,5 +121,19 @@ export default {
 #list {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+#table {
+	display: none;
+}
+
+@media (max-width: 767px) {
+	#list {
+		display: none;
+	}
+
+	#table {
+		display: initial;
+	}
 }
 </style>

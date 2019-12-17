@@ -1,14 +1,27 @@
 <template>
-	<div id="list">
-		<Card
-			v-for="set in sets"
-			:key="set.setId"
-			:amount="set.amount"
-			:ticker="formatSet(set.setId)"
-			:title="formatPlatform(set.platformId)"
-			:price="set.price"
-			@click.native="openSet(set)"
-		/>
+	<div>
+		<div id="list">
+			<Card
+				v-for="set in sets"
+				:key="set.setId"
+				:amount="set.amount"
+				:ticker="formatSet(set.setId)"
+				:title="formatPlatform(set.platformId)"
+				:price="set.price"
+				@click.native="openSet(set)"
+			/>
+		</div>
+		<div id="table">
+			<Row
+				v-for="set in sets"
+				:key="set.setId"
+				:amount="set.amount"
+				:ticker="formatSet(set.setId)"
+				:title="formatPlatform(set.platformId)"
+				:price="set.price"
+				@click.native="openSet(set)"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -16,6 +29,7 @@
 import BigNumber from 'bignumber.js';
 
 import Card from '../Card.vue';
+import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
@@ -37,6 +51,7 @@ export default {
 	},
 	components: {
 		Card,
+		Row,
 	},
 	computed: {
 		sets() {
@@ -114,5 +129,19 @@ export default {
 #list {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+#table {
+	display: none;
+}
+
+@media (max-width: 767px) {
+	#list {
+		display: none;
+	}
+
+	#table {
+		display: initial;
+	}
 }
 </style>

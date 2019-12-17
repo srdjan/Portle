@@ -1,14 +1,27 @@
 <template>
-	<div id="list">
-		<Card
-			v-for="asset in assets"
-			:key="asset.assetId"
-			:amount="asset.amount"
-			:ticker="formatAsset(asset.assetId)"
-			:title="asset.name"
-			:price="asset.price"
-			@click.native="openAsset(asset)"
-		/>
+	<div>
+		<div id="list">
+			<Card
+				v-for="asset in assets"
+				:key="asset.assetId"
+				:amount="asset.amount"
+				:ticker="formatAsset(asset.assetId)"
+				:title="asset.name"
+				:price="asset.price"
+				@click.native="openAsset(asset)"
+			/>
+		</div>
+		<div id="table">
+			<Row
+				v-for="asset in assets"
+				:key="asset.assetId"
+				:amount="asset.amount"
+				:ticker="formatAsset(asset.assetId)"
+				:title="asset.name"
+				:price="asset.price"
+				@click.native="openAsset(asset)"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -16,6 +29,7 @@
 import BigNumber from 'bignumber.js';
 
 import Card from '../Card.vue';
+import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
@@ -35,6 +49,7 @@ export default {
 	},
 	components: {
 		Card,
+		Row,
 	},
 	computed: {
 		assets() {
@@ -88,5 +103,19 @@ export default {
 #list {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+#table {
+	display: none;
+}
+
+@media (max-width: 767px) {
+	#list {
+		display: none;
+	}
+
+	#table {
+		display: initial;
+	}
 }
 </style>
