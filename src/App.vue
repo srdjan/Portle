@@ -123,6 +123,7 @@ body {
 }
 
 header {
+	height: 64px;
 	padding: 0px 16px 0px 16px;
 	display: flex;
 	justify-content: space-between;
