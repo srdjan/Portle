@@ -116,6 +116,11 @@ button#main {
 	margin-top: 0.5em;
 }
 
+.input-group {
+	padding: 0.5em 0;
+	background: white;
+}
+
 #watch {
 	margin-left: 1em;
 	padding: 0.5em 1.25em 0.5em 1.25em;
