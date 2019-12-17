@@ -118,4 +118,17 @@ export default {
 .max-label-active {
 	color: #282821;
 }
+
+@media all and (max-width: 767px) {
+	.label-right {
+		margin-left: 0.5em;
+	}
+
+	.max-label {
+		margin: 0 0.5em;
+		font-size: 0.75em;
+		cursor: pointer;
+		color: grey;
+	}
+}
 </style>
