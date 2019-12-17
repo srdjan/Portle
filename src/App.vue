@@ -344,6 +344,38 @@ input.invalid {
 	opacity: 0;
 	cursor: inherit;
 }
+
+/* Mobile */
+
+@media all and (max-width: 1399px) {
+	aside {
+		flex: 1;
+	}
+
+	section {
+		flex: 3;
+	}
+}
+
+@media all and (max-width: 1023px) {
+	aside {
+		flex: 1;
+	}
+
+	section {
+		flex: 4;
+	}
+}
+
+@media all and (max-width: 767px) {
+	aside {
+		flex: 1;
+	}
+
+	section {
+		flex: 8;
+	}
+}
 </style>
 
 <style scoped>
