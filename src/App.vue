@@ -375,6 +375,16 @@ input.invalid {
 	section {
 		flex: 8;
 	}
+
+	.asset-selector {
+		margin: 0.5em 0.25em 0.5em 0;
+		padding: 0.25em 0.5em;
+	}
+
+	.app-selector {
+		margin: 0.5em 0.25em 0.5em 0;
+		padding: 0.25em 0.25em;
+	}
 }
 </style>
 
