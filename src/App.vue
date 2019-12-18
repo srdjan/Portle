@@ -321,6 +321,10 @@ input.invalid {
 	section {
 		flex: 4;
 	}
+
+	input.address {
+		width: 320px;
+	}
 }
 
 @media all and (max-width: 767px) {
@@ -334,6 +338,10 @@ input.invalid {
 
 	input.amount {
 		width: 140px;
+	}
+
+	input.address {
+		width: 180px;
 	}
 
 	.asset-selector {

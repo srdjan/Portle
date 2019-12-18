@@ -139,4 +139,12 @@ button#main {
 #divider {
 	margin-top: 1em;
 }
+
+/* Mobile */
+
+@media all and (max-width: 767px) {
+	#watch {
+		margin-left: 0;
+	}
+}
 </style>
