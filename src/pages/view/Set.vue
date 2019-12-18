@@ -6,8 +6,11 @@
 		<div id="type">
 			Investment
 		</div>
+		<div id="platform">
+			{{ formatPlatform(set.platformId) }}
+		</div>
 		<div id="name">
-			{{ formatPlatform(set.platformId) }}: {{ formatSetName(set.setId) }}
+			{{ formatSetName(set.setId) }}
 		</div>
 		<div id="amount">
 			{{ formatAmount(set.amount) }} {{ formatSet(set.setId) }}
@@ -203,8 +206,12 @@ export default {
 	border: 1px solid grey;
 }
 
-#name {
+#platform {
 	margin-top: 2em;
+}
+
+#name {
+	margin-top: 1em;
 }
 
 #amount {
