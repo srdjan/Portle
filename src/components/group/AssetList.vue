@@ -37,6 +37,10 @@ import Formatter from '../../utils/formatter.js';
 import tokens from '../../data/tokens.json';
 
 export default {
+	components: {
+		Card,
+		Row,
+	},
 	props: {
 		balances: {
 			type: Object,
@@ -46,10 +50,6 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-	},
-	components: {
-		Card,
-		Row,
 	},
 	computed: {
 		assets() {

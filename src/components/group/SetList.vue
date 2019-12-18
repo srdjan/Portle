@@ -35,6 +35,10 @@ import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
 export default {
+	components: {
+		Card,
+		Row,
+	},
 	props: {
 		balances: {
 			type: Object,
@@ -48,10 +52,6 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-	},
-	components: {
-		Card,
-		Row,
 	},
 	computed: {
 		sets() {
