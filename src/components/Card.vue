@@ -5,7 +5,9 @@
 		</div>
 		<div class="title sparse">
 			<div>{{ title }}</div>
-			<div v-if="rate">{{ formatRate(rate) }}</div>
+			<div v-if="rate">
+				{{ formatRate(rate) }}
+			</div>
 		</div>
 		<div class="price-value sparse">
 			<div>{{ formatMoney(price) }}</div>
