@@ -4,7 +4,7 @@
 		id="view"
 	>
 		<div id="type">
-			Set
+			Investment
 		</div>
 		<div id="name">
 			{{ formatPlatform(set.platformId) }}: {{ formatSetName(set.setId) }}
