@@ -195,7 +195,7 @@ class Loader {
 						balance
 					}
 				}
-				pots {
+				maker(id: 0) {
 					index
 					rate
 				}
