@@ -6,18 +6,19 @@
 		<div>
 			<span class="input-group">
 				<input
-					id="address"
-					v-model="address"
-					:class="{ invalid: !isAddressValid }"
+					id="input"
+					v-model="input"
+					:class="{ invalid: !isInputValid }"
 					class="address"
-					placeholder="Enter address"
+					placeholder="Enter address or ENS"
 				>
 				<span
 					id="watch"
-					:class="{ disabled: isWatchButtonDisabled }"
+					:class="{ disabled: isWatchButtonDisabled || loading }"
 					@click="watch()"
 				>
-					Watch
+					<span v-if="loading">Loading…</span>
+					<span v-else>Watch</span>
 				</span>
 			</span>
 		</div>
@@ -37,28 +38,30 @@
 </template>
 
 <script>
+import { ethers } from 'ethers';
+
 export default {
 	data() {
 		return {
-			address: '',
+			input: '',
+			loading: false,
 		};
 	},
 	computed: {
-		isAddressValid() {
-			if (this.address.length == 0) {
+		isInputValid() {
+			if (this._isAddressValid(this.input)) {
 				return true;
 			}
-			if (this.address.length != 42) {
-				return false;
+			if (this._isEnsValid(this.input)) {
+				return true;
 			}
-			const addressRegex = /0x[0-9A-Fa-f]{40}/g;
-			return addressRegex.test(this.address);
+			return false;
 		},
 		isWatchButtonDisabled() {
-			if (this.address.length == 0) {
+			if (this.input.length == 0) {
 				return true;
 			}
-			return !this.isAddressValid;
+			return !this.isInputValid;
 		},
 		isWeb3Available() {
 			const web3 = window.ethereum || window.web3;
@@ -80,11 +83,50 @@ export default {
 			localStorage.setItem('auth', true);
 			this.$router.push('/');
 		},
-		watch() {
-			const address = this.address;
+		async watch() {
+			const addressRegex = /0x[0-9A-Fa-f]{40}/g;
+			const address = addressRegex.test(this.input)
+				? this.input
+				: await this._resolveEns(this.input);
+			if (!address) {
+				return;
+			}
 			localStorage.setItem('address', address);
 			localStorage.setItem('auth', false);
 			this.$router.push('/');
+		},
+		_isAddressValid(address) {
+			if (address.length == 0) {
+				return true;
+			}
+			if (address.length != 42) {
+				return false;
+			}
+			const addressRegex = /0x[0-9A-Fa-f]{40}/g;
+			return addressRegex.test(address);
+		},
+		_isEnsValid(ens) {
+			const tokens = ens.split('.');
+			for (const token of tokens) {
+				const tokenRegex = /[0-9A-Za-z]+/g;
+				if (!tokenRegex.test(token)) {
+					return false;
+				}
+			}
+			const root = tokens[tokens.length - 1];
+			const validRoots = ['eth', 'xyz'];
+			if (!validRoots.includes(root)) {
+				return false;
+			}
+			return true;
+		},
+		async _resolveEns(ens) {
+			this.loading = true;
+			const infuraKey = '93e3393c76ed4e1f940d0266e2fdbda2';
+			const provider = new ethers.providers.InfuraProvider('mainnet', infuraKey);
+			const address = await provider.resolveName(ens);
+			this.loading = false;
+			return address;
 		},
 	},
 };
@@ -108,7 +150,7 @@ div#placeholder {
 	height: 200px;
 }
 
-input#address {
+input#input {
 	margin-left: 0.5em;
 }
 
