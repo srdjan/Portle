@@ -10,7 +10,7 @@
 					v-model="input"
 					:class="{ invalid: !isInputValid }"
 					class="address"
-					placeholder="Enter address or ENS"
+					placeholder="Address or ENS"
 				>
 				<span
 					id="watch"
