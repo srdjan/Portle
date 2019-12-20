@@ -118,6 +118,7 @@ export default {
 #amount {
 	font-size: 3em;
 	font-weight: bold;
+	text-align: center;
 }
 
 #value {
