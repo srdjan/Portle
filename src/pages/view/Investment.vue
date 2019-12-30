@@ -13,7 +13,7 @@
 			{{ formatInvestmentName(investment) }}
 		</div>
 		<div id="amount">
-			{{ formatAmount(investment.amount) }} {{ formatInvestment(investment) }}
+			{{ formatAmount(investment.amount) }} {{ formatInvestmentId(investment) }}
 		</div>
 		<div id="underlying">
 			<span>Underlying assets:</span>
@@ -26,7 +26,7 @@
 			</span>
 		</div>
 		<div id="value">
-			{{ formatMoney(investment.value) }}  @ {{ formatMoney(investment.price) }}/{{ formatInvestment(investment) }}
+			{{ formatMoney(investment.value) }}  @ {{ formatMoney(investment.price) }}/{{ formatInvestmentId(investment) }}
 		</div>
 	</div>
 </template>
@@ -101,9 +101,12 @@ export default {
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
-		formatInvestment(investment) {
+		formatInvestmentId(investment) {
 			if (investment.platformId == 'tokensets') {
 				return Formatter.formatSet(investment.investmentId);
+			}
+			if (investment.platformId == 'melon') {
+				return 'sh.';
 			}
 			return investment.investmentId;
 		},
@@ -125,6 +128,9 @@ export default {
 		async _loadInvestment() {
 			if (this.platformId == 'tokensets') {
 				await this._loadTokenSet();
+			}
+			if (this.platformId == 'melon') {
+				await this._loadMelon();
 			}
 		},
 		async _loadPrices() {
@@ -177,6 +183,43 @@ export default {
 				}
 				this.balance = balance;
 				this.components = components;
+			}
+		},
+		async _loadMelon() {
+			const address = this.account.address.toLowerCase();
+			const data = await Loader.loadMelon(address);
+			if (!data.investor) {
+				return;
+			}
+			const addressMap = Converter.reverseMap(addresses);
+			const investments = data.investor.investments;
+			for (const investment of investments) {
+				const investmentId = investment.fund.name;
+				if (this.investmentId != investmentId) {
+					continue;
+				}
+				const balance = investment.shares;
+				const totalShares = investment.fund.totalSupply;
+				const currentHoldings = investment.fund.holdingsHistory
+					.filter((holding, index, array) => holding.timestamp === array[0].timestamp && !new BigNumber(holding.amount).isZero());
+				const holdingCount = currentHoldings.length;
+				const components = [];
+				for (let i = 0; i < holdingCount; i++) {
+					const holding = currentHoldings[i];
+					const holdingAmount = holding.amount;
+					const holdingAmountNumber = new BigNumber(holding.amount);
+					const holdingAsset = holding.asset.id;
+					const componentAddress = ethers.utils.getAddress(holdingAsset);
+					const componentAssetId = addressMap[componentAddress];
+					const componentAmount = holdingAmountNumber.div(totalShares).toString();
+					const component = {
+						assetId: componentAssetId,
+						amount: componentAmount,
+					};
+					components.push(component);
+				}
+				this.balance = balance;
+				this.components = components
 			}
 		},
 		_getPrice(components) {

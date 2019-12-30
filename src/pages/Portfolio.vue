@@ -112,9 +112,11 @@ export default {
 			},
 			investmentBalances: {
 				tokensets: {},
+				melon: {},
 			},
 			investmentComponents: {
 				tokensets: {},
+				melon: {},
 			},
 			prices: {},
 			rates: {
@@ -205,6 +207,7 @@ export default {
 				this._loadMaker(),
 				this._loadUniswap(),
 				this._loadTokenSets(),
+				this._loadMelon(),
 			];
 			await Promise.all(balancePromises);
 		},
@@ -457,6 +460,43 @@ export default {
 				}
 				Vue.set(this.investmentBalances.tokensets, investmentId, balance);
 				Vue.set(this.investmentComponents.tokensets, investmentId, components);
+			}
+		},
+		async _loadMelon() {
+			const address = this.account.address.toLowerCase();
+			const data = await Loader.loadMelon(address);
+			if (!data.investor) {
+				return;
+			}
+			const addressMap = Converter.reverseMap(addresses);
+			const investments = data.investor.investments;
+			for (const investment of investments) {
+				const investmentId = investment.fund.name;
+				const balance = investment.shares;
+				const totalShares = investment.fund.totalSupply;
+				if (totalShares == 0) {
+					continue;
+				}
+				const currentHoldings = investment.fund.holdingsHistory
+					.filter((holding, index, array) => holding.timestamp === array[0].timestamp && !new BigNumber(holding.amount).isZero());
+				const holdingCount = currentHoldings.length;
+				const components = [];
+				for (let i = 0; i < holdingCount; i++) {
+					const holding = currentHoldings[i];
+					const holdingAmount = holding.amount;
+					const holdingAmountNumber = new BigNumber(holding.amount);
+					const holdingAsset = holding.asset.id;
+					const componentAddress = ethers.utils.getAddress(holdingAsset);
+					const componentAssetId = addressMap[componentAddress];
+					const componentAmount = holdingAmountNumber.div(totalShares).toString();
+					const component = {
+						assetId: componentAssetId,
+						amount: componentAmount,
+					};
+					components.push(component);
+				}
+				Vue.set(this.investmentBalances.melon, investmentId, balance);
+				Vue.set(this.investmentComponents.melon, investmentId, components);
 			}
 		},
 	},
