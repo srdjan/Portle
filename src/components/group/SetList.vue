@@ -98,7 +98,7 @@ export default {
 		openSet(set) {
 			const setId = set.setId;
 			const platformId = set.platformId;
-			const path = `/set/${platformId}/${setId}`;
+			const path = `/investment/${platformId}/${setId}`;
 			this.$router.push(path);
 		},
 		formatSet(setId) {

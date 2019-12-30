@@ -22,7 +22,7 @@ const routes = [
 	{ path: '/asset/:assetId', component: Asset },
 	{ path: '/deposit/:platformId/:assetId', component: Deposit },
 	{ path: '/pool/:platformId/:assetId', component: Pool },
-	{ path: '/set/:platformId/:setId', component: Set },
+	{ path: '/investment/:platformId/:setId', component: Set },
 
 	{ path: '/deposit/manage', component: ManageDeposit },
 ];
