@@ -277,6 +277,43 @@ class Loader {
 		const data = json.data;
 		return data;	
 	}
+
+	static async loadMelon(address) {
+		const url = 'https://api.thegraph.com/subgraphs/name/melonproject/melon';
+		const query = `
+			query {
+				investor(id: "${address}") {
+					id
+					investments {
+						shares
+						fund {
+							name
+							totalSupply
+							holdingsHistory(orderBy: timestamp, orderDirection: desc) {
+								timestamp
+								amount
+								assetGav
+								asset {
+									id
+									symbol
+									decimals
+								}
+							}
+						}
+					}
+				}
+			}
+		`;
+		const opts = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ query }),
+		};
+		const response = await fetch(url, opts);
+		const json = await response.json();
+		const data = json.data;
+		return data;	
+	}
 }
 
 function getProvider() {
