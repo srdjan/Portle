@@ -58,7 +58,7 @@
 			<div class="category-header">
 				<h2>Investments</h2>
 			</div>
-			<SetList
+			<InvestmentList
 				:balances="setBalances"
 				:components="setComponents"
 				:prices="prices"
@@ -85,7 +85,7 @@ import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
 import PoolList from '../components/group/PoolList.vue';
-import SetList from '../components/group/SetList.vue';
+import InvestmentList from '../components/group/InvestmentList.vue';
 
 export default {
 	components: {
@@ -93,7 +93,7 @@ export default {
 		AssetList,
 		DepositList,
 		PoolList,
-		SetList,
+		InvestmentList,
 	},
 	mixins: [
 		account,
