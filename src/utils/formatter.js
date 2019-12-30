@@ -22,6 +22,7 @@ class Formatter {
 			'maker': 'Maker DSR',
 			'uniswap': 'Uniswap',
 			'tokensets': 'TokenSets',
+			'melon': 'Melon',
 		};
 		const platform = platformMap[platformId];
 		return platform;
