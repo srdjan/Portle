@@ -1,19 +1,19 @@
 <template>
 	<div
-		v-if="set"
+		v-if="investment"
 		id="view"
 	>
 		<div id="type">
 			Investment
 		</div>
 		<div id="platform">
-			{{ formatPlatform(set.platformId) }}
+			{{ formatPlatform(investment.platformId) }}
 		</div>
 		<div id="name">
-			{{ formatSetName(set.setId) }}
+			{{ formatInvestmentName(investment) }}
 		</div>
 		<div id="amount">
-			{{ formatAmount(set.amount) }} {{ formatSet(set.setId) }}
+			{{ formatAmount(investment.amount) }} {{ formatInvestment(investment) }}
 		</div>
 		<div id="underlying">
 			<span>Underlying assets:</span>
@@ -26,7 +26,7 @@
 			</span>
 		</div>
 		<div id="value">
-			{{ formatMoney(set.value) }}  @ {{ formatMoney(set.price) }}/{{ formatSet(set.setId) }}
+			{{ formatMoney(investment.value) }}  @ {{ formatMoney(investment.price) }}/{{ formatInvestment(investment) }}
 		</div>
 	</div>
 </template>
@@ -51,14 +51,14 @@ export default {
 	data() {
 		return {
 			platformId: '',
-			setId: '',
+			investmentId: '',
 			balance: {},
 			components: {},
 			prices: {},
 		};
 	},
 	computed: {
-		set() {
+		investment() {
 			if (Object.keys(this.balance).length == 0) {
 				return;
 			}
@@ -66,19 +66,19 @@ export default {
 			if (!price) {
 				return;
 			}
-			const setId = this.setId;
+			const investmentId = this.investmentId;
 			const platformId = this.platformId;
 			const amount = Converter.toAmount(this.balance, 'eth');
 			const amountNumber = new BigNumber(amount);
 			const value = amountNumber.times(price).toString();
-			const set = {
-				setId,
+			const investment = {
+				investmentId,
 				platformId,
 				amount,
 				price,
 				value,
 			};
-			return set;
+			return investment;
 		},
 	},
 	async mounted() {
@@ -87,25 +87,31 @@ export default {
 			return;
 		}
 		this.platformId = this.$route.params.platformId;
-		this.setId = this.$route.params.setId;
-		await this._loadSet();
+		this.investmentId = this.$route.params.investmentId;
+		await this._loadInvestment();
 		this._loadPrices();
 	},
 	methods: {
 		getUnderlyingAmount(component) {
 			const componentAmount = component.amount;
 			const componentAmountNumber = new BigNumber(componentAmount);
-			const setAmount = this.set.amount;
-			return componentAmountNumber.times(setAmount);
+			const investmentAmount = this.investment.amount;
+			return componentAmountNumber.times(investmentAmount);
 		},
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
-		formatSet(setId) {
-			return Formatter.formatSet(setId);
+		formatInvestment(investment) {
+			if (investment.platformId == 'tokensets') {
+				return Formatter.formatSet(investment.investmentId);
+			}
+			return investment.investmentId;
 		},
-		formatSetName(setId) {
-			return Formatter.formatSetName(setId);
+		formatInvestmentName(investment) {
+			if (investment.platformId == 'tokensets') {
+				return Formatter.formatSetName(investment.investmentId);
+			}
+			return investment.investmentId;
 		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);
@@ -116,7 +122,7 @@ export default {
 		formatMoney(priceString) {
 			return Formatter.formatMoney(priceString);
 		},
-		async _loadSet() {
+		async _loadInvestment() {
 			if (this.platformId == 'tokensets') {
 				await this._loadTokenSet();
 			}
@@ -144,11 +150,11 @@ export default {
 			const sets = data.users[0].balances;
 
 			for (const set of sets) {
-				const setId = set.set_.set_.symbol.toLowerCase();
-				if (this.setId != setId) {
+				const investmentId = set.set_.set_.symbol.toLowerCase();
+				if (this.investmentId != investmentId) {
 					continue;
 				}
-				const setBalance = set.balance;
+				const balance = set.balance;
 				const units = set.set_.set_.units;
 				const unitsNumber = new BigNumber(units);
 				const naturalUnit = set.set_.set_.naturalUnit;
@@ -169,7 +175,7 @@ export default {
 					};
 					components.push(component);
 				}
-				this.balance = setBalance;
+				this.balance = balance;
 				this.components = components;
 			}
 		},

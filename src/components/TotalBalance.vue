@@ -28,11 +28,11 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-		setBalances: {
+		investmentBalances: {
 			type: Object,
 			default: () => {},
 		},
-		setComponents: {
+		investmentComponents: {
 			type: Object,
 			default: () => {},
 		},
@@ -46,7 +46,7 @@ export default {
 			const balance = this._assetValue
 				.plus(this._depositValue)
 				.plus(this._poolValue)
-				.plus(this._setValue);
+				.plus(this._investmentValue);
 			return balance.toString();
 		},
 		_assetValue() {
@@ -104,13 +104,13 @@ export default {
 			}
 			return poolValue;
 		},
-		_setValue() {
-			let setValue = new BigNumber(0);
-			for (const platformId in this.setBalances) {
-				const platformBalances = this.setBalances[platformId];
-				for (const setId in this.setBalances[platformId]) {
-					const balance = platformBalances[setId];
-					const components = this.setComponents[platformId][setId];
+		_investmentValue() {
+			let investmentValue = new BigNumber(0);
+			for (const platformId in this.investmentBalances) {
+				const platformBalances = this.investmentBalances[platformId];
+				for (const investmentId in this.investmentBalances[platformId]) {
+					const balance = platformBalances[investmentId];
+					const components = this.investmentComponents[platformId][investmentId];
 					let price = new BigNumber(0);
 					for (const component of components) {
 						const amountNumber = new BigNumber(component.amount);
@@ -128,10 +128,10 @@ export default {
 					const amount = Converter.toAmount(balance, 'eth');
 					const amountNumber = new BigNumber(amount);
 					const value = amountNumber.times(price).toString();
-					setValue = setValue.plus(value);
+					investmentValue = investmentValue.plus(value);
 				}
 			}
-			return setValue;
+			return investmentValue;
 		},
 	},
 	methods: {

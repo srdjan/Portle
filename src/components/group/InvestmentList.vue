@@ -2,24 +2,24 @@
 	<div>
 		<div id="list">
 			<Card
-				v-for="set in sets"
-				:key="set.setId"
-				:amount="set.amount"
-				:ticker="formatSet(set.setId)"
-				:title="formatPlatform(set.platformId)"
-				:price="set.price"
-				@click.native="openSet(set)"
+				v-for="investment in investments"
+				:key="investment.investmentId"
+				:amount="investment.amount"
+				:ticker="formatInvestment(investment)"
+				:title="formatPlatform(investment.platformId)"
+				:price="investment.price"
+				@click.native="openInvestment(investment)"
 			/>
 		</div>
 		<div id="table">
 			<Row
-				v-for="set in sets"
-				:key="set.setId"
-				:amount="set.amount"
-				:ticker="formatSet(set.setId)"
-				:title="formatPlatform(set.platformId)"
-				:price="set.price"
-				@click.native="openSet(set)"
+				v-for="investment in investments"
+				:key="investment.investmentId"
+				:amount="investment.amount"
+				:ticker="formatInvestment(investment)"
+				:title="formatPlatform(investment.platformId)"
+				:price="investment.price"
+				@click.native="openInvestment(investment)"
 			/>
 		</div>
 	</div>
@@ -54,13 +54,13 @@ export default {
 		},
 	},
 	computed: {
-		sets() {
-			const sets = [];
+		investments() {
+			const investments = [];
 			for (const platformId in this.balances) {
 				const platformBalances = this.balances[platformId];
-				for (const setId in platformBalances) {
-					const balance = platformBalances[setId];
-					const components = this.components[platformId][setId];
+				for (const investmentId in platformBalances) {
+					const balance = platformBalances[investmentId];
+					const components = this.components[platformId][investmentId];
 					const price = this._getPrice(components);
 					if (!price) {
 						continue;
@@ -68,17 +68,17 @@ export default {
 					const amount = Converter.toAmount(balance, 'eth');
 					const amountNumber = new BigNumber(amount);
 					const value = amountNumber.times(price).toString();
-					const set = {
-						setId,
+					const investment = {
+						investmentId,
 						platformId,
 						amount,
 						price,
 						value,
 					};
-					sets.push(set);
+					investments.push(investment);
 				}
 			}
-			sets.sort((a, b) => {
+			investments.sort((a, b) => {
 				const aValue = new BigNumber(a.value);
 				const bValue = new BigNumber(b.value);
 				return aValue.lt(bValue)
@@ -87,22 +87,25 @@ export default {
 						? -1
 						: 0;
 			});
-			const meaningfulSets = sets.filter(set => {
-				const value = new BigNumber(set.value);
+			const meaningfulInvestments = investments.filter(investment => {
+				const value = new BigNumber(investment.value);
 				return value.gt(1);
 			});
-			return meaningfulSets;
+			return meaningfulInvestments;
 		},
 	},
 	methods: {
-		openSet(set) {
-			const setId = set.setId;
-			const platformId = set.platformId;
-			const path = `/investment/${platformId}/${setId}`;
+		openInvestment(investment) {
+			const investmentId = investment.investmentId;
+			const platformId = investment.platformId;
+			const path = `/investment/${platformId}/${investmentId}`;
 			this.$router.push(path);
 		},
-		formatSet(setId) {
-			return Formatter.formatSet(setId);
+		formatInvestment(investment) {
+			if (investment.platformId == 'tokensets') {
+				return Formatter.formatSet(investment.investmentId);
+			}
+			return investment.investmentId;
 		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);

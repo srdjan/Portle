@@ -4,8 +4,8 @@
 			:assets="assetBalances"
 			:deposits="depositBalances"
 			:pools="poolBalances"
-			:set-balances="setBalances"
-			:set-components="setComponents"
+			:investment-balances="investmentBalances"
+			:investment-components="investmentComponents"
 			:prices="prices"
 		/>
 		<div
@@ -52,15 +52,15 @@
 			/>
 		</div>
 		<div
-			v-if="hasSets"
+			v-if="hasInvestments"
 			class="category"
 		>
 			<div class="category-header">
 				<h2>Investments</h2>
 			</div>
 			<InvestmentList
-				:balances="setBalances"
-				:components="setComponents"
+				:balances="investmentBalances"
+				:components="investmentComponents"
 				:prices="prices"
 			/>
 		</div>
@@ -110,10 +110,10 @@ export default {
 			poolBalances: {
 				uniswap: {},
 			},
-			setBalances: {
+			investmentBalances: {
 				tokensets: {},
 			},
-			setComponents: {
+			investmentComponents: {
 				tokensets: {},
 			},
 			prices: {},
@@ -167,12 +167,12 @@ export default {
 			}
 			return false;
 		},
-		hasSets() {
-			for (const platformId in this.setBalances) {
-				const platformBalance = this.setBalances[platformId];
+		hasInvestments() {
+			for (const platformId in this.investmentBalances) {
+				const platformBalance = this.investmentBalances[platformId];
 				for (const assetId in platformBalance) {
-					const setBalance = platformBalance[assetId];
-					if (setBalance != '0') {
+					const investmentBalance = platformBalance[assetId];
+					if (investmentBalance != '0') {
 						return true;
 					}
 				}
@@ -225,12 +225,12 @@ export default {
 					assetMap[assetId] = true;
 				}
 			}
-			for (const platformId in this.setComponents) {
-				const platformComponents = this.setComponents[platformId];
-				for (const setId in platformComponents) {
-					const setComponents = platformComponents[setId];
-					for (const setComponent of setComponents) {
-						const assetId = setComponent.assetId;
+			for (const platformId in this.investmentComponents) {
+				const platformComponents = this.investmentComponents[platformId];
+				for (const investmentId in platformComponents) {
+					const investmentComponents = platformComponents[investmentId];
+					for (const investmentComponent of investmentComponents) {
+						const assetId = investmentComponent.assetId;
 						assetMap[assetId] = true;
 					}
 				}
@@ -433,8 +433,8 @@ export default {
 			const addressMap = Converter.reverseMap(addresses);
 			const sets = data.users[0].balances;
 			for (const set of sets) {
-				const setId = set.set_.set_.symbol.toLowerCase();
-				const setBalance = set.balance;
+				const investmentId = set.set_.set_.symbol.toLowerCase();
+				const balance = set.balance;
 				const units = set.set_.set_.units;
 				const unitsNumber = new BigNumber(units);
 				const naturalUnit = set.set_.set_.naturalUnit;
@@ -455,8 +455,8 @@ export default {
 					};
 					components.push(component);
 				}
-				Vue.set(this.setBalances.tokensets, setId, setBalance);
-				Vue.set(this.setComponents.tokensets, setId, components);
+				Vue.set(this.investmentBalances.tokensets, investmentId, balance);
+				Vue.set(this.investmentComponents.tokensets, investmentId, components);
 			}
 		},
 	},
