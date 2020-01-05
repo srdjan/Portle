@@ -219,7 +219,7 @@ export default {
 					components.push(component);
 				}
 				this.balance = balance;
-				this.components = components
+				this.components = components;
 			}
 		},
 		_getPrice(components) {
