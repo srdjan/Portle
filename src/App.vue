@@ -124,11 +124,11 @@ body {
 
 header {
 	height: 64px;
-	padding: 0px 16px 0px 16px;
+	padding: 0 16px 0 16px;
 	display: flex;
 	justify-content: space-between;
 	background: white;
-	box-shadow: 0px 1px 4px -2px rgba(0,0,0,0.75);
+	box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.75);
 }
 
 footer {
@@ -158,15 +158,14 @@ h2 {
 }
 
 button {
-	padding: 0px 1rem;
+	padding: 0 1rem;
 	font-size: 0.75em;
 	height: 2rem;
 	min-width: 2rem;
-	background: none;
 	cursor: pointer;
 	border: none;
 	background: #eedfbd;
-	color: #333333;
+	color: #333;
 	border-radius: 4px;
 }
 
@@ -177,7 +176,7 @@ button.primary {
 }
 
 button.big {
-	padding: 0px 1.5em;
+	padding: 0 1.5em;
 	font-size: 1em;
 	height: 2.5em;
 }
@@ -188,7 +187,7 @@ button.action {
 
 button:hover {
 	background: #dbbb74;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 2px 4px;
 }
 
 button.primary:hover {

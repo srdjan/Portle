@@ -68,11 +68,13 @@ export default {
 	padding: 0.5em 1.5em;
 }
 
-.slide-enter-active, .slide-leave-active {
+.slide-enter-active,
+.slide-leave-active {
 	transition: all 1s ease;
 }
 
-.slide-enter, .slide-leave-to {
+.slide-enter,
+.slide-leave-to {
 	opacity: 0;
 	transform: translateY(32px);
 }

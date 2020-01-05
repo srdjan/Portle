@@ -73,12 +73,12 @@ export default {
 	padding: 0.75em 1em;
 	background: white;
 	border-radius: 8px;
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px;
 	cursor: pointer;
 }
 
 .card:hover {
-	box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0 2px 4px;
 }
 
 .amount {

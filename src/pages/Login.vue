@@ -141,7 +141,7 @@ h1#title {
 div#view {
 	height: 100vh;
 	display: flex;
-	flex-direction:column;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
