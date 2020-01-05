@@ -207,7 +207,7 @@ export default {
 				for (let i = 0; i < holdingCount; i++) {
 					const holding = currentHoldings[i];
 					const holdingAmount = holding.amount;
-					const holdingAmountNumber = new BigNumber(holding.amount);
+					const holdingAmountNumber = new BigNumber(holdingAmount);
 					const holdingAsset = holding.asset.id;
 					const componentAddress = ethers.utils.getAddress(holdingAsset);
 					const componentAssetId = addressMap[componentAddress];
