@@ -152,10 +152,10 @@ export default {
 		async _loadCompoundDeposit() {
 			const address = this.account.address.toLowerCase();
 			const data = await Loader.loadCompound(address);
-			if (data.userBalances.length == 0) {
+			if (data.users.length == 0) {
 				return;
 			}
-			const balances = data.userBalances[0].balances;
+			const balances = data.users[0].balances;
 			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
@@ -221,10 +221,10 @@ export default {
 		async _loadFulcrumDeposit() {
 			const address = this.account.address.toLowerCase();
 			const data = await Loader.loadFulcrum(address);
-			if (data.userBalances.length == 0) {
+			if (data.users.length == 0) {
 				return;
 			}
-			const balances = data.userBalances[0].balances;
+			const balances = data.users[0].balances;
 			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);

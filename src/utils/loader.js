@@ -76,7 +76,7 @@ class Loader {
 						address
 					}
 				}
-				userBalances(where: {
+				users(where: {
 					id: "${address}"
 				}) {
 					balances {
@@ -153,7 +153,7 @@ class Loader {
 						address
 					}
 				}
-				userBalances(where: {
+				users(where: {
 					id: "${address}"
 				}) {
 					balances {

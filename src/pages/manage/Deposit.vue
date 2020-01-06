@@ -541,16 +541,15 @@ export default {
 				Vue.set(this.rates.compound, assetId, rate);
 				Vue.set(this.indices.compound, assetId, index);
 			}
-			if (data.userBalances.length == 0) {
+			if (data.users.length == 0) {
 				return;
 			}
-			const userBalances = data.userBalances[0].balances;
-			for (const userBalance of userBalances) {
+			const balances = data.users[0].balances;
+			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(addresses);
-				const assetAddress = ethers.utils.getAddress(userBalance.token.underlying.address);
+				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
-				const balance = userBalance.balance;
-				Vue.set(this.depositBalances.compound, assetId, balance);
+				Vue.set(this.depositBalances.compound, assetId, balance.balance);
 			}
 		},
 		async _loadDydx() {
@@ -616,16 +615,15 @@ export default {
 				Vue.set(this.rates.fulcrum, assetId, rate);
 				Vue.set(this.indices.fulcrum, assetId, index);
 			}
-			if (data.userBalances.length == 0) {
+			if (data.users.length == 0) {
 				return;
 			}
-			const userBalances = data.userBalances[0].balances;
-			for (const userBalance of userBalances) {
+			const balances = data.users[0].balances;
+			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(addresses);
-				const assetAddress = ethers.utils.getAddress(userBalance.token.underlying.address);
+				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
-				const balance = userBalance.balance;
-				Vue.set(this.depositBalances.fulcrum, assetId, balance);
+				Vue.set(this.depositBalances.fulcrum, assetId, balance.balance);
 			}
 		},
 		_getDydxMarket(assetId) {
