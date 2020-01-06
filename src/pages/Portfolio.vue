@@ -344,7 +344,7 @@ export default {
 				const addressMap = Converter.reverseMap(addresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
-				const index = balance.token.index;
+				const index = balance.token.supplyIndex;
 				const tokenRawBalance = balance.balance;
 				// Set balances
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);

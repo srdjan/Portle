@@ -232,7 +232,7 @@ export default {
 				if (this.assetId != assetId) {
 					continue;
 				}
-				const index = balance.token.index;
+				const index = balance.token.supplyIndex;
 				const tokenRawBalance = balance.balance;
 				// Set balance
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);

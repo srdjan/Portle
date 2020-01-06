@@ -608,7 +608,7 @@ export default {
 				const assetId = addressMap[assetAddress];
 				const address = token.address;
 				const rawRate = token.supplyRate;
-				const index = token.index;
+				const index = token.supplyIndex;
 				const rawRateNumber = new BigNumber(rawRate);
 				const rateNumber = rawRateNumber.div('1e18').div('1e2');
 				const rate = rateNumber.toString();
