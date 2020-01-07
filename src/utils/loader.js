@@ -147,7 +147,7 @@ class Loader {
 				iTokens {
 					symbol
 					address
-					index
+					supplyIndex
 					supplyRate
 					underlying {
 						address
@@ -159,7 +159,7 @@ class Loader {
 					balances {
 						token {
 							symbol
-							index
+							supplyIndex
 							supplyRate
 							underlying {
 								address
