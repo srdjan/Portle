@@ -207,7 +207,7 @@ export default {
 				this._loadMaker(),
 				this._loadUniswap(),
 				this._loadTokenSets(),
-				// this._loadMelon(),
+				this._loadMelon(),
 			];
 			await Promise.all(balancePromises);
 		},
