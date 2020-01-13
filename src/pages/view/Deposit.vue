@@ -18,23 +18,6 @@
 		<div id="value">
 			{{ formatMoney(deposit.value) }} @ {{ formatMoney(deposit.price) }}/{{ formatAsset(deposit.assetId) }}
 		</div>
-		<div
-			v-if="account && account.auth && deposit.platformId != 'maker'"
-			id="action-wrapper"
-		>
-			<button
-				class="action"
-				@click="openDeposit('deposit')"
-			>
-				Deposit
-			</button>
-			<button
-				class="action"
-				@click="openDeposit('withdraw')"
-			>
-				Withdraw
-			</button>
-		</div>
 	</div>
 </template>
 
@@ -102,15 +85,6 @@ export default {
 		this._loadDeposit();
 	},
 	methods: {
-		openDeposit(action) {
-			const path = '/deposit/manage';
-			this.$router.state = {
-				assetId: this.assetId,
-				platformId: this.platformId,
-				action,
-			};
-			this.$router.push(path);
-		},
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
