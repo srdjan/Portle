@@ -11,8 +11,6 @@ import Deposit from './pages/view/Deposit.vue';
 import Pool from './pages/view/Pool.vue';
 import Investment from './pages/view/Investment.vue';
 
-import ManageDeposit from './pages/manage/Deposit.vue';
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -23,8 +21,6 @@ const routes = [
 	{ path: '/deposit/:platformId/:assetId', component: Deposit },
 	{ path: '/pool/:platformId/:assetId', component: Pool },
 	{ path: '/investment/:platformId/:investmentId', component: Investment },
-
-	{ path: '/deposit/manage', component: ManageDeposit },
 ];
 
 const router = new VueRouter({
