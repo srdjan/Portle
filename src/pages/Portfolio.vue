@@ -26,12 +26,6 @@
 		>
 			<div class="category-header">
 				<h2>Deposits</h2>
-				<img
-					v-if="account && account.auth"
-					:src="plusCircleIcon"
-					class="icon"
-					@click="openDepositManagePage()"
-				>
 			</div>
 			<DepositList
 				:balances="depositBalances"
@@ -194,10 +188,6 @@ export default {
 		this._loadPrices();
 	},
 	methods: {
-		openDepositManagePage() {
-			const path = '/deposit/manage';
-			this.$router.push(path);
-		},
 		async _loadBalances() {
 			const balancePromises = [
 				this._loadAssets(),
