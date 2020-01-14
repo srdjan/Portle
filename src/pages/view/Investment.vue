@@ -126,6 +126,9 @@ export default {
 			return Formatter.formatMoney(priceString);
 		},
 		async _loadInvestment() {
+			if (this.platformId == 'uniswap') {
+				await this._loadUniswap();
+			}
 			if (this.platformId == 'tokensets') {
 				await this._loadTokenSet();
 			}
@@ -144,6 +147,46 @@ export default {
 				const assetId = assets[i];
 				const price = prices[assetId];
 				Vue.set(this.prices, assetId, price);
+			}
+		},
+		async _loadUniswap() {
+			const address = this.account.address.toLowerCase();
+			const data = await Loader.loadUniswap(address);
+			if (data.userExchangeDatas.length == 0) {
+				return;
+			}
+			const addressMap = Converter.reverseMap(addresses);
+			const pools = data.userExchangeDatas;
+
+			for (const pool of pools) {
+				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
+				const assetId = addressMap[assetAddress];
+				const investmentId = `eth_${assetId}`;
+				if (this.investmentId != investmentId) {
+					continue;
+				}
+
+				const uniTokenBalanceNumber = new BigNumber(pool.uniTokenBalance);
+				const totalUniTokenBalanceNumber = new BigNumber(pool.exchange.totalUniToken);
+				const totalEtherBalanceNumber = new BigNumber(pool.exchange.ethBalance);
+				const totalTokenBalanceNumber = new BigNumber(pool.exchange.tokenBalance);
+
+				const etherPerUniTokenNumber = totalEtherBalanceNumber.div(totalUniTokenBalanceNumber);
+				const tokenPerUniTokenNumber = totalTokenBalanceNumber.div(totalUniTokenBalanceNumber);
+
+				const uniTokenBalance = uniTokenBalanceNumber.times('1e18').toString();
+				const etherPerUniToken = etherPerUniTokenNumber.toString();
+				const tokenPerUniToken = tokenPerUniTokenNumber.toString();
+
+				const components = [{
+					assetId: 'eth',
+					amount: etherPerUniToken,
+				}, {
+					assetId,
+					amount: tokenPerUniToken,
+				}];
+				this.balance = uniTokenBalance;
+				this.components = components;
 			}
 		},
 		async _loadTokenSet() {
