@@ -6,6 +6,8 @@ import App from './App.vue';
 import Login from './pages/Login.vue';
 import Portfolio from './pages/Portfolio.vue';
 
+import NewWallet from './pages/NewWallet.vue';
+
 import Asset from './pages/view/Asset.vue';
 import Deposit from './pages/view/Deposit.vue';
 import Investment from './pages/view/Investment.vue';
@@ -15,6 +17,8 @@ Vue.use(VueRouter);
 const routes = [
 	{ path: '/login', component: Login },
 	{ path: '/', component: Portfolio },
+
+	{ path: '/wallet/new', component: NewWallet },
 
 	{ path: '/asset/:assetId', component: Asset },
 	{ path: '/deposit/:platformId/:assetId', component: Deposit },
