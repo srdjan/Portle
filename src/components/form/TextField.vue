@@ -1,0 +1,102 @@
+<template>
+	<div
+		class="wrapper"
+		:class="{ invalid }"
+	>
+		<input
+			id="field"
+			type="text"
+			class="field_input"
+			:class="{ invalid }"
+			:value="value"
+			placeholder=""
+			@input="onInput($event)"
+		>
+		<label
+			for="field"
+			class="label"
+			:class="{ invalid }"
+		>
+			{{ label }}
+		</label>
+	</div>
+</template>
+
+<script>
+export default {
+	props: {
+		label: {
+			type: String,
+			default: '',
+		},
+		value: {
+			type: String,
+			default: '',
+		},
+		invalid: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	methods: {
+		onInput(e) {
+			this.$emit('input', e.target.value);
+		},
+	},
+};
+</script>
+
+<style scoped>
+.label {
+	display: block;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 18px 12px 0;
+	color: #79818c;
+	font-size: 0.875em;
+	transition: all 0.2s;
+	transform: translateY(-14px);
+}
+
+.wrapper {
+	position: relative;
+	border: 1px solid #e7e8ea;
+	border-radius: 4px;
+}
+
+.field_input {
+	display: block;
+	appearance: none;
+	width: 95%;
+	padding: 0 12px 10px 12px;
+	background: transparent;
+	border: none;
+	font-size: 1.125em;
+	margin-top: 24px;
+	outline: 0;
+}
+
+.field_input:placeholder-shown ~ .label {
+	font-size: 1.125em;
+	transform: translateY(0);
+}
+
+.field_input:focus ~ .label {
+	color: #79818c;
+	font-size: 0.875em;
+	transform: translateY(-14px);
+}
+
+.wrapper.invalid {
+	border-color: #c80815;
+}
+
+.label.invalid,
+.field_input.invalid,
+.field_input:focus ~ .label.invalid {
+	color: #c80815;
+}
+</style>
