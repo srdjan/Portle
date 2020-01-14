@@ -171,12 +171,13 @@ button.primary {
 	background: #efb22d;
 	color: white;
 	border: none;
+	width: 14em;
 }
 
 button.big {
 	padding: 0 1.5em;
 	font-size: 1em;
-	height: 2.5em;
+	height: 4em;
 }
 
 button.action {
