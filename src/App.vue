@@ -116,9 +116,7 @@ export default {
 
 body {
 	margin: 0;
-	background: #f4f8f9;
-	color: #282821;
-	font-size: 20px;
+	color: black;
 	font-family: 'Source Sans Pro', -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
