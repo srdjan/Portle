@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<div class="price-value sparse">
-			<div>{{ formatMoney(price) }}</div>
+			<div>{{ formatMoney(price) }}/</div>
 			<div>{{ formatMoney(value) }}</div>
 		</div>
 	</div>
@@ -76,18 +76,19 @@ export default {
 
 <style scoped>
 .card {
-	width: 10em;
-	height: 4.5em;
+	box-sizing: border-box;
+	width: 11.25em;
+	height: 5em;
 	margin: 0.5em;
-	padding: 0.75em 1em;
-	background: white;
-	border-radius: 8px;
-	box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px;
+	padding: 0.5em 1em;
+	box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.12);
+	transition: transform .3s,box-shadow .3s,-webkit-transform .3s;
+	transition-timing-function: cubic-bezier(.25,.1,.25,1);
 	cursor: pointer;
 }
 
 .card:hover {
-	box-shadow: rgba(0, 0, 0, 0.2) 0 2px 4px;
+	box-shadow: 0 12px 36px rgba(0,0,0,.2);
 }
 
 .logo {
@@ -99,7 +100,7 @@ export default {
 }
 
 .amount {
-	font-size: 1.25em;
+	font-size: 1.125em;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -114,7 +115,8 @@ export default {
 
 .title,
 .price-value {
-	color: grey;
+	font-size: 0.875em;
+	color: #79818c;
 }
 
 .sparse {
