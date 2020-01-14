@@ -53,10 +53,9 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
-import { account } from '../mixins/account.js';
-
 import Converter from '../utils/converter.js';
 import Loader from '../utils/loader.js';
+import Storage from '../utils/storage.js';
 
 import addresses from '../data/addresses.json';
 
@@ -74,11 +73,9 @@ export default {
 		DepositList,
 		InvestmentList,
 	},
-	mixins: [
-		account,
-	],
 	data() {
 		return {
+			walletList: [],
 			assetBalances: {},
 			depositBalances: {
 				compound: {},
@@ -152,7 +149,8 @@ export default {
 		},
 	},
 	async mounted() {
-		if (!this.account.address) {
+		this.walletList = Storage.getWalletList();
+		if (this.walletList.length == 0) {
 			this.$router.push('/login');
 			return;
 		}
@@ -203,7 +201,7 @@ export default {
 			}
 		},
 		async _loadAssets() {
-			const address = this.account.address;
+			const address = this.walletList[0].address;
 			const balances = await Loader.loadBalance(address);
 			for (const assetId in balances) {
 				const balance = balances[assetId];
@@ -214,7 +212,7 @@ export default {
 			}
 		},
 		async _loadCompound() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadCompound(address);
 			if (data.users.length == 0) {
 				return;
@@ -245,7 +243,7 @@ export default {
 			}
 		},
 		async _loadDydx() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadDydx(address);
 			if (data.users.length == 0) {
 				return;
@@ -290,7 +288,7 @@ export default {
 			}
 		},
 		async _loadFulcrum() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadFulcrum(address);
 			if (data.users.length == 0) {
 				return;
@@ -321,7 +319,7 @@ export default {
 			}
 		},
 		async _loadMaker() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadMaker(address);
 			if (data.users.length == 0) {
 				return;
@@ -349,7 +347,7 @@ export default {
 			Vue.set(this.rates.supply.maker, 'dai', rate);
 		},
 		async _loadUniswap() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadUniswap(address);
 			if (data.userExchangeDatas.length == 0) {
 				return;
@@ -389,7 +387,7 @@ export default {
 			}
 		},
 		async _loadTokenSets() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadTokenSets(address);
 			if (data.users.length == 0) {
 				return;
@@ -424,7 +422,7 @@ export default {
 			}
 		},
 		async _loadMelon() {
-			const address = this.account.address.toLowerCase();
+			const address = this.walletList[0].address.toLowerCase();
 			const data = await Loader.loadMelon(address);
 			if (!data.investor) {
 				return;
