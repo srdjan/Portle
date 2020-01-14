@@ -4,6 +4,7 @@
 			<Card
 				v-for="asset in assets"
 				:key="asset.assetId"
+				:logo="getLogo(asset.assetId)"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.assetId)"
 				:title="asset.name"
@@ -31,6 +32,7 @@ import BigNumber from 'bignumber.js';
 import Card from '../Card.vue';
 import Row from '../Row.vue';
 
+import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
@@ -94,6 +96,9 @@ export default {
 		},
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
+		},
+		getLogo(assetId) {
+			return AssetLoader.loadAssetLogo(assetId);
 		},
 	},
 };

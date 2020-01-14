@@ -4,6 +4,7 @@
 			<Card
 				v-for="deposit in deposits"
 				:key="deposit.platformId + '-' + deposit.assetId"
+				:logo="getLogo(deposit.assetId)"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
 				:title="formatPlatform(deposit.platformId)"
@@ -33,6 +34,7 @@ import BigNumber from 'bignumber.js';
 import Card from '../Card.vue';
 import Row from '../Row.vue';
 
+import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 
@@ -106,6 +108,9 @@ export default {
 		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);
+		},
+		getLogo(assetId) {
+			return AssetLoader.loadAssetLogo(assetId);
 		},
 	},
 };
