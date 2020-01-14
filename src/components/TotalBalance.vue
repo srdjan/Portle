@@ -24,10 +24,6 @@ export default {
 			type: Object,
 			default: () => {},
 		},
-		pools: {
-			type: Object,
-			default: () => {},
-		},
 		investmentBalances: {
 			type: Object,
 			default: () => {},
@@ -45,7 +41,6 @@ export default {
 		totalBalance() {
 			const balance = this._assetValue
 				.plus(this._depositValue)
-				.plus(this._poolValue)
 				.plus(this._investmentValue);
 			return balance.toString();
 		},
@@ -80,29 +75,6 @@ export default {
 				}
 			}
 			return depositValue;
-		},
-		_poolValue() {
-			let poolValue = new BigNumber(0);
-			for (const platformId in this.pools) {
-				for (const assetId in this.pools[platformId]) {
-					const tokenPrice = this.prices[assetId];
-					const etherPrice = this.prices.eth;
-					if (!tokenPrice || !etherPrice) {
-						continue;
-					}
-					const balance = this.pools[platformId][assetId];
-					const tokenBalance = balance.token;
-					const tokenAmount = Converter.toAmount(tokenBalance, assetId);
-					const tokenAmountNumber = new BigNumber(tokenAmount);
-					const etherBalance = balance.ether;
-					const etherAmount = Converter.toAmount(etherBalance, 'eth');
-					const etherAmountNumber = new BigNumber(etherAmount);
-					const value = (tokenAmountNumber.times(tokenPrice))
-						.plus(etherAmountNumber.times(etherPrice));
-					poolValue = poolValue.plus(value);
-				}
-			}
-			return poolValue;
 		},
 		_investmentValue() {
 			let investmentValue = new BigNumber(0);
