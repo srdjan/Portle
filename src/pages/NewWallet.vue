@@ -185,7 +185,6 @@ export default {
 			return true;
 		},
 		_saveWallet(address) {
-			console.log('saveWallet', address);
 			const wallet = {
 				address: address.toLowerCase(),
 			};
