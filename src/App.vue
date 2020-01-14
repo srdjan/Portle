@@ -117,7 +117,7 @@ export default {
 body {
 	margin: 0;
 	color: black;
-	font-family: 'Source Sans Pro', -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 header {
