@@ -3,7 +3,6 @@
 		<TotalBalance
 			:assets="assetBalances"
 			:deposits="depositBalances"
-			:pools="poolBalances"
 			:investment-balances="investmentBalances"
 			:investment-components="investmentComponents"
 			:prices="prices"
@@ -31,18 +30,6 @@
 				:balances="depositBalances"
 				:prices="prices"
 				:rates="rates"
-			/>
-		</div>
-		<div
-			v-if="hasPools"
-			class="category"
-		>
-			<div class="category-header">
-				<h2>Pools</h2>
-			</div>
-			<PoolList
-				:balances="poolBalances"
-				:prices="prices"
 			/>
 		</div>
 		<div
@@ -78,7 +65,6 @@ import plusCircleIcon from '../../public/img/plus-circle.svg';
 import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
-import PoolList from '../components/group/PoolList.vue';
 import InvestmentList from '../components/group/InvestmentList.vue';
 
 export default {
@@ -86,7 +72,6 @@ export default {
 		TotalBalance,
 		AssetList,
 		DepositList,
-		PoolList,
 		InvestmentList,
 	},
 	mixins: [
@@ -101,14 +86,13 @@ export default {
 				fulcrum: {},
 				maker: {},
 			},
-			poolBalances: {
-				uniswap: {},
-			},
 			investmentBalances: {
+				uniswap: {},
 				tokensets: {},
 				melon: {},
 			},
 			investmentComponents: {
+				uniswap: {},
 				tokensets: {},
 				melon: {},
 			},
@@ -145,18 +129,6 @@ export default {
 				for (const assetId in platformBalance) {
 					const depositBalance = platformBalance[assetId];
 					if (depositBalance != '0') {
-						return true;
-					}
-				}
-			}
-			return false;
-		},
-		hasPools() {
-			for (const platformId in this.poolBalances) {
-				const platformBalance = this.poolBalances[platformId];
-				for (const assetId in platformBalance) {
-					const poolBalance = platformBalance[assetId].pool;
-					if (poolBalance != '0') {
 						return true;
 					}
 				}
@@ -208,12 +180,6 @@ export default {
 			}
 			for (const platformId in this.depositBalances) {
 				const platformBalance = this.depositBalances[platformId];
-				for (const assetId in platformBalance) {
-					assetMap[assetId] = true;
-				}
-			}
-			for (const platformId in this.poolBalances) {
-				const platformBalance = this.poolBalances[platformId];
 				for (const assetId in platformBalance) {
 					assetMap[assetId] = true;
 				}
@@ -400,21 +366,26 @@ export default {
 
 				const uniTokenBalanceNumber = new BigNumber(pool.uniTokenBalance);
 				const totalUniTokenBalanceNumber = new BigNumber(pool.exchange.totalUniToken);
-				const rawEtherBalanceNumber = new BigNumber(pool.exchange.ethBalance);
-				const rawTokenBalanceNumber = new BigNumber(pool.exchange.tokenBalance);
+				const totalEtherBalanceNumber = new BigNumber(pool.exchange.ethBalance);
+				const totalTokenBalanceNumber = new BigNumber(pool.exchange.tokenBalance);
 
-				const etherBalanceNumber = rawEtherBalanceNumber.times(uniTokenBalanceNumber).div(totalUniTokenBalanceNumber);
-				const tokenBalanceNumber = rawTokenBalanceNumber.times(uniTokenBalanceNumber).div(totalUniTokenBalanceNumber);
-				const etherBalance = Converter.toBalance(etherBalanceNumber, 'eth');
-				const tokenBalance = Converter.toBalance(tokenBalanceNumber, assetId);
-				const uniTokenBalance = Converter.toBalance(uniTokenBalanceNumber, 'eth');
+				const etherPerUniTokenNumber = totalEtherBalanceNumber.div(totalUniTokenBalanceNumber);
+				const tokenPerUniTokenNumber = totalTokenBalanceNumber.div(totalUniTokenBalanceNumber);
 
-				const poolBalance = {
-					'ether': etherBalance.toString(),
-					'token': tokenBalance.toString(),
-					'pool': uniTokenBalance.toString(),
-				};
-				Vue.set(this.poolBalances.uniswap, assetId, poolBalance);
+				const uniTokenBalance = uniTokenBalanceNumber.times('1e18').toString();
+				const etherPerUniToken = etherPerUniTokenNumber.toString();
+				const tokenPerUniToken = tokenPerUniTokenNumber.toString();
+
+				const investmentId = `eth_${assetId}`;
+				const components = [{
+					assetId: 'eth',
+					amount: etherPerUniToken,
+				}, {
+					assetId,
+					amount: tokenPerUniToken,
+				}];
+				Vue.set(this.investmentBalances.uniswap, investmentId, uniTokenBalance);
+				Vue.set(this.investmentComponents.uniswap, investmentId, components);
 			}
 		},
 		async _loadTokenSets() {
