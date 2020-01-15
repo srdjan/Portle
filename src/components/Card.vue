@@ -81,14 +81,14 @@ export default {
 	height: 5em;
 	margin: 0.5em;
 	padding: 0.5em 1em;
-	box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.12);
-	transition: transform .3s,box-shadow .3s,-webkit-transform .3s;
-	transition-timing-function: cubic-bezier(.25,.1,.25,1);
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+	transition: transform 0.3s, box-shadow 0.3s, -webkit-transform 0.3s;
+	transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 	cursor: pointer;
 }
 
 .card:hover {
-	box-shadow: 0 12px 36px rgba(0,0,0,.2);
+	box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
 }
 
 .logo {
