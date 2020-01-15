@@ -88,7 +88,7 @@
 				</div>
 				<InvestmentList
 					:investments="investments"
-					:components="investmentComponents"
+					:components="components"
 					:prices="prices"
 				/>
 			</div>
@@ -124,7 +124,7 @@ export default {
 	data() {
 		return {
 			wallets: [],
-			investmentComponents: {
+			components: {
 				uniswap: {},
 				tokensets: {},
 				melon: {},
@@ -230,7 +230,7 @@ export default {
 				assetBalances,
 				depositBalances,
 				investmentBalances,
-				this.investmentComponents,
+				this.components,
 				this.prices
 			);
 			const balanceString = balance.toString();
@@ -255,7 +255,7 @@ export default {
 			const investmentBalances = wallet.investments;
 			const balance = Balance.getInvestments(
 				investmentBalances,
-				this.investmentComponents,
+				this.components,
 				this.prices
 			);
 			const balanceString = balance.toString();
@@ -325,11 +325,11 @@ export default {
 					assetMap[assetId] = true;
 				}
 			}
-			for (const platformId in this.investmentComponents) {
-				const platformComponents = this.investmentComponents[platformId];
+			for (const platformId in this.components) {
+				const platformComponents = this.components[platformId];
 				for (const investmentId in platformComponents) {
-					const investmentComponents = platformComponents[investmentId];
-					for (const investmentComponent of investmentComponents) {
+					const components = platformComponents[investmentId];
+					for (const investmentComponent of components) {
 						const assetId = investmentComponent.assetId;
 						assetMap[assetId] = true;
 					}
@@ -532,7 +532,7 @@ export default {
 					amount: tokenPerUniToken,
 				}];
 				Vue.set(wallet.investments.uniswap, investmentId, uniTokenBalance);
-				Vue.set(this.investmentComponents.uniswap, investmentId, components);
+				Vue.set(this.components.uniswap, investmentId, components);
 			}
 		},
 		async _loadTokenSets() {
@@ -568,7 +568,7 @@ export default {
 					components.push(component);
 				}
 				Vue.set(wallet.investments.tokensets, investmentId, balance);
-				Vue.set(this.investmentComponents.tokensets, investmentId, components);
+				Vue.set(this.components.tokensets, investmentId, components);
 			}
 		},
 		async _loadMelon() {
@@ -606,7 +606,7 @@ export default {
 					components.push(component);
 				}
 				Vue.set(wallet.investments.melon, investmentId, balance);
-				Vue.set(this.investmentComponents.melon, investmentId, components);
+				Vue.set(this.components.melon, investmentId, components);
 			}
 		},
 	},
