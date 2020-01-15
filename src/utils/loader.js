@@ -21,9 +21,6 @@ class Loader {
 		const response = await fetch(url);
 		const balanceResponse = await response.json();
 		const balances = {};
-		balances['eth'] = {
-			balance: Converter.toBalance(balanceResponse.ETH.balance, 'eth'),
-		};
 		const addressMap = Converter.reverseMap(addresses);
 		const tokens = balanceResponse.tokens || [];
 		for (const tokenData of tokens) {
@@ -48,14 +45,18 @@ class Loader {
 		const provider = getProvider();
 		const wethContract = new EthCall.Contract(addresses['weth'], erc20Abi);
 		const amplContract = new EthCall.Contract(addresses['ampl'], erc20Abi);
+		const ethBalanceCall = EthCall.calls.getEthBalance(address);
 		const wethBalanceCall = wethContract.balanceOf(address);
 		const amplBalanceCall = amplContract.balanceOf(address);
-		const balanceData = await EthCall.all([wethBalanceCall, amplBalanceCall], provider);
-		balances['weth'] = {
+		const balanceData = await EthCall.all([ethBalanceCall, wethBalanceCall, amplBalanceCall], provider);
+		balances['eth'] = {
 			balance: balanceData[0],
 		};
-		balances['ampl'] = {
+		balances['weth'] = {
 			balance: balanceData[1],
+		};
+		balances['ampl'] = {
+			balance: balanceData[2],
 		};
 		return balances;
 	}
