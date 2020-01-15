@@ -226,14 +226,10 @@ export default {
 			if (this.wallets.length == 0) {
 				return Formatter.formatMoney('0');
 			}
-			const wallet = this.wallets[0];
-			const assetBalances = wallet.assets;
-			const depositBalances = wallet.deposits;
-			const investmentBalances = wallet.investments;
 			const balance = Balance.getTotal(
-				assetBalances,
-				depositBalances,
-				investmentBalances,
+				this.assets,
+				this.deposits,
+				this.investments,
 				this.components,
 				this.prices
 			);
@@ -241,27 +237,17 @@ export default {
 			return Formatter.formatMoney(balanceString);
 		},
 		assetBalance() {
-			const wallet = this.wallets[0];
-			const assetBalances = wallet.assets;
-			const balance = Balance.getAssets(assetBalances, this.prices);
+			const balance = Balance.getAssets(this.assets, this.prices);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
 		},
 		depositBalance() {
-			const wallet = this.wallets[0];
-			const depositBalances = wallet.deposits;
-			const balance = Balance.getDeposits(depositBalances, this.prices);
+			const balance = Balance.getDeposits(this.deposits, this.prices);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
 		},
 		investmentBalance() {
-			const wallet = this.wallets[0];
-			const investmentBalances = wallet.investments;
-			const balance = Balance.getInvestments(
-				investmentBalances,
-				this.components,
-				this.prices
-			);
+			const balance = Balance.getInvestments(this.investments, this.components, this.prices);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
 		},
