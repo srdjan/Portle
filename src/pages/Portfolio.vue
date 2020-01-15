@@ -10,10 +10,17 @@
 					Wallets
 				</div>
 				<div class="wallet">
-					<div id="wallet-icon-1" class="wallet-icon"></div>
+					<div
+						id="wallet-icon-1"
+						class="wallet-icon"
+					/>
 					<div class="wallet-details">
-						<div class="wallet-address">0x0443c74A…d9d64616</div>
-						<div class="wallet-value">$7,631.12</div>
+						<div class="wallet-address">
+							0x0443c74A…d9d64616
+						</div>
+						<div class="wallet-value">
+							$7,631.12
+						</div>
 					</div>
 				</div>
 				<div id="add-wallet">
@@ -21,8 +28,12 @@
 						<img :src="plusIcon">
 					</div>
 					<div id="add-wallet-text">
-						<div id="add-wallet-title">Add new wallet</div>
-						<div id="add-wallet-subtitle">Metamask, ENS, address, etc</div>
+						<div id="add-wallet-title">
+							Add new wallet
+						</div>
+						<div id="add-wallet-subtitle">
+							Metamask, ENS, address, etc
+						</div>
 					</div>
 				</div>
 			</div>
@@ -33,8 +44,12 @@
 				class="category"
 			>
 				<div class="category-header">
-					<h2 class="category-title">Assets</h2>
-					<div class="category-value">{{ assetBalance }}</div>
+					<h2 class="category-title">
+						Assets
+					</h2>
+					<div class="category-value">
+						{{ assetBalance }}
+					</div>
 				</div>
 				<AssetList
 					:balances="assetBalances"
@@ -46,8 +61,12 @@
 				class="category"
 			>
 				<div class="category-header">
-					<h2 class="category-title">Deposits</h2>
-					<div class="category-value">{{ depositBalance }}</div>
+					<h2 class="category-title">
+						Deposits
+					</h2>
+					<div class="category-value">
+						{{ depositBalance }}
+					</div>
 				</div>
 				<DepositList
 					:balances="depositBalances"
@@ -60,8 +79,12 @@
 				class="category"
 			>
 				<div class="category-header">
-					<h2 class="category-title">Investments</h2>
-					<div class="category-value">{{ investmentBalance }}</div>
+					<h2 class="category-title">
+						Investments
+					</h2>
+					<div class="category-value">
+						{{ investmentBalance }}
+					</div>
 				</div>
 				<InvestmentList
 					:balances="investmentBalances"
