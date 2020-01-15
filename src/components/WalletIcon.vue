@@ -2,6 +2,10 @@
 	<div
 		:class="{ 
 			'id-0': id == 0,
+			'id-1': id == 1,
+			'id-2': id == 2,
+			'id-3': id == 3,
+			'id-4': id == 4,
 		}"
 	/>
 </template>
@@ -27,5 +31,21 @@ div {
 
 .id-0 {
 	background: teal;
+}
+
+.id-1 {
+	background: chocolate;
+}
+
+.id-2 {
+	background: darkcyan;
+}
+
+.id-3 {
+	background: darkslateblue;
+}
+
+.id-4 {
+	background: lightsalmon;
 }
 </style>
