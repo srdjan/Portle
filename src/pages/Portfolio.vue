@@ -1,48 +1,74 @@
 <template>
 	<div id="view">
-		<h1 id="total">
-			{{ totalBalance }}
-		</h1>
-		<div
-			v-if="hasAssets"
-			class="category"
-		>
-			<div class="category-header">
-				<h2 class="category-title">Assets</h2>
-				<div class="category-value">{{ assetBalance }}</div>
+		<section id="wallet-section">
+			<div id="total-value">
+				Net worth: {{ totalBalance }}
 			</div>
-			<AssetList
-				:balances="assetBalances"
-				:prices="prices"
-			/>
-		</div>
-		<div
-			v-if="hasDeposits"
-			class="category"
-		>
-			<div class="category-header">
-				<h2 class="category-title">Deposits</h2>
-				<div class="category-value">{{ depositBalance }}</div>
+
+			<div id="wallet-list">
+				<div id="wallet-list-header">
+					Wallets
+				</div>
+				<div class="wallet">
+					<div id="wallet-icon-1" class="wallet-icon"></div>
+					<div class="wallet-details">
+						<div class="wallet-address">0x0443c74A…d9d64616</div>
+						<div class="wallet-value">$7,631.12</div>
+					</div>
+				</div>
+				<div id="add-wallet">
+					<div id="add-wallet-icon">
+						<img :src="plusIcon">
+					</div>
+					<div id="add-wallet-text">
+						<div id="add-wallet-title">Add new wallet</div>
+						<div id="add-wallet-subtitle">Metamask, ENS, address, etc</div>
+					</div>
+				</div>
 			</div>
-			<DepositList
-				:balances="depositBalances"
-				:prices="prices"
-				:rates="rates"
-			/>
-		</div>
-		<div
-			v-if="hasInvestments"
-			class="category"
-		>
-			<div class="category-header">
-				<h2 class="category-title">Investments</h2>
-				<div class="category-value">{{ investmentBalance }}</div>
+		</section>
+		<div id="asset-section">
+			<div
+				v-if="hasAssets"
+				class="category"
+			>
+				<div class="category-header">
+					<h2 class="category-title">Assets</h2>
+					<div class="category-value">{{ assetBalance }}</div>
+				</div>
+				<AssetList
+					:balances="assetBalances"
+					:prices="prices"
+				/>
 			</div>
-			<InvestmentList
-				:balances="investmentBalances"
-				:components="investmentComponents"
-				:prices="prices"
-			/>
+			<div
+				v-if="hasDeposits"
+				class="category"
+			>
+				<div class="category-header">
+					<h2 class="category-title">Deposits</h2>
+					<div class="category-value">{{ depositBalance }}</div>
+				</div>
+				<DepositList
+					:balances="depositBalances"
+					:prices="prices"
+					:rates="rates"
+				/>
+			</div>
+			<div
+				v-if="hasInvestments"
+				class="category"
+			>
+				<div class="category-header">
+					<h2 class="category-title">Investments</h2>
+					<div class="category-value">{{ investmentBalance }}</div>
+				</div>
+				<InvestmentList
+					:balances="investmentBalances"
+					:components="investmentComponents"
+					:prices="prices"
+				/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -59,6 +85,8 @@ import Loader from '../utils/loader.js';
 import Storage from '../utils/storage.js';
 
 import addresses from '../data/addresses.json';
+
+import plusIcon from '../../public/img/plus.svg';
 
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
@@ -170,6 +198,9 @@ export default {
 			);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
+		},
+		plusIcon() {
+			return plusIcon;
 		},
 	},
 	async mounted() {
@@ -487,6 +518,86 @@ export default {
 </script>
 
 <style scoped>
+#view {
+	display: flex;
+}
+
+#wallet-section {
+	flex: 1;
+	padding: 1.5em 1.125em;
+}
+
+#total-value {
+	font-size: 1.125em;
+	font-weight: bold;
+}
+
+#wallet-list {
+	margin-top: 2.25em;
+}
+
+#wallet-list-header {
+	margin-bottom: 1.125em;
+	font-size: 1.125em;
+	font-weight: bold;
+}
+
+.wallet,
+#add-wallet {
+	padding: 1.25em 0.5em;
+	border-top: 1px solid #e7e8ea;
+	display: flex;
+	align-items: center;
+}
+
+.wallet-icon,
+#add-wallet-icon {
+	height: 2em;
+	width: 2em;
+	border-radius: 1em;
+	background: #d6d6d6;
+}
+
+#wallet-icon-1 {
+	background: teal;
+}
+
+.wallet-details,
+#add-wallet-text {
+	margin-left: 0.75em;
+}
+
+.wallet-address {
+	font-size: 0.875em;
+	color: #666;
+}
+
+.wallet-value {
+	font-size: 1.125em;
+	font-weight: bold;
+}
+
+#add-wallet-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#add-wallet-icon > img {
+	height: 1em;
+	width: 1em;
+}
+
+#add-wallet-subtitle {
+	font-size: 0.875em;
+	color: #666;
+}
+
+#asset-section {
+	flex: 3;
+	padding: 3.25em 3.5em;
+}
+
 #total {
 	display: flex;
 	justify-content: center;
