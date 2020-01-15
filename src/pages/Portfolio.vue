@@ -2,7 +2,7 @@
 	<div id="view">
 		<section id="wallet-section">
 			<div id="total-value">
-				Net worth: {{ totalBalance }}
+				Net worth: {{ formatMoney(totalBalance) }}
 			</div>
 
 			<div id="wallet-list">
@@ -52,7 +52,7 @@
 						Assets
 					</h2>
 					<div class="category-value">
-						{{ assetBalance }}
+						{{ formatMoney(assetBalance) }}
 					</div>
 				</div>
 				<AssetList
@@ -69,7 +69,7 @@
 						Deposits
 					</h2>
 					<div class="category-value">
-						{{ depositBalance }}
+						{{ formatMoney(depositBalance) }}
 					</div>
 				</div>
 				<DepositList
@@ -87,7 +87,7 @@
 						Investments
 					</h2>
 					<div class="category-value">
-						{{ investmentBalance }}
+						{{ formatMoney(investmentBalance) }}
 					</div>
 				</div>
 				<InvestmentList
@@ -224,7 +224,7 @@ export default {
 		},
 		totalBalance() {
 			if (this.wallets.length == 0) {
-				return Formatter.formatMoney('0');
+				return '0';
 			}
 			const balance = Balance.getTotal(
 				this.assets,
@@ -233,23 +233,19 @@ export default {
 				this.components,
 				this.prices
 			);
-			const balanceString = balance.toString();
-			return Formatter.formatMoney(balanceString);
+			return balance.toString();
 		},
 		assetBalance() {
 			const balance = Balance.getAssets(this.assets, this.prices);
-			const balanceString = balance.toString();
-			return Formatter.formatMoney(balanceString);
+			return balance.toString();
 		},
 		depositBalance() {
 			const balance = Balance.getDeposits(this.deposits, this.prices);
-			const balanceString = balance.toString();
-			return Formatter.formatMoney(balanceString);
+			return balance.toString();
 		},
 		investmentBalance() {
 			const balance = Balance.getInvestments(this.investments, this.components, this.prices);
-			const balanceString = balance.toString();
-			return Formatter.formatMoney(balanceString);
+			return balance.toString();
 		},
 		plusIcon() {
 			return plusIcon;
@@ -266,6 +262,9 @@ export default {
 		this._loadPrices();
 	},
 	methods: {
+		formatMoney(moneyString) {
+			return Formatter.formatMoney(moneyString);
+		},
 		formatWalletAddress(address) {
 			return Formatter.formatAddress(address);
 		},
