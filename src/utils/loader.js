@@ -52,13 +52,13 @@ class Loader {
 		const amplBalanceCall = amplContract.balanceOf(address);
 		const balanceData = await EthCall.all([ethBalanceCall, wethBalanceCall, amplBalanceCall], provider);
 		balances['eth'] = {
-			balance: balanceData[0],
+			balance: balanceData[0].toString(),
 		};
 		balances['weth'] = {
-			balance: balanceData[1],
+			balance: balanceData[1].toString(),
 		};
 		balances['ampl'] = {
-			balance: balanceData[2],
+			balance: balanceData[2].toString(),
 		};
 		return balances;
 	}
