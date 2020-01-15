@@ -17,6 +17,9 @@ class Storage {
 	static removeWallet(wallet) {
 		const walletList = this.getWalletList();
 		const walletIndex = walletList.findIndex(w => w.address == wallet.address);
+		if (walletIndex == -1) {
+			return;
+		}
 		walletList.splice(walletIndex, 1);
 		_saveWalletList(walletList);
 	}
