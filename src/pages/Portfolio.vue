@@ -9,7 +9,7 @@
 		>
 			<div class="category-header">
 				<h2 class="category-title">Assets</h2>
-				<div class="category-value">$10,819.31</div>
+				<div class="category-value">{{ assetBalance }}</div>
 			</div>
 			<AssetList
 				:balances="assetBalances"
@@ -21,7 +21,8 @@
 			class="category"
 		>
 			<div class="category-header">
-				<h2>Deposits</h2>
+				<h2 class="category-title">Deposits</h2>
+				<div class="category-value">{{ depositBalance }}</div>
 			</div>
 			<DepositList
 				:balances="depositBalances"
@@ -34,7 +35,8 @@
 			class="category"
 		>
 			<div class="category-header">
-				<h2>Investments</h2>
+				<h2 class="category-title">Investments</h2>
+				<div class="category-value">{{ investmentBalance }}</div>
 			</div>
 			<InvestmentList
 				:balances="investmentBalances"
@@ -143,6 +145,25 @@ export default {
 			const balance = Balance.getTotal(
 				this.assetBalances,
 				this.depositBalances,
+				this.investmentBalances,
+				this.investmentComponents,
+				this.prices
+			);
+			const balanceString = balance.toString();
+			return Formatter.formatMoney(balanceString);
+		},
+		assetBalance() {
+			const balance = Balance.getAssets(this.assetBalances, this.prices);
+			const balanceString = balance.toString();
+			return Formatter.formatMoney(balanceString);
+		},
+		depositBalance() {
+			const balance = Balance.getDeposits(this.depositBalances, this.prices);
+			const balanceString = balance.toString();
+			return Formatter.formatMoney(balanceString);
+		},
+		investmentBalance() {
+			const balance = Balance.getInvestments(
 				this.investmentBalances,
 				this.investmentComponents,
 				this.prices
