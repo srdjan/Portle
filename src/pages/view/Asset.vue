@@ -21,8 +21,6 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import { account } from '../../mixins/account.js';
-
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
@@ -30,9 +28,6 @@ import Loader from '../../utils/loader.js';
 import tokens from '../../data/tokens.json';
 
 export default {
-	mixins: [
-		account,
-	],
 	data() {
 		return {
 			assetId: '',
@@ -63,10 +58,7 @@ export default {
 		},
 	},
 	mounted() {
-		if (!this.account.address) {
-			this.$router.push('/login');
-			return;
-		}
+		this.address = this.$route.params.address;
 		this.assetId = this.$route.params.assetId;
 		this._loadPrice();
 		this._loadBalance();
@@ -87,8 +79,7 @@ export default {
 			this.price = prices[this.assetId];
 		},
 		async _loadBalance() {
-			const address = this.account.address;
-			const balances = await Loader.loadBalance(address);
+			const balances = await Loader.loadBalance(this.address);
 			const balance = balances[this.assetId];
 			this.balance = balance.balance;
 		},

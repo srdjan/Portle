@@ -36,8 +36,6 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
-import { account } from '../../mixins/account.js';
-
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
@@ -45,11 +43,9 @@ import Loader from '../../utils/loader.js';
 import addresses from '../../data/addresses.json';
 
 export default {
-	mixins: [
-		account,
-	],
 	data() {
 		return {
+			address: '',
 			platformId: '',
 			investmentId: '',
 			balance: {},
@@ -82,10 +78,7 @@ export default {
 		},
 	},
 	async mounted() {
-		if (!this.account.address) {
-			this.$router.push('/login');
-			return;
-		}
+		this.address = this.$route.params.address;
 		this.platformId = this.$route.params.platformId;
 		this.investmentId = this.$route.params.investmentId;
 		await this._loadInvestment();
@@ -150,8 +143,7 @@ export default {
 			}
 		},
 		async _loadUniswap() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadUniswap(address);
+			const data = await Loader.loadUniswap(this.address);
 			if (data.userExchangeDatas.length == 0) {
 				return;
 			}
@@ -190,8 +182,7 @@ export default {
 			}
 		},
 		async _loadTokenSet() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadTokenSets(address);
+			const data = await Loader.loadTokenSets(this.address);
 			if (data.users.length == 0) {
 				return;
 			}
@@ -229,8 +220,7 @@ export default {
 			}
 		},
 		async _loadMelon() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadMelon(address);
+			const data = await Loader.loadMelon(this.address);
 			if (!data.investor) {
 				return;
 			}

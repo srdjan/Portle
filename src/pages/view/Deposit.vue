@@ -26,8 +26,6 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
-import { account } from '../../mixins/account.js';
-
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
@@ -35,9 +33,6 @@ import Loader from '../../utils/loader.js';
 import addresses from '../../data/addresses.json';
 
 export default {
-	mixins: [
-		account,
-	],
 	data() {
 		return {
 			platformId: '',
@@ -75,10 +70,7 @@ export default {
 		},
 	},
 	mounted() {
-		if (!this.account.address) {
-			this.$router.push('/login');
-			return;
-		}
+		this.address = this.$route.params.address;
 		this.platformId = this.$route.params.platformId;
 		this.assetId = this.$route.params.assetId;
 		this._loadPrices();
@@ -124,8 +116,7 @@ export default {
 			}
 		},
 		async _loadCompoundDeposit() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadCompound(address);
+			const data = await Loader.loadCompound(this.address);
 			if (data.users.length == 0) {
 				return;
 			}
@@ -153,8 +144,7 @@ export default {
 			}
 		},
 		async _loadDydxDeposit() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadDydx(address);
+			const data = await Loader.loadDydx(this.address);
 			if (data.users.length == 0) {
 				return;
 			}
@@ -193,8 +183,7 @@ export default {
 			this.balance = marketBalances[this.assetId] || '0';
 		},
 		async _loadFulcrumDeposit() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadFulcrum(address);
+			const data = await Loader.loadFulcrum(this.address);
 			if (data.users.length == 0) {
 				return;
 			}
@@ -222,8 +211,7 @@ export default {
 			}
 		},
 		async _loadMakerDeposit() {
-			const address = this.account.address.toLowerCase();
-			const data = await Loader.loadMaker(address);
+			const data = await Loader.loadMaker(this.address);
 			if (data.users.length == 0) {
 				return;
 			}
