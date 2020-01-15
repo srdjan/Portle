@@ -41,11 +41,7 @@
 			</div>
 		</header>
 		<main>
-			<aside />
-			<section>
-				<router-view />
-			</section>
-			<aside />
+			<router-view />
 		</main>
 		<footer />
 	</div>
@@ -131,18 +127,6 @@ header {
 
 footer {
 	height: 32px;
-}
-
-main {
-	display: flex;
-}
-
-aside {
-	flex: 2;
-}
-
-section {
-	flex: 5;
 }
 
 h1#title {
