@@ -12,7 +12,8 @@
 			class="category"
 		>
 			<div class="category-header">
-				<h2>Assets</h2>
+				<h2 class="category-title">Assets</h2>
+				<div class="category-value">$10,819.31</div>
 			</div>
 			<AssetList
 				:balances="assetBalances"
@@ -463,8 +464,27 @@ export default {
 </script>
 
 <style scoped>
+.category {
+	margin-bottom: 2em;
+	padding: 0 2em 1em 2em;
+	border: 1px solid #E7E8EA;
+	border-radius: 8px;
+}
+
 .category-header {
 	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+}
+
+.category-title {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.category-value {
+	font-size: 1.25em;
+	font-weight: bold;
 }
 
 .icon {
