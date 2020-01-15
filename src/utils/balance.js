@@ -3,10 +3,10 @@ import BigNumber from 'bignumber.js';
 import Converter from './converter.js';
 
 class Balance {
-	static getTotal(assets, deposits, investmentBalances, investmentComponents, prices) {
+	static getTotal(assets, deposits, investments, components, prices) {
 		const assetValue = this.getAssets(assets, prices);
 		const depositValue = this.getDeposits(deposits, prices);
-		const investmentValue = this.getInvestments(investmentBalances, investmentComponents, prices);
+		const investmentValue = this.getInvestments(investments, components, prices);
 		const value = assetValue.plus(depositValue).plus(investmentValue);
 		return value;
 	}
@@ -45,15 +45,15 @@ class Balance {
 		return depositValue;
 	}
 
-	static getInvestments(investmentBalances, investmentComponents, prices) {
+	static getInvestments(investments, components, prices) {
 		let investmentValue = new BigNumber(0);
-		for (const platformId in investmentBalances) {
-			const platformBalances = investmentBalances[platformId];
-			for (const investmentId in investmentBalances[platformId]) {
+		for (const platformId in investments) {
+			const platformBalances = investments[platformId];
+			for (const investmentId in investments[platformId]) {
 				const balance = platformBalances[investmentId];
-				const components = investmentComponents[platformId][investmentId];
+				const investmentComponents = components[platformId][investmentId];
 				let price = new BigNumber(0);
-				for (const component of components) {
+				for (const component of investmentComponents) {
 					const amountNumber = new BigNumber(component.amount);
 					const assetId = component.assetId;
 					const assetPrice = prices[assetId];
