@@ -114,7 +114,7 @@ export default {
 		},
 		getLogo(investment) {
 			if (investment.platformId == 'tokensets') {
-				const setId = investment.investmentId
+				const setId = investment.investmentId;
 				return AssetLoader.loadSetLogo(setId);
 			}
 		},
