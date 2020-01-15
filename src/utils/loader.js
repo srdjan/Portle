@@ -17,14 +17,20 @@ class Loader {
 	}
 
 	static async loadBalance(address) {
-		const url = `https://api.ethplorer.io/getAddressInfo/${address}?apiKey=freekey`;
-		const response = await fetch(url);
+		const amberdataKey = 'UAKcba96395cf4b76e0d532cbae62a2bf6e';
+		const headers = {
+			'x-api-key': amberdataKey,
+		};
+		const url = `https://web3api.io/api/v2/addresses/${address}/tokens`;
+		const response = await fetch(url, {
+			headers,
+		});
 		const balanceResponse = await response.json();
 		const balances = {};
 		const addressMap = Converter.reverseMap(addresses);
-		const tokens = balanceResponse.tokens || [];
+		const tokens = balanceResponse.payload.records;
 		for (const tokenData of tokens) {
-			const assetAddress = ethers.utils.getAddress(tokenData.tokenInfo.address);
+			const assetAddress = ethers.utils.getAddress(tokenData.address);
 			if (!assetAddress) {
 				continue;
 			}
@@ -32,13 +38,9 @@ class Loader {
 			if (!assetId) {
 				continue;
 			}
-			const balance = tokenData.balance.toString();
-			const price = tokenData.tokenInfo.price
-				? tokenData.tokenInfo.price.rate
-				: undefined;
+			const balance = tokenData.amount;
 			balances[assetId] = {
 				balance,
-				price,
 			};
 		}
 
