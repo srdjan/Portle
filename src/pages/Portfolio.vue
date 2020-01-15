@@ -15,7 +15,7 @@
 						class="wallet-icon"
 					/>
 					<div
-						v-for="wallet in wallets"
+						v-for="(wallet, walletId) in wallets"
 						:key="wallet.address"
 						class="wallet-details"
 					>
@@ -23,7 +23,7 @@
 							{{ formatWalletAddress(wallet.address) }}
 						</div>
 						<div class="wallet-value">
-							$7,631.12
+							{{ formatMoney(walletBalance(walletId)) }}
 						</div>
 					</div>
 				</div>
@@ -262,6 +262,22 @@ export default {
 		this._loadPrices();
 	},
 	methods: {
+		walletBalance(walletId) {
+			const walletAssets = this.assets
+				.filter(asset => asset.walletId == walletId);
+			const walletDeposits = this.deposits
+				.filter(deposit => deposit.walletId == walletId);
+			const walletInvestments = this.investments
+				.filter(investment => investment.walletId == walletId);
+			const walletBalance = Balance.getTotal(
+				walletAssets,
+				walletDeposits,
+				walletInvestments,
+				this.components,
+				this.prices
+			);
+			return walletBalance.toString();
+		},
 		formatMoney(moneyString) {
 			return Formatter.formatMoney(moneyString);
 		},
