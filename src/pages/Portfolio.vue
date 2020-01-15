@@ -9,16 +9,16 @@
 				<div id="wallet-list-header">
 					Wallets
 				</div>
-				<div class="wallet">
+				<div
+					v-for="(wallet, walletId) in wallets"
+					:key="wallet.address"
+					class="wallet"
+				>
 					<div
 						id="wallet-icon-1"
 						class="wallet-icon"
 					/>
-					<div
-						v-for="(wallet, walletId) in wallets"
-						:key="wallet.address"
-						class="wallet-details"
-					>
+					<div class="wallet-details">
 						<div class="wallet-address">
 							{{ formatWalletAddress(wallet.address) }}
 						</div>
