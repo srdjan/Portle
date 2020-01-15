@@ -352,8 +352,8 @@ export default {
 			const user = data.users[0];
 
 			const rawRate = maker.rate;
-			const rawRateNumber = parseFloat(rawRate);
-			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
+			const rawRateNumber = new BigNumber(rawRate);
+			const rateNumber = rawRateNumber.div('1e27').minus(1).times(60 * 60 * 24 * 365);
 			const index = maker.index;
 			const rawBalance = user.balance;
 			const rawChaiBalance = user.chaiBalance;
