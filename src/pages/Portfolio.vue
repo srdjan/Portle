@@ -14,9 +14,13 @@
 						id="wallet-icon-1"
 						class="wallet-icon"
 					/>
-					<div class="wallet-details">
+					<div
+						v-for="wallet in wallets"
+						:key="wallet.address"
+						class="wallet-details"
+					>
 						<div class="wallet-address">
-							0x0443c74A…d9d64616
+							{{ formatWalletAddress(wallet.address) }}
 						</div>
 						<div class="wallet-value">
 							$7,631.12
@@ -276,6 +280,9 @@ export default {
 		this._loadPrices();
 	},
 	methods: {
+		formatWalletAddress(address) {
+			return Formatter.formatAddress(address);
+		},
 		_initWallets(walletList) {
 			this.wallets = [];
 			for (const wallet of walletList) {
