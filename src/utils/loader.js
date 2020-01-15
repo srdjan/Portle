@@ -1,8 +1,9 @@
 import { ethers } from 'ethers';
+import EthCall from 'ethcall';
 
 import Converter from './converter.js';
 
-import tokenOracleAbi from '../data/abi/tokenOracle.json';
+import erc20Abi from '../data/abi/erc20.json';
 
 import addresses from '../data/addresses.json';
 
@@ -45,21 +46,17 @@ class Loader {
 		}
 
 		const provider = getProvider();
-		const tokenOracleAddress = '0x66c7C9E4075b1ff9D35693973432A20632Ba93e6';
-		const tokenOracle = new ethers.Contract(tokenOracleAddress, tokenOracleAbi, provider);
-		const balanceRequest = [{
-			token: addresses['weth'],
-		}, {
-			token: addresses['ampl'],
-		}];
-		const oracleResponse = await tokenOracle.balances(address, balanceRequest);
+		const wethContract = new EthCall.Contract(addresses['weth'], erc20Abi);
+		const amplContract = new EthCall.Contract(addresses['ampl'], erc20Abi);
+		const wethBalanceCall = wethContract.balanceOf(address);
+		const amplBalanceCall = amplContract.balanceOf(address);
+		const balanceData = await EthCall.all([wethBalanceCall, amplBalanceCall], provider);
 		balances['weth'] = {
-			balance: oracleResponse[0].toString(),
+			balance: balanceData[0],
 		};
 		balances['ampl'] = {
-			balance: oracleResponse[1].toString(),
+			balance: balanceData[1],
 		};
-
 		return balances;
 	}
 
