@@ -14,10 +14,7 @@
 					:key="wallet.address"
 					class="wallet"
 				>
-					<div
-						id="wallet-icon-1"
-						class="wallet-icon"
-					/>
+					<WalletIcon :id="walletId" />
 					<div class="wallet-details">
 						<div class="wallet-address">
 							{{ formatWalletAddress(wallet.address) }}
@@ -118,12 +115,14 @@ import plusIcon from '../../public/img/plus.svg';
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
 import InvestmentList from '../components/group/InvestmentList.vue';
+import WalletIcon from '../components/WalletIcon.vue';
 
 export default {
 	components: {
 		AssetList,
 		DepositList,
 		InvestmentList,
+		WalletIcon,
 	},
 	data() {
 		return {
@@ -654,16 +653,11 @@ export default {
 	align-items: center;
 }
 
-.wallet-icon,
 #add-wallet-icon {
 	height: 2em;
 	width: 2em;
 	border-radius: 1em;
 	background: #d6d6d6;
-}
-
-#wallet-icon-1 {
-	background: teal;
 }
 
 .wallet-details,
