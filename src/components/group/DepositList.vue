@@ -2,7 +2,7 @@
 	<div>
 		<div id="list">
 			<Card
-				v-for="deposit in deposits"
+				v-for="deposit in sortedDeposits"
 				:key="deposit.platformId + '-' + deposit.assetId"
 				:logo="getLogo(deposit.assetId)"
 				:amount="deposit.amount"
@@ -15,7 +15,7 @@
 		</div>
 		<div id="table">
 			<Row
-				v-for="deposit in deposits"
+				v-for="deposit in sortedDeposits"
 				:key="deposit.platformId + '-' + deposit.assetId"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
@@ -44,9 +44,9 @@ export default {
 		Row,
 	},
 	props: {
-		balances: {
-			type: Object,
-			default: () => {},
+		deposits: {
+			type: Array,
+			default: () => [],
 		},
 		rates: {
 			type: Object,
@@ -58,27 +58,24 @@ export default {
 		},
 	},
 	computed: {
-		deposits() {
+		sortedDeposits() {
 			const deposits = [];
-			for (const platformId in this.balances) {
-				const platformBalances = this.balances[platformId];
-				for (const assetId in platformBalances) {
-					const price = this.prices[assetId] || '0';
-					const rate = this.rates.supply[platformId][assetId];
-					const balance = platformBalances[assetId];
-					const amount = Converter.toAmount(balance, assetId);
-					const amountNumber = new BigNumber(amount);
-					const value = amountNumber.times(price).toString();
-					const deposit = {
-						amount,
-						assetId,
-						platformId,
-						price,
-						rate,
-						value,
-					};
-					deposits.push(deposit);
-				}
+			for (const rawDeposit of this.deposits) {
+				const { assetId, platformId, balance } = rawDeposit;
+				const price = this.prices[assetId] || '0';
+				const rate = this.rates.supply[platformId][assetId];
+				const amount = Converter.toAmount(balance, assetId);
+				const amountNumber = new BigNumber(amount);
+				const value = amountNumber.times(price).toString();
+				const deposit = {
+					amount,
+					assetId,
+					platformId,
+					price,
+					rate,
+					value,
+				};
+				deposits.push(deposit);
 			}
 			deposits.sort((a, b) => {
 				const aValue = new BigNumber(a.value);

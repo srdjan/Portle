@@ -40,7 +40,7 @@
 		</section>
 		<div id="asset-section">
 			<div
-				v-if="hasAssets"
+				v-if="assets.length > 0"
 				class="category"
 			>
 				<div class="category-header">
@@ -52,12 +52,12 @@
 					</div>
 				</div>
 				<AssetList
-					:balances="assetBalances"
+					:assets="assets"
 					:prices="prices"
 				/>
 			</div>
 			<div
-				v-if="hasDeposits"
+				v-if="deposits.length > 0"
 				class="category"
 			>
 				<div class="category-header">
@@ -69,13 +69,13 @@
 					</div>
 				</div>
 				<DepositList
-					:balances="depositBalances"
+					:deposits="deposits"
 					:prices="prices"
 					:rates="rates"
 				/>
 			</div>
 			<div
-				v-if="hasInvestments"
+				v-if="investments.length > 0"
 				class="category"
 			>
 				<div class="category-header">
@@ -87,7 +87,7 @@
 					</div>
 				</div>
 				<InvestmentList
-					:balances="investmentBalances"
+					:investments="investments"
 					:components="investmentComponents"
 					:prices="prices"
 				/>
@@ -123,19 +123,7 @@ export default {
 	},
 	data() {
 		return {
-			walletList: [],
-			assetBalances: {},
-			depositBalances: {
-				compound: {},
-				dydx: {},
-				fulcrum: {},
-				maker: {},
-			},
-			investmentBalances: {
-				uniswap: {},
-				tokensets: {},
-				melon: {},
-			},
+			wallets: [],
 			investmentComponents: {
 				uniswap: {},
 				tokensets: {},
@@ -159,44 +147,89 @@ export default {
 		};
 	},
 	computed: {
-		hasAssets() {
-			for (const assetId in this.assetBalances) {
-				const assetBalance = this.assetBalances[assetId];
-				if (assetBalance != '0') {
-					return true;
-				}
+		assets() {
+			const assets = [];
+			if (this.wallets.length == 0) {
+				return assets;
 			}
-			return false;
-		},
-		hasDeposits() {
-			for (const platformId in this.depositBalances) {
-				const platformBalance = this.depositBalances[platformId];
-				for (const assetId in platformBalance) {
-					const depositBalance = platformBalance[assetId];
-					if (depositBalance != '0') {
-						return true;
+			for (const walletId in this.wallets) {
+				const wallet = this.wallets[walletId];
+				for (const assetId in wallet.assets) {
+					const balance = wallet.assets[assetId];
+					if (balance != '0') {
+						const asset = {
+							walletId,
+							assetId,
+							balance,
+						};
+						assets.push(asset);
 					}
 				}
 			}
-			return false;
+			return assets;
 		},
-		hasInvestments() {
-			for (const platformId in this.investmentBalances) {
-				const platformBalance = this.investmentBalances[platformId];
-				for (const assetId in platformBalance) {
-					const investmentBalance = platformBalance[assetId];
-					if (investmentBalance != '0') {
-						return true;
+		deposits() {
+			const deposits = [];
+			if (this.wallets.length == 0) {
+				return deposits;
+			}
+			for (const walletId in this.wallets) {
+				const wallet = this.wallets[walletId];
+				for (const platformId in wallet.deposits) {
+					const platformBalance = wallet.deposits[platformId];
+					for (const assetId in platformBalance) {
+						const balance = platformBalance[assetId];
+						if (balance != '0') {
+							const deposit = {
+								walletId,
+								platformId,
+								assetId,
+								balance,
+							};
+							deposits.push(deposit);
+						}
 					}
 				}
 			}
-			return false;
+			return deposits;
+		},
+		investments() {
+			const investments = [];
+			if (this.wallets.length == 0) {
+				return investments;
+			}
+			for (const walletId in this.wallets) {
+				const wallet = this.wallets[walletId];
+				for (const platformId in wallet.investments) {
+					const platformBalance = wallet.investments[platformId];
+					for (const investmentId in platformBalance) {
+						const balance = platformBalance[investmentId];
+						if (balance != '0') {
+							const deposit = {
+								walletId,
+								platformId,
+								investmentId,
+								balance,
+							};
+							investments.push(deposit);
+						}
+					}
+				}
+			}
+			return investments;
 		},
 		totalBalance() {
+			if (this.wallets.length == 0) {
+				return Formatter.formatMoney('0');
+			}
+			const wallet = this.wallets[0];
+			const assetBalances = wallet.assets;
+			const depositBalances = wallet.deposits;
+			const investmentBalances = wallet.investments;
 			const balance = Balance.getTotal(
-				this.assetBalances,
-				this.depositBalances,
-				this.investmentBalances,
+				assetBalances,
+				depositBalances,
+				investmentBalances,
 				this.investmentComponents,
 				this.prices
 			);
@@ -204,18 +237,24 @@ export default {
 			return Formatter.formatMoney(balanceString);
 		},
 		assetBalance() {
-			const balance = Balance.getAssets(this.assetBalances, this.prices);
+			const wallet = this.wallets[0];
+			const assetBalances = wallet.assets;
+			const balance = Balance.getAssets(assetBalances, this.prices);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
 		},
 		depositBalance() {
-			const balance = Balance.getDeposits(this.depositBalances, this.prices);
+			const wallet = this.wallets[0];
+			const depositBalances = wallet.deposits;
+			const balance = Balance.getDeposits(depositBalances, this.prices);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
 		},
 		investmentBalance() {
+			const wallet = this.wallets[0];
+			const investmentBalances = wallet.investments;
 			const balance = Balance.getInvestments(
-				this.investmentBalances,
+				investmentBalances,
 				this.investmentComponents,
 				this.prices
 			);
@@ -227,15 +266,38 @@ export default {
 		},
 	},
 	async mounted() {
-		this.walletList = Storage.getWalletList();
-		if (this.walletList.length == 0) {
+		const walletList = Storage.getWalletList();
+		if (walletList.length == 0) {
 			this.$router.push('/login');
 			return;
 		}
+		this._initWallets(walletList);
 		await this._loadBalances();
 		this._loadPrices();
 	},
 	methods: {
+		_initWallets(walletList) {
+			this.wallets = [];
+			for (const wallet of walletList) {
+				const address = wallet.address;
+				const emptyWallet = {
+					address,
+					assets: {},
+					deposits: {
+						compound: {},
+						dydx: {},
+						fulcrum: {},
+						maker: {},
+					},
+					investments: {
+						uniswap: {},
+						tokensets: {},
+						melon: {},
+					},
+				};
+				this.wallets.push(emptyWallet);
+			}
+		},
 		async _loadBalances() {
 			const balancePromises = [
 				this._loadAssets(),
@@ -251,11 +313,14 @@ export default {
 		},
 		async _loadPrices() {
 			const assetMap = {};
-			for (const assetId in this.assetBalances) {
+			const wallet = this.wallets[0];
+			const assetBalances = wallet.assets;
+			const depositBalances = wallet.deposits;
+			for (const assetId in assetBalances) {
 				assetMap[assetId] = true;
 			}
-			for (const platformId in this.depositBalances) {
-				const platformBalance = this.depositBalances[platformId];
+			for (const platformId in depositBalances) {
+				const platformBalance = depositBalances[platformId];
 				for (const assetId in platformBalance) {
 					assetMap[assetId] = true;
 				}
@@ -279,18 +344,20 @@ export default {
 			}
 		},
 		async _loadAssets() {
-			const address = this.walletList[0].address;
+			const wallet = this.wallets[0];
+			const address = wallet.address;
 			const balances = await Loader.loadBalance(address);
 			for (const assetId in balances) {
 				const balance = balances[assetId];
-				Vue.set(this.assetBalances, assetId, balance.balance);
+				Vue.set(wallet.assets, assetId, balance.balance);
 				if (balance.price) {
 					Vue.set(this.prices, assetId, balance.price);
 				}
 			}
 		},
 		async _loadCompound() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadCompound(address);
 			if (data.users.length == 0) {
 				return;
@@ -306,7 +373,7 @@ export default {
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(supplyIndex).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.compound, assetId, tokenBalance);
+				Vue.set(wallet.deposits.compound, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.token.supplyRate;
 				const borrowRawRate = balance.token.borrowRate;
@@ -321,7 +388,8 @@ export default {
 			}
 		},
 		async _loadDydx() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadDydx(address);
 			if (data.users.length == 0) {
 				return;
@@ -362,11 +430,12 @@ export default {
 			}, {});
 			for (const assetId in marketBalances) {
 				const marketBalance = marketBalances[assetId];
-				Vue.set(this.depositBalances.dydx, assetId, marketBalance);
+				Vue.set(wallet.deposits.dydx, assetId, marketBalance);
 			}
 		},
 		async _loadFulcrum() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadFulcrum(address);
 			if (data.users.length == 0) {
 				return;
@@ -382,7 +451,7 @@ export default {
 				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
 				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
 				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(this.depositBalances.fulcrum, assetId, tokenBalance);
+				Vue.set(wallet.deposits.fulcrum, assetId, tokenBalance);
 				// Set rates
 				const supplyRawRate = balance.token.supplyRate;
 				const borrowRawRate = balance.token.borrowRate;
@@ -397,7 +466,8 @@ export default {
 			}
 		},
 		async _loadMaker() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadMaker(address);
 			if (data.users.length == 0) {
 				return;
@@ -421,11 +491,12 @@ export default {
 			const totalBalanceNumber = rawTotalBalanceNumber.times(index).div('1e27');
 			const totalBalance = totalBalanceNumber.toString();
 			const rate = rateNumber.toString();
-			Vue.set(this.depositBalances.maker, 'dai', totalBalance);
+			Vue.set(wallet.deposits.maker, 'dai', totalBalance);
 			Vue.set(this.rates.supply.maker, 'dai', rate);
 		},
 		async _loadUniswap() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadUniswap(address);
 			if (data.userExchangeDatas.length == 0) {
 				return;
@@ -460,12 +531,13 @@ export default {
 					assetId,
 					amount: tokenPerUniToken,
 				}];
-				Vue.set(this.investmentBalances.uniswap, investmentId, uniTokenBalance);
+				Vue.set(wallet.investments.uniswap, investmentId, uniTokenBalance);
 				Vue.set(this.investmentComponents.uniswap, investmentId, components);
 			}
 		},
 		async _loadTokenSets() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadTokenSets(address);
 			if (data.users.length == 0) {
 				return;
@@ -495,12 +567,13 @@ export default {
 					};
 					components.push(component);
 				}
-				Vue.set(this.investmentBalances.tokensets, investmentId, balance);
+				Vue.set(wallet.investments.tokensets, investmentId, balance);
 				Vue.set(this.investmentComponents.tokensets, investmentId, components);
 			}
 		},
 		async _loadMelon() {
-			const address = this.walletList[0].address.toLowerCase();
+			const wallet = this.wallets[0];
+			const address = wallet.address.toLowerCase();
 			const data = await Loader.loadMelon(address);
 			if (!data.investor) {
 				return;
@@ -532,7 +605,7 @@ export default {
 					};
 					components.push(component);
 				}
-				Vue.set(this.investmentBalances.melon, investmentId, balance);
+				Vue.set(wallet.investments.melon, investmentId, balance);
 				Vue.set(this.investmentComponents.melon, investmentId, components);
 			}
 		},

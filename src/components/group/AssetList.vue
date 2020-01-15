@@ -2,7 +2,7 @@
 	<div>
 		<div id="list">
 			<Card
-				v-for="asset in assets"
+				v-for="asset in sortedAssets"
 				:key="asset.assetId"
 				:logo="getLogo(asset.assetId)"
 				:amount="asset.amount"
@@ -14,7 +14,7 @@
 		</div>
 		<div id="table">
 			<Row
-				v-for="asset in assets"
+				v-for="asset in sortedAssets"
 				:key="asset.assetId"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.assetId)"
@@ -44,9 +44,9 @@ export default {
 		Row,
 	},
 	props: {
-		balances: {
-			type: Object,
-			default: () => {},
+		assets: {
+			type: Array,
+			default: () => [],
 		},
 		prices: {
 			type: Object,
@@ -54,11 +54,11 @@ export default {
 		},
 	},
 	computed: {
-		assets() {
+		sortedAssets() {
 			const assets = [];
-			for (const assetId in this.balances) {
+			for (const rawAsset of this.assets) {
+				const { assetId, balance } = rawAsset;
 				const name = tokens[assetId];
-				const balance = this.balances[assetId];
 				const price = this.prices[assetId] || '0';
 				const amount = Converter.toAmount(balance, assetId);
 				const amountNumber = new BigNumber(amount);

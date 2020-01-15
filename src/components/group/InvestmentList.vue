@@ -2,7 +2,7 @@
 	<div>
 		<div id="list">
 			<Card
-				v-for="investment in investments"
+				v-for="investment in sortedInvestments"
 				:key="investment.investmentId"
 				:logo="getLogo(investment)"
 				:amount="investment.amount"
@@ -14,7 +14,7 @@
 		</div>
 		<div id="table">
 			<Row
-				v-for="investment in investments"
+				v-for="investment in sortedInvestments"
 				:key="investment.investmentId"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
@@ -42,9 +42,9 @@ export default {
 		Row,
 	},
 	props: {
-		balances: {
-			type: Object,
-			default: () => {},
+		investments: {
+			type: Array,
+			default: () => [],
 		},
 		components: {
 			type: Object,
@@ -56,29 +56,26 @@ export default {
 		},
 	},
 	computed: {
-		investments() {
+		sortedInvestments() {
 			const investments = [];
-			for (const platformId in this.balances) {
-				const platformBalances = this.balances[platformId];
-				for (const investmentId in platformBalances) {
-					const balance = platformBalances[investmentId];
-					const components = this.components[platformId][investmentId];
-					const price = this._getPrice(components);
-					if (!price) {
-						continue;
-					}
-					const amount = Converter.toAmount(balance, 'eth');
-					const amountNumber = new BigNumber(amount);
-					const value = amountNumber.times(price).toString();
-					const investment = {
-						investmentId,
-						platformId,
-						amount,
-						price,
-						value,
-					};
-					investments.push(investment);
+			for (const rawInvestment of this.investments) {
+				const { platformId, investmentId, balance } = rawInvestment;
+				const components = this.components[platformId][investmentId];
+				const price = this._getPrice(components);
+				if (!price) {
+					continue;
 				}
+				const amount = Converter.toAmount(balance, 'eth');
+				const amountNumber = new BigNumber(amount);
+				const value = amountNumber.times(price).toString();
+				const investment = {
+					investmentId,
+					platformId,
+					amount,
+					price,
+					value,
+				};
+				investments.push(investment);
 			}
 			investments.sort((a, b) => {
 				const aValue = new BigNumber(a.value);
