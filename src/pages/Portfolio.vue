@@ -58,8 +58,6 @@ import Storage from '../utils/storage.js';
 
 import addresses from '../data/addresses.json';
 
-import plusCircleIcon from '../../public/img/plus-circle.svg';
-
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
 import InvestmentList from '../components/group/InvestmentList.vue';
@@ -151,9 +149,6 @@ export default {
 			);
 			const balanceString = balance.toString();
 			return Formatter.formatMoney(balanceString);
-		},
-		plusCircleIcon() {
-			return plusCircleIcon;
 		},
 	},
 	async mounted() {
