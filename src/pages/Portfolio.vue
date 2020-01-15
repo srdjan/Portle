@@ -1,12 +1,8 @@
 <template>
 	<div id="view">
-		<TotalBalance
-			:assets="assetBalances"
-			:deposits="depositBalances"
-			:investment-balances="investmentBalances"
-			:investment-components="investmentComponents"
-			:prices="prices"
-		/>
+		<h1 id="total">
+			{{ totalBalance }}
+		</h1>
 		<div
 			v-if="hasAssets"
 			class="category"
@@ -54,7 +50,9 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
+import Balance from '../utils/balance.js';
 import Converter from '../utils/converter.js';
+import Formatter from '../utils/formatter.js';
 import Loader from '../utils/loader.js';
 import Storage from '../utils/storage.js';
 
@@ -62,14 +60,12 @@ import addresses from '../data/addresses.json';
 
 import plusCircleIcon from '../../public/img/plus-circle.svg';
 
-import TotalBalance from '../components/TotalBalance.vue';
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
 import InvestmentList from '../components/group/InvestmentList.vue';
 
 export default {
 	components: {
-		TotalBalance,
 		AssetList,
 		DepositList,
 		InvestmentList,
@@ -144,6 +140,17 @@ export default {
 				}
 			}
 			return false;
+		},
+		totalBalance() {
+			const balance = Balance.getTotal(
+				this.assetBalances,
+				this.depositBalances,
+				this.investmentBalances,
+				this.investmentComponents,
+				this.prices
+			);
+			const balanceString = balance.toString();
+			return Formatter.formatMoney(balanceString);
 		},
 		plusCircleIcon() {
 			return plusCircleIcon;
@@ -464,6 +471,11 @@ export default {
 </script>
 
 <style scoped>
+#total {
+	display: flex;
+	justify-content: center;
+}
+
 .category {
 	margin-bottom: 2em;
 	padding: 0 2em 1em 2em;
