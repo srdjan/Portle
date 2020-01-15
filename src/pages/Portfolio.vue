@@ -271,7 +271,7 @@ export default {
 				}
 			}
 			const assets = Object.keys(assetMap);
-			const prices = await Loader.loadPrice(assets);
+			const prices = await Loader.loadPrices(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
 				const price = prices[assetId];

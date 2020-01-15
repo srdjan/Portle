@@ -8,7 +8,7 @@ import erc20Abi from '../data/abi/erc20.json';
 import addresses from '../data/addresses.json';
 
 class Loader {
-	static async loadPrice(assets) {
+	static async loadPrices(assets) {
 		const assetString = assets.join('%2C');
 		const url = `https://api.portle.io/price?assets=${assetString}`;
 		const response = await fetch(url);
