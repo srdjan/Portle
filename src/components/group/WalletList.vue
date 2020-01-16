@@ -28,11 +28,18 @@
 							</div>
 						</div>
 					</div>
-					<img
-						:src="crossIcon"
-						class="remove-wallet-icon"
-						@click="removeWallet(wallet)"
-					>
+					<div class="wallet-actions">
+						<img
+							:src="clipboardIcon"
+							class="copy-address-icon"
+							@click="copyWalletAddress(wallet.address)"
+						>
+						<img
+							:src="crossIcon"
+							class="remove-wallet-icon"
+							@click="removeWallet(wallet)"
+						>
+					</div>
 				</div>
 				<div
 					id="add-wallet"
@@ -56,6 +63,7 @@
 </template>
 
 <script>
+import clipboardIcon from '../../../public/img/clipboard.svg';
 import crossIcon from '../../../public/img/cross.svg';
 import plusIcon from '../../../public/img/plus.svg';
 
@@ -107,6 +115,9 @@ export default {
 			);
 			return balance.toString();
 		},
+		clipboardIcon() {
+			return clipboardIcon;
+		},
 		crossIcon() {
 			return crossIcon;
 		},
@@ -136,6 +147,9 @@ export default {
 		},
 		formatWalletAddress(address) {
 			return Formatter.formatAddress(address);
+		},
+		copyWalletAddress(address) {
+			navigator.clipboard.writeText(address);
 		},
 		removeWallet(wallet) {
 			Storage.removeWallet(wallet);
@@ -175,14 +189,26 @@ export default {
 
 .wallet {
 	justify-content: space-between;
+	align-items: center;
 }
 
-.remove-wallet-icon {
+.wallet-actions {
 	display: none;
 }
 
-.wallet:hover > .remove-wallet-icon {
+.wallet:hover > .wallet-actions {
 	display: initial;
+}
+
+.wallet-actions > img {
+	margin-left: 0.5em;
+	height: 1.25em;
+	width: 1.25em;
+	opacity: 0.5;
+}
+
+.wallet-actions > img:hover {
+	opacity: 1;
 }
 
 #add-wallet-icon {
