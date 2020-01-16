@@ -95,7 +95,7 @@ header {
 }
 
 main {
-	height: calc(100% - 96px);
+	min-height: calc(100% - 96px);
 }
 
 #app-title {
