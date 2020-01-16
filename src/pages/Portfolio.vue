@@ -689,7 +689,7 @@ export default {
 
 #asset-section {
 	flex: 3;
-	padding: 3.25em 3.5em;
+	padding: 3.25em 3.5em 0 3.5em;
 }
 
 #total {
