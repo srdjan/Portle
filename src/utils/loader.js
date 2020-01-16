@@ -211,13 +211,11 @@ class Loader {
 		return data;
 	}
 
-	static async loadMaker(address) {
+	static async loadMaker(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/maker';
-		const query = `
-			query {
-				users(where: {
-					id: "${address}"
-				}) {
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: user(id: "${address}") {
 					id
 					balance
 					chaiBalance
@@ -226,12 +224,16 @@ class Loader {
 						balance
 					}
 				}
+			`;})
+			.join('');
+		const query = `
+			query {
 				maker(id: 0) {
 					index
 					rate
 				}
-			}
-		`;
+				${addressQuery}
+			}`;
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

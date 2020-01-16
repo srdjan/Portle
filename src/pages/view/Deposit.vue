@@ -209,17 +209,17 @@ export default {
 			}
 		},
 		async _loadMakerDeposit() {
-			const data = await Loader.loadMaker(this.address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const maker = data.maker;
-			const user = data.users[0];
+			const addresses = [ this.address ];
+			const users = await Loader.loadMaker(addresses);
 
+			const maker = users.maker;
+			const index = maker.index;
 			const rawRate = maker.rate;
 			const rawRateNumber = parseFloat(rawRate);
 			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
-			const index = maker.index;
+			this.rate = rateNumber.toString();
+
+			const user = users[`user_${this.address}`];
 			const rawBalance = user.balance;
 			const rawChaiBalance = user.chaiBalance;
 			const rawProxyBalance = user.proxy.balance;
@@ -232,7 +232,6 @@ export default {
 			const totalBalanceNumber = rawTotalBalanceNumber.times(index).div('1e27');
 			const totalBalance = totalBalanceNumber.toString();
 			this.balance = totalBalance;
-			this.rate = rateNumber.toString();
 		},
 	},
 };

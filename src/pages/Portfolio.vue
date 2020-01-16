@@ -354,33 +354,40 @@ export default {
 			}
 		},
 		async _loadMaker() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadMaker(address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const maker = data.maker;
-			const user = data.users[0];
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const users = await Loader.loadMaker(addresses);
 
+			const maker = users.maker;
+			const index = maker.index;
 			const rawRate = maker.rate;
 			const rawRateNumber = new BigNumber(rawRate);
 			const rateNumber = rawRateNumber.div('1e27').minus(1).times(60 * 60 * 24 * 365);
-			const index = maker.index;
-			const rawBalance = user.balance;
-			const rawChaiBalance = user.chaiBalance;
-			const rawProxyBalance = user.proxy.balance;
-			const rawBalanceNumber = new BigNumber(rawBalance);
-			const rawChaiBalanceNumber = new BigNumber(rawChaiBalance);
-			const rawProxyBalanceNumber = new BigNumber(rawProxyBalance);
-			const rawTotalBalanceNumber = rawBalanceNumber
-				.plus(rawChaiBalanceNumber)
-				.plus(rawProxyBalanceNumber);
-			const totalBalanceNumber = rawTotalBalanceNumber.times(index).div('1e27');
-			const totalBalance = totalBalanceNumber.toString();
 			const rate = rateNumber.toString();
-			Vue.set(wallet.deposits.maker, 'dai', totalBalance);
 			Vue.set(this.rates.supply.maker, 'dai', rate);
+
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const user = users[`user_${address}`];
+				if (!user) {
+					continue;
+				}
+				const wallet = this.wallets[i];
+				const rawBalance = user.balance;
+				const rawChaiBalance = user.chaiBalance;
+				const rawProxyBalance = user.proxy
+					? user.proxy.balance
+					: 0;
+				const rawBalanceNumber = new BigNumber(rawBalance);
+				const rawChaiBalanceNumber = new BigNumber(rawChaiBalance);
+				const rawProxyBalanceNumber = new BigNumber(rawProxyBalance);
+				const rawTotalBalanceNumber = rawBalanceNumber
+					.plus(rawChaiBalanceNumber)
+					.plus(rawProxyBalanceNumber);
+				const totalBalanceNumber = rawTotalBalanceNumber.times(index).div('1e27');
+				const totalBalance = totalBalanceNumber.toString();
+				Vue.set(wallet.deposits.maker, 'dai', totalBalance);
+			}
 		},
 		async _loadUniswap() {
 			const wallet = this.wallets[0];
