@@ -24,7 +24,10 @@
 						</div>
 					</div>
 				</div>
-				<div id="add-wallet">
+				<div
+					id="add-wallet"
+					@click="openNewWallet()"
+				>
 					<div id="add-wallet-icon">
 						<img :src="plusIcon">
 					</div>
@@ -118,6 +121,10 @@ export default {
 		},
 		formatWalletAddress(address) {
 			return Formatter.formatAddress(address);
+		},
+		openNewWallet() {
+			const path = '/wallet/new';
+			this.$router.push(path);
 		},
 	},
 };
