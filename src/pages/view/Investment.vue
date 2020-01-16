@@ -181,12 +181,11 @@ export default {
 			}
 		},
 		async _loadTokenSet() {
-			const data = await Loader.loadTokenSets(this.address);
-			if (data.users.length == 0) {
-				return;
-			}
+			const addresses = [ this.address ];
+			const data = await Loader.loadTokenSets(addresses);
+			const walletBalance = data[`user_${this.address}`];
+			const sets = walletBalance.balances;
 			const addressMap = Converter.reverseMap(addresses);
-			const sets = data.users[0].balances;
 
 			for (const set of sets) {
 				const investmentId = set.set_.set_.symbol.toLowerCase();

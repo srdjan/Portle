@@ -435,39 +435,44 @@ export default {
 			}
 		},
 		async _loadTokenSets() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadTokenSets(address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const addressMap = Converter.reverseMap(tokenAddresses);
-			const sets = data.users[0].balances;
-			for (const set of sets) {
-				const investmentId = set.set_.set_.symbol.toLowerCase();
-				const balance = set.balance;
-				const units = set.set_.set_.units;
-				const unitsNumber = new BigNumber(units);
-				const naturalUnit = set.set_.set_.naturalUnit;
-				const underlyingComponents = set.set_.underlyingSet.components;
-				const underlyingUnits = set.set_.underlyingSet.units;
-				const underlyingNaturalUnit = set.set_.underlyingSet.naturalUnit;
-				const componentCount = underlyingComponents.length;
-				const components = [];
-				for (let i = 0; i < componentCount; i++) {
-					const componentAddress = ethers.utils.getAddress(underlyingComponents[i]);
-					const componentAssetId = addressMap[componentAddress];
-					const componentUnit = underlyingUnits[i];
-					const componentBalance = unitsNumber.times(componentUnit).div(underlyingNaturalUnit).div(naturalUnit).times('1e18');
-					const componentAmount = Converter.toAmount(componentBalance, componentAssetId);
-					const component = {
-						assetId: componentAssetId,
-						amount: componentAmount,
-					};
-					components.push(component);
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const data = await Loader.loadTokenSets(addresses);
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const walletBalance = data[`user_${address}`];
+				if (!walletBalance) {
+					continue;
 				}
-				Vue.set(wallet.investments.tokensets, investmentId, balance);
-				Vue.set(this.components.tokensets, investmentId, components);
+				const sets = walletBalance.balances;
+				const wallet = this.wallets[i];
+				const addressMap = Converter.reverseMap(tokenAddresses);
+				for (const set of sets) {
+					const investmentId = set.set_.set_.symbol.toLowerCase();
+					const balance = set.balance;
+					const units = set.set_.set_.units;
+					const unitsNumber = new BigNumber(units);
+					const naturalUnit = set.set_.set_.naturalUnit;
+					const underlyingComponents = set.set_.underlyingSet.components;
+					const underlyingUnits = set.set_.underlyingSet.units;
+					const underlyingNaturalUnit = set.set_.underlyingSet.naturalUnit;
+					const componentCount = underlyingComponents.length;
+					const components = [];
+					for (let i = 0; i < componentCount; i++) {
+						const componentAddress = ethers.utils.getAddress(underlyingComponents[i]);
+						const componentAssetId = addressMap[componentAddress];
+						const componentUnit = underlyingUnits[i];
+						const componentBalance = unitsNumber.times(componentUnit).div(underlyingNaturalUnit).div(naturalUnit).times('1e18');
+						const componentAmount = Converter.toAmount(componentBalance, componentAssetId);
+						const component = {
+							assetId: componentAssetId,
+							amount: componentAmount,
+						};
+						components.push(component);
+					}
+					Vue.set(wallet.investments.tokensets, investmentId, balance);
+					Vue.set(this.components.tokensets, investmentId, components);
+				}
 			}
 		},
 		async _loadMelon() {

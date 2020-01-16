@@ -280,13 +280,11 @@ class Loader {
 		return data;
 	}
 
-	static async loadTokenSets(address) {
+	static async loadTokenSets(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/token-sets';
-		const query = `
-			query {
-				users(where: {
-					id: "${address}"
-				}) {
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: user(id: "${address}") {
 					balances {
 						balance
 						set_ {
@@ -303,8 +301,12 @@ class Loader {
 						}
 					}
 				}
-			}
-		`;
+			`;})
+			.join('');
+		const query = `
+			query {
+				${addressQuery}
+			}`;
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
