@@ -40,22 +40,6 @@
 					</div>
 				</div>
 			</div>
-			<div id="social-links">
-				<a
-					href="https://twitter.com/PortleApp"
-					class="social-link"
-					target="_blank"
-				>
-					Twitter
-				</a>
-				<a
-					href="https://github.com/Destiner/Portle"
-					class="social-link"
-					target="_blank"
-				>
-					GitHub
-				</a>
-			</div>
 		</section>
 		<div id="asset-section">
 			<div
@@ -704,16 +688,6 @@ export default {
 #add-wallet-subtitle {
 	font-size: 0.875em;
 	color: #666;
-}
-
-#social-links {
-	margin-top: 2em;
-}
-
-.social-link {
-	text-decoration: none;
-	color: black;
-	margin-right: 0.5em;
 }
 
 #asset-section {

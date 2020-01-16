@@ -13,7 +13,24 @@
 		<main>
 			<router-view />
 		</main>
-		<footer />
+		<footer>
+			<div id="social-links">
+				<a
+					href="https://twitter.com/PortleApp"
+					class="social-link"
+					target="_blank"
+				>
+					Twitter
+				</a>
+				<a
+					href="https://github.com/Destiner/Portle"
+					class="social-link"
+					target="_blank"
+				>
+					GitHub
+				</a>
+			</div>
+		</footer>
 	</div>
 </template>
 
@@ -81,6 +98,7 @@ header {
 }
 
 footer {
+	margin: 0 1em;
 	height: 32px;
 }
 
@@ -291,6 +309,16 @@ input.invalid {
 .header-part {
 	display: flex;
 	align-items: center;
+}
+
+#social-links {
+	margin-top: 2em;
+}
+
+.social-link {
+	text-decoration: none;
+	color: black;
+	margin-right: 0.5em;
 }
 
 /* Mobile */
