@@ -476,41 +476,46 @@ export default {
 			}
 		},
 		async _loadMelon() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadMelon(address);
-			if (!data.investor) {
-				return;
-			}
-			const addressMap = Converter.reverseMap(tokenAddresses);
-			const investments = data.investor.investments;
-			for (const investment of investments) {
-				const investmentId = investment.fund.name;
-				const balance = investment.shares;
-				const totalShares = investment.fund.totalSupply;
-				if (totalShares == 0) {
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const data = await Loader.loadMelon(addresses);
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const walletBalance = data[`user_${address}`];
+				if (!walletBalance) {
 					continue;
 				}
-				const currentHoldings = investment.fund.holdingsHistory
-					.filter((holding, index, array) => holding.timestamp === array[0].timestamp && !new BigNumber(holding.amount).isZero());
-				const holdingCount = currentHoldings.length;
-				const components = [];
-				for (let i = 0; i < holdingCount; i++) {
-					const holding = currentHoldings[i];
-					const holdingAmount = holding.amount;
-					const holdingAmountNumber = new BigNumber(holdingAmount);
-					const holdingAsset = holding.asset.id;
-					const componentAddress = ethers.utils.getAddress(holdingAsset);
-					const componentAssetId = addressMap[componentAddress];
-					const componentAmount = holdingAmountNumber.div(totalShares).toString();
-					const component = {
-						assetId: componentAssetId,
-						amount: componentAmount,
-					};
-					components.push(component);
+				const investments = walletBalance.investments;
+				const wallet = this.wallets[i];
+				const addressMap = Converter.reverseMap(tokenAddresses);
+				for (const investment of investments) {
+					const investmentId = investment.fund.name;
+					const balance = investment.shares;
+					const totalShares = investment.fund.totalSupply;
+					if (totalShares == 0) {
+						continue;
+					}
+					const currentHoldings = investment.fund.holdingsHistory
+						.filter((holding, index, array) => holding.timestamp === array[0].timestamp && !new BigNumber(holding.amount).isZero());
+					const holdingCount = currentHoldings.length;
+					const components = [];
+					for (let i = 0; i < holdingCount; i++) {
+						const holding = currentHoldings[i];
+						const holdingAmount = holding.amount;
+						const holdingAmountNumber = new BigNumber(holdingAmount);
+						const holdingAsset = holding.asset.id;
+						const componentAddress = ethers.utils.getAddress(holdingAsset);
+						const componentAssetId = addressMap[componentAddress];
+						const componentAmount = holdingAmountNumber.div(totalShares).toString();
+						const component = {
+							assetId: componentAssetId,
+							amount: componentAmount,
+						};
+						components.push(component);
+					}
+					Vue.set(wallet.investments.melon, investmentId, balance);
+					Vue.set(this.components.melon, investmentId, components);
 				}
-				Vue.set(wallet.investments.melon, investmentId, balance);
-				Vue.set(this.components.melon, investmentId, components);
 			}
 		},
 	},

@@ -318,12 +318,11 @@ class Loader {
 		return data;	
 	}
 
-	static async loadMelon(address) {
+	static async loadMelon(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/melonproject/melon';
-		const query = `
-			query {
-				investor(id: "${address}") {
-					id
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: investor(id: "${address}") {
 					investments {
 						shares
 						fund {
@@ -335,15 +334,17 @@ class Loader {
 								assetGav
 								asset {
 									id
-									symbol
-									decimals
 								}
 							}
 						}
 					}
 				}
-			}
-		`;
+			`;})
+			.join('');
+		const query = `
+			query {
+				${addressQuery}
+			}`;
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

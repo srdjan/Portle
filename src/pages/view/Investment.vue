@@ -218,12 +218,11 @@ export default {
 			}
 		},
 		async _loadMelon() {
-			const data = await Loader.loadMelon(this.address);
-			if (!data.investor) {
-				return;
-			}
+			const addresses = [ this.address ];
+			const data = await Loader.loadMelon(addresses);
+			const walletBalance = data[`user_${this.address}`];
+			const investments = walletBalance.investments;
 			const addressMap = Converter.reverseMap(addresses);
-			const investments = data.investor.investments;
 			for (const investment of investments) {
 				const investmentId = investment.fund.name;
 				if (this.investmentId != investmentId) {
