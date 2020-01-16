@@ -16,7 +16,7 @@ class Loader {
 		return prices; 
 	}
 
-	static async loadBalance(addresses) {
+	static async loadAssets(addresses) {
 		const addressCount = addresses.length;
 		const amberdataKey = 'UAKcba96395cf4b76e0d532cbae62a2bf6e';
 		const headers = {

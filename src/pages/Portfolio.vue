@@ -216,7 +216,7 @@ export default {
 		async _loadAssets() {
 			const walletCount = this.wallets.length;
 			const addresses = this.wallets.map(wallet => wallet.address);
-			const walletBalances = await Loader.loadBalance(addresses);
+			const walletBalances = await Loader.loadAssets(addresses);
 			for (let i = 0; i < walletCount; i++) {
 				const address = addresses[i];
 				const balances = walletBalances[address];
