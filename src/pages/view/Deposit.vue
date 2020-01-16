@@ -35,6 +35,7 @@ import tokenAddresses from '../../data/addresses.json';
 export default {
 	data() {
 		return {
+			address: '',
 			platformId: '',
 			assetId: '',
 			balance: 0,
@@ -70,7 +71,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.address = this.$route.params.address;
+		this.address = this.$route.params.wallet;
 		this.platformId = this.$route.params.platformId;
 		this.assetId = this.$route.params.assetId;
 		this._loadPrices();

@@ -78,7 +78,7 @@ export default {
 		},
 	},
 	async mounted() {
-		this.address = this.$route.params.address;
+		this.address = this.$route.params.wallet;
 		this.platformId = this.$route.params.platformId;
 		this.investmentId = this.$route.params.investmentId;
 		await this._loadInvestment();

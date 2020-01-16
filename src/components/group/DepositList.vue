@@ -38,6 +38,7 @@ import Row from '../Row.vue';
 import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
+import Storage from '../../utils/storage.js';
 
 export default {
 	components: {
@@ -97,9 +98,10 @@ export default {
 	},
 	methods: {
 		openDeposit(deposit) {
-			const platformId = deposit.platformId;
-			const assetId = deposit.assetId;
-			const path = `/deposit/${platformId}/${assetId}`;
+			const { walletId, platformId, assetId } = deposit;
+			const walletList = Storage.getWalletList();
+			const walletAddress = walletList[walletId].address;
+			const path = `/wallet/${walletAddress}/deposit/${platformId}/${assetId}`;
 			this.$router.push(path);
 		},
 		formatAsset(assetId) {

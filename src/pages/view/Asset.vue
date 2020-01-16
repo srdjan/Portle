@@ -30,6 +30,7 @@ import tokens from '../../data/tokens.json';
 export default {
 	data() {
 		return {
+			address: '',
 			assetId: '',
 			balance: 0,
 			price: 0,
@@ -58,7 +59,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.address = this.$route.params.address;
+		this.address = this.$route.params.wallet;
 		this.assetId = this.$route.params.assetId;
 		this._loadPrice();
 		this._loadBalance();
@@ -81,7 +82,7 @@ export default {
 		async _loadBalance() {
 			const addresses = [ this.address ];
 			const balances = await Loader.loadAssets(addresses);
-			this.balance = balances[this.assetId];
+			this.balance = balances[this.address][this.assetId];
 		},
 	},
 };
