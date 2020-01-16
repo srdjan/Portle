@@ -41,8 +41,20 @@
 				</div>
 			</div>
 			<div id="social-links">
-				<a href="https://twitter.com/PortleApp" class="social-link" target="_blank">Twitter</a>
-				<a href="https://github.com/Destiner/Portle" class="social-link" target="_blank">GitHub</a>
+				<a
+					href="https://twitter.com/PortleApp"
+					class="social-link"
+					target="_blank"
+				>
+					Twitter
+				</a>
+				<a
+					href="https://github.com/Destiner/Portle"
+					class="social-link"
+					target="_blank"
+				>
+					GitHub
+				</a>
 			</div>
 		</section>
 		<div id="asset-section">
