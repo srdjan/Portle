@@ -223,7 +223,9 @@ export default {
 			const user = data[`user_${this.address}`];
 			const rawBalance = user.balance;
 			const rawChaiBalance = user.chaiBalance;
-			const rawProxyBalance = user.proxy.balance;
+			const rawProxyBalance = user.proxy
+				? user.proxy.balance
+				: 0;
 			const rawBalanceNumber = new BigNumber(rawBalance);
 			const rawChaiBalanceNumber = new BigNumber(rawChaiBalance);
 			const rawProxyBalanceNumber = new BigNumber(rawProxyBalance);
