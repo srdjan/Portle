@@ -14,15 +14,21 @@
 					:key="wallet.address"
 					class="wallet"
 				>
-					<WalletIcon :id="walletId" />
-					<div class="wallet-details">
-						<div class="wallet-address">
-							{{ formatWalletAddress(wallet.address) }}
-						</div>
-						<div class="wallet-value">
-							{{ formatMoney(walletBalance(walletId)) }}
+					<div class="wallet-data">
+						<WalletIcon :id="walletId" />
+						<div class="wallet-details">
+							<div class="wallet-address">
+								{{ formatWalletAddress(wallet.address) }}
+							</div>
+							<div class="wallet-value">
+								{{ formatMoney(walletBalance(walletId)) }}
+							</div>
 						</div>
 					</div>
+					<img
+						:src="crossIcon"
+						@click="removeWallet(wallet)"
+					>
 				</div>
 				<div
 					id="add-wallet"
@@ -46,12 +52,14 @@
 </template>
 
 <script>
+import crossIcon from '../../../public/img/cross.svg';
 import plusIcon from '../../../public/img/plus.svg';
 
 import WalletIcon from '../WalletIcon.vue';
 
 import Balance from '../../utils/balance.js';
 import Formatter from '../../utils/formatter.js';
+import Storage from '../../utils/storage.js';
 import Wallets from '../../utils/wallets.js';
 
 export default {
@@ -95,6 +103,9 @@ export default {
 			);
 			return balance.toString();
 		},
+		crossIcon() {
+			return crossIcon;
+		},
 		plusIcon() {
 			return plusIcon;
 		},
@@ -121,6 +132,10 @@ export default {
 		},
 		formatWalletAddress(address) {
 			return Formatter.formatAddress(address);
+		},
+		removeWallet(wallet) {
+			Storage.removeWallet(wallet);
+			this.$router.go();
 		},
 		openNewWallet() {
 			const path = '/wallet/new';
@@ -151,7 +166,10 @@ export default {
 	padding: 1.25em 0.5em;
 	border-top: 1px solid #e7e8ea;
 	display: flex;
-	align-items: center;
+}
+
+.wallet {
+	justify-content: space-between;
 }
 
 #add-wallet-icon {
@@ -162,6 +180,11 @@ export default {
 	justify-content: center;
 	border-radius: 1em;
 	background: #d6d6d6;
+}
+
+.wallet-data {
+	display: flex;
+	align-items: center;
 }
 
 .wallet-details,
