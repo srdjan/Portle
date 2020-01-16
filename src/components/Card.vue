@@ -6,9 +6,9 @@
 			:src="logo"
 		>
 		<div class="sparse">
-			<span class="amount">
+			<div class="amount">
 				{{ formatAmount(amount) }} {{ ticker }}
-			</span>
+			</div>
 			<WalletIcon
 				:id="walletId"
 				class="wallet-icon"
