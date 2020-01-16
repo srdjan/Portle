@@ -653,8 +653,11 @@ export default {
 }
 
 #add-wallet-icon {
+	display: flex;
 	height: 2em;
 	width: 2em;
+	align-items: center;
+	justify-content: center;
 	border-radius: 1em;
 	background: #d6d6d6;
 }
@@ -672,12 +675,6 @@ export default {
 .wallet-value {
 	font-size: 1.125em;
 	font-weight: bold;
-}
-
-#add-wallet-icon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 #add-wallet-icon > img {
