@@ -103,6 +103,9 @@ export default {
 			this.$router.push(path);
 		},
 		formatInvestment(investment) {
+			if (investment.platformId == 'uniswap') {
+				return Formatter.formatUniswapPool(investment.investmentId);
+			}
 			if (investment.platformId == 'tokensets') {
 				return Formatter.formatSet(investment.investmentId);
 			}

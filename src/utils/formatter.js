@@ -61,6 +61,11 @@ class Formatter {
 		return rate.toLocaleString(undefined, options);
 	}
 
+	static formatUniswapPool(poolId) {
+		const assets = poolId.split('_');
+		return `(${assets[0].toUpperCase()} + ${assets[1].toUpperCase()})`;
+	}
+
 	static formatSet(setId) {
 		const sets = {
 			'btcdai': 'BTCHIVOL',
