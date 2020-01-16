@@ -319,30 +319,24 @@ export default {
 			await Promise.all(balancePromises);
 		},
 		async _loadPrices() {
-			const assetMap = {};
-			const wallet = this.wallets[0];
-			const assetBalances = wallet.assets;
-			const depositBalances = wallet.deposits;
-			for (const assetId in assetBalances) {
-				assetMap[assetId] = true;
+			const assetSet = {};
+			for (const asset of this.assets) {
+				const { assetId } = asset;
+				assetSet[assetId] = true;
 			}
-			for (const platformId in depositBalances) {
-				const platformBalance = depositBalances[platformId];
-				for (const assetId in platformBalance) {
-					assetMap[assetId] = true;
+			for (const deposit of this.deposits) {
+				const { assetId } = deposit;
+				assetSet[assetId] = true;
+			}
+			for (const investment of this.investments) {
+				const { platformId, investmentId } = investment;
+				const components = this.components[platformId][investmentId];
+				for (const component of components) {
+					const { assetId } = component;
+					assetSet[assetId] = true;
 				}
 			}
-			for (const platformId in this.components) {
-				const platformComponents = this.components[platformId];
-				for (const investmentId in platformComponents) {
-					const components = platformComponents[investmentId];
-					for (const investmentComponent of components) {
-						const assetId = investmentComponent.assetId;
-						assetMap[assetId] = true;
-					}
-				}
-			}
-			const assets = Object.keys(assetMap);
+			const assets = Object.keys(assetSet);
 			const prices = await Loader.loadPrices(assets);
 			for (let i = 0; i < assets.length; i++) {
 				const assetId = assets[i];
