@@ -34,18 +34,18 @@ div {
 }
 
 .id-1 {
-	background: chocolate;
-}
-
-.id-2 {
-	background: darkcyan;
-}
-
-.id-3 {
 	background: darkslateblue;
 }
 
+.id-2 {
+	background: gold;
+}
+
+.id-3 {
+	background: lightcoral;
+}
+
 .id-4 {
-	background: lightsalmon;
+	background: saddlebrown;
 }
 </style>
