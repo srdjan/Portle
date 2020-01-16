@@ -15,7 +15,10 @@
 					class="wallet"
 				>
 					<div class="wallet-data">
-						<WalletIcon :id="walletId" />
+						<WalletIcon
+							class="wallet-icon"
+							:id="walletId"
+						/>
 						<div class="wallet-details">
 							<div class="wallet-address">
 								{{ formatWalletAddress(wallet.address) }}
@@ -195,6 +198,10 @@ export default {
 .wallet-data {
 	display: flex;
 	align-items: center;
+}
+
+.wallet-icon {
+	opacity: 0.75;
 }
 
 .wallet-details,
