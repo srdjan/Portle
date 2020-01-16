@@ -3,7 +3,7 @@
 		<div id="list">
 			<Card
 				v-for="deposit in sortedDeposits"
-				:key="deposit.platformId + '-' + deposit.assetId"
+				:key="deposit.walletId + '-' + deposit.platformId + '-' + deposit.assetId"
 				:logo="getLogo(deposit.assetId)"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
@@ -17,7 +17,7 @@
 		<div id="table">
 			<Row
 				v-for="deposit in sortedDeposits"
-				:key="deposit.platformId + '-' + deposit.assetId"
+				:key="deposit.walletId + '-' + deposit.platformId + '-' + deposit.assetId"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
 				:title="formatPlatform(deposit.platformId)"

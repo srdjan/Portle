@@ -3,7 +3,7 @@
 		<div id="list">
 			<Card
 				v-for="asset in sortedAssets"
-				:key="asset.assetId"
+				:key="asset.walletId + '-' + asset.assetId"
 				:logo="getLogo(asset.assetId)"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.assetId)"
@@ -16,7 +16,7 @@
 		<div id="table">
 			<Row
 				v-for="asset in sortedAssets"
-				:key="asset.assetId"
+				:key="asset.walletId + '-' + asset.assetId"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.assetId)"
 				:title="asset.name"

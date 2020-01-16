@@ -3,7 +3,7 @@
 		<div id="list">
 			<Card
 				v-for="investment in sortedInvestments"
-				:key="investment.investmentId"
+				:key="investment.walletId + '-' + investment.platformId + '-' + investment.investmentId"
 				:logo="getLogo(investment)"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
@@ -16,7 +16,7 @@
 		<div id="table">
 			<Row
 				v-for="investment in sortedInvestments"
-				:key="investment.investmentId"
+				:key="investment.walletId + '-' + investment.platformId + '-' + investment.investmentId"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
 				:title="formatPlatform(investment.platformId)"
