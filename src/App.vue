@@ -320,6 +320,7 @@ input.invalid {
 }
 
 .social-link {
+	font-size: 0.875em;
 	text-decoration: none;
 	color: black;
 	margin-right: 0.5em;
