@@ -95,6 +95,9 @@ export default {
 			return Formatter.formatAsset(assetId);
 		},
 		formatInvestmentId(investment) {
+			if (investment.platformId == 'uniswap') {
+				return Formatter.formatUniswapPool(investment.investmentId);
+			}
 			if (investment.platformId == 'tokensets') {
 				return Formatter.formatSet(investment.investmentId);
 			}
@@ -104,6 +107,9 @@ export default {
 			return investment.investmentId;
 		},
 		formatInvestmentName(investment) {
+			if (investment.platformId == 'uniswap') {
+				return '';
+			}
 			if (investment.platformId == 'tokensets') {
 				return Formatter.formatSetName(investment.investmentId);
 			}
