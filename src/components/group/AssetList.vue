@@ -7,6 +7,7 @@
 				:logo="getLogo(asset.assetId)"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.assetId)"
+				:wallet-id="asset.walletId"
 				:title="asset.name"
 				:price="asset.price"
 				@click.native="openAsset(asset)"
@@ -57,13 +58,14 @@ export default {
 		sortedAssets() {
 			const assets = [];
 			for (const rawAsset of this.assets) {
-				const { assetId, balance } = rawAsset;
+				const { walletId, assetId, balance } = rawAsset;
 				const name = tokens[assetId];
 				const price = this.prices[assetId] || '0';
 				const amount = Converter.toAmount(balance, assetId);
 				const amountNumber = new BigNumber(amount);
 				const value = amountNumber.times(price).toString();
 				const asset = {
+					walletId,
 					assetId,
 					name,
 					amount,

@@ -7,6 +7,7 @@
 				:logo="getLogo(deposit.assetId)"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
+				:wallet-id="deposit.walletId"
 				:title="formatPlatform(deposit.platformId)"
 				:rate="deposit.rate"
 				:price="deposit.price"
@@ -61,13 +62,14 @@ export default {
 		sortedDeposits() {
 			const deposits = [];
 			for (const rawDeposit of this.deposits) {
-				const { assetId, platformId, balance } = rawDeposit;
+				const { walletId, assetId, platformId, balance } = rawDeposit;
 				const price = this.prices[assetId] || '0';
 				const rate = this.rates.supply[platformId][assetId];
 				const amount = Converter.toAmount(balance, assetId);
 				const amountNumber = new BigNumber(amount);
 				const value = amountNumber.times(price).toString();
 				const deposit = {
+					walletId,
 					amount,
 					assetId,
 					platformId,

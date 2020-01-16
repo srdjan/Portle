@@ -5,8 +5,12 @@
 			class="logo"
 			:src="logo"
 		>
-		<div class="amount">
+		<div class="amount sparse">
 			{{ formatAmount(amount) }} {{ ticker }}
+			<WalletIcon
+				:id="walletId"
+				class="wallet-icon"
+			/>
 		</div>
 		<div class="title sparse">
 			<div>{{ title }}</div>
@@ -24,9 +28,14 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import WalletIcon from './WalletIcon.vue';
+
 import Formatter from '../utils/formatter.js';
 
 export default {
+	components: {
+		WalletIcon,
+	},
 	props: {
 		logo: {
 			type: String,
@@ -39,6 +48,10 @@ export default {
 		ticker: {
 			type: String,
 			default: '',
+		},
+		walletId: {
+			type: Number,
+			default: 0,
 		},
 		title: {
 			type: String,
@@ -106,6 +119,11 @@ export default {
 	text-overflow: ellipsis;
 }
 
+.wallet-icon {
+	height: 0.75em;
+	width: 0.75em;
+}
+
 .title {
 	margin-top: 0.25em;
 	overflow: hidden;
@@ -122,5 +140,6 @@ export default {
 .sparse {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 }
 </style>

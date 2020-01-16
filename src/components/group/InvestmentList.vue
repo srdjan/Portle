@@ -7,6 +7,7 @@
 				:logo="getLogo(investment)"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
+				:wallet-id="investment.walletId"
 				:title="formatPlatform(investment.platformId)"
 				:price="investment.price"
 				@click.native="openInvestment(investment)"
@@ -59,7 +60,7 @@ export default {
 		sortedInvestments() {
 			const investments = [];
 			for (const rawInvestment of this.investments) {
-				const { platformId, investmentId, balance } = rawInvestment;
+				const { walletId, platformId, investmentId, balance } = rawInvestment;
 				const components = this.components[platformId][investmentId];
 				const price = this._getPrice(components);
 				if (!price) {
@@ -69,6 +70,7 @@ export default {
 				const amountNumber = new BigNumber(amount);
 				const value = amountNumber.times(price).toString();
 				const investment = {
+					walletId,
 					investmentId,
 					platformId,
 					amount,

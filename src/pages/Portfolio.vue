@@ -157,7 +157,8 @@ export default {
 			if (this.wallets.length == 0) {
 				return assets;
 			}
-			for (const walletId in this.wallets) {
+			for (const walletIndex in this.wallets) {
+				const walletId = parseInt(walletIndex);
 				const wallet = this.wallets[walletId];
 				for (const assetId in wallet.assets) {
 					const balance = wallet.assets[assetId];
@@ -178,7 +179,8 @@ export default {
 			if (this.wallets.length == 0) {
 				return deposits;
 			}
-			for (const walletId in this.wallets) {
+			for (const walletIndex in this.wallets) {
+				const walletId = parseInt(walletIndex);
 				const wallet = this.wallets[walletId];
 				for (const platformId in wallet.deposits) {
 					const platformBalance = wallet.deposits[platformId];
@@ -203,7 +205,8 @@ export default {
 			if (this.wallets.length == 0) {
 				return investments;
 			}
-			for (const walletId in this.wallets) {
+			for (const walletIndex in this.wallets) {
+				const walletId = parseInt(walletIndex);
 				const wallet = this.wallets[walletId];
 				for (const platformId in wallet.investments) {
 					const platformBalance = wallet.investments[platformId];
