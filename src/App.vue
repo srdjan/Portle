@@ -83,7 +83,7 @@ body {
 
 header {
 	height: 64px;
-	padding: 0 2em;
+	padding: 0 1em;
 	display: flex;
 	justify-content: space-between;
 	color: white;

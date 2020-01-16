@@ -626,7 +626,7 @@ export default {
 	flex-direction: column;
 	justify-content: space-between;
 	flex: 1;
-	padding: 1.5em 1.125em;
+	padding: 1.5em 1em;
 }
 
 #total-value {
