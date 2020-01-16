@@ -317,35 +317,40 @@ export default {
 			}
 		},
 		async _loadFulcrum() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadFulcrum(address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const balances = data.users[0].balances;
-			for (const balance of balances) {
-				const addressMap = Converter.reverseMap(tokenAddresses);
-				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
-				const assetId = addressMap[assetAddress];
-				const index = balance.token.supplyIndex;
-				const tokenRawBalance = balance.balance;
-				// Set balances
-				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
-				const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
-				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(wallet.deposits.fulcrum, assetId, tokenBalance);
-				// Set rates
-				const supplyRawRate = balance.token.supplyRate;
-				const borrowRawRate = balance.token.borrowRate;
-				const supplyRawRateNumber = new BigNumber(supplyRawRate);
-				const borrowRawRateNumber = new BigNumber(borrowRawRate);
-				const supplyRateNumber = supplyRawRateNumber.div('1e18').div('1e2');
-				const borrowRateNumber = borrowRawRateNumber.div('1e18').div('1e2');
-				const supplyRate = supplyRateNumber.toString();
-				const borrowRate = borrowRateNumber.toString();
-				Vue.set(this.rates.supply.fulcrum, assetId, supplyRate);
-				Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const walletBalances = await Loader.loadFulcrum(addresses);
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const walletBalance = walletBalances[`user_${address}`];
+				if (!walletBalance) {
+					continue;
+				}
+				const balances = walletBalance.balances;
+				const wallet = this.wallets[i];
+				for (const balance of balances) {
+					const addressMap = Converter.reverseMap(tokenAddresses);
+					const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
+					const assetId = addressMap[assetAddress];
+					const index = balance.token.supplyIndex;
+					const tokenRawBalance = balance.balance;
+					// Set balances
+					const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
+					const tokenBalanceNumber = tokenRawBalanceNumber.times(index).div('1e18');
+					const tokenBalance = tokenBalanceNumber.toString();
+					Vue.set(wallet.deposits.fulcrum, assetId, tokenBalance);
+					// Set rates
+					const supplyRawRate = balance.token.supplyRate;
+					const borrowRawRate = balance.token.borrowRate;
+					const supplyRawRateNumber = new BigNumber(supplyRawRate);
+					const borrowRawRateNumber = new BigNumber(borrowRawRate);
+					const supplyRateNumber = supplyRawRateNumber.div('1e18').div('1e2');
+					const borrowRateNumber = borrowRawRateNumber.div('1e18').div('1e2');
+					const supplyRate = supplyRateNumber.toString();
+					const borrowRate = borrowRateNumber.toString();
+					Vue.set(this.rates.supply.fulcrum, assetId, supplyRate);
+					Vue.set(this.rates.borrow.fulcrum, assetId, borrowRate);
+				}
 			}
 		},
 		async _loadMaker() {

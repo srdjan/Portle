@@ -168,22 +168,11 @@ class Loader {
 		return data;
 	}
 
-	static async loadFulcrum(address) {
+	static async loadFulcrum(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/fulcrum';
-		const query = `
-			query {
-				iTokens {
-					symbol
-					address
-					supplyIndex
-					supplyRate
-					underlying {
-						address
-					}
-				}
-				users(where: {
-					id: "${address}"
-				}) {
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: user(id: "${address}") {
 					balances {
 						token {
 							symbol
@@ -196,6 +185,20 @@ class Loader {
 						balance
 					}
 				}
+			`;})
+			.join('');
+		const query = `
+			query {
+				iTokens {
+					symbol
+					address
+					supplyIndex
+					supplyRate
+					underlying {
+						address
+					}
+				}
+				${addressQuery}
 			}`;
 		const opts = {
 			method: 'POST',

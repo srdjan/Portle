@@ -182,11 +182,10 @@ export default {
 			this.balance = marketBalances[this.assetId] || '0';
 		},
 		async _loadFulcrumDeposit() {
-			const data = await Loader.loadFulcrum(this.address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const balances = data.users[0].balances;
+			const addresses = [ this.address ];
+			const walletBalances = await Loader.loadFulcrum(addresses);
+			const walletBalance = walletBalances[`user_${this.address}`];
+			const balances = walletBalance.balances;
 			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
