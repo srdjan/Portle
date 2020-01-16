@@ -153,7 +153,7 @@ export default {
 			for (const pool of pools) {
 				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
 				const assetId = addressMap[assetAddress];
-				const investmentId = `eth_${assetId}`;
+				const investmentId = `${assetId}_eth`;
 				if (this.investmentId != investmentId) {
 					continue;
 				}

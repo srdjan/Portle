@@ -529,7 +529,7 @@ export default {
 				const etherPerUniToken = etherPerUniTokenNumber.toString();
 				const tokenPerUniToken = tokenPerUniTokenNumber.toString();
 
-				const investmentId = `eth_${assetId}`;
+				const investmentId = `${assetId}_eth`;
 				const components = [{
 					assetId: 'eth',
 					amount: etherPerUniToken,
