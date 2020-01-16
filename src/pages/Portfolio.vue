@@ -265,14 +265,11 @@ export default {
 			}
 		},
 		async _loadDydx() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadDydx(address);
-			if (data.users.length == 0) {
-				return;
-			}
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const walletBalances = await Loader.loadDydx(addresses);
 
-			const markets = data.markets;
+			const markets = walletBalances.markets;
 			for (const market of markets) {
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(market.token.address);
@@ -285,29 +282,38 @@ export default {
 				Vue.set(this.rates.supply.dydx, assetId, supplyRate);
 			}
 
-			const balances = data.users[0].balances;
-			const marketBalances = balances.reduce((map, balance) => {
-				const addressMap = Converter.reverseMap(tokenAddresses);
-				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
-				const assetId = addressMap[assetAddress];
-
-				const index = balance.market.supplyIndex;
-				const accountRawBalance = balance.balance;
-				const accountRawBalanceNumber = new BigNumber(accountRawBalance);
-				const accountBalanceNumber = accountRawBalanceNumber.times(index).div('1e18');
-				if (accountBalanceNumber.isNegative()) {
-					return map;
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const walletBalance = walletBalances[`user_${address}`];
+				if (!walletBalance) {
+					continue;
 				}
+				const balances = walletBalance.balances;
+				const wallet = this.wallets[i];
 
-				const prevMarketBalance = map[assetId] || '0';
-				const marketBalanceNumber = accountBalanceNumber.plus(prevMarketBalance);
-				const marketBalance = marketBalanceNumber.toString();
-				map[assetId] = marketBalance;
-				return map;
-			}, {});
-			for (const assetId in marketBalances) {
-				const marketBalance = marketBalances[assetId];
-				Vue.set(wallet.deposits.dydx, assetId, marketBalance);
+				const marketBalances = balances.reduce((map, balance) => {
+					const addressMap = Converter.reverseMap(tokenAddresses);
+					const assetAddress = ethers.utils.getAddress(balance.market.token.address);
+					const assetId = addressMap[assetAddress];
+
+					const index = balance.market.supplyIndex;
+					const accountRawBalance = balance.balance;
+					const accountRawBalanceNumber = new BigNumber(accountRawBalance);
+					const accountBalanceNumber = accountRawBalanceNumber.times(index).div('1e18');
+					if (accountBalanceNumber.isNegative()) {
+						return map;
+					}
+
+					const prevMarketBalance = map[assetId] || '0';
+					const marketBalanceNumber = accountBalanceNumber.plus(prevMarketBalance);
+					const marketBalance = marketBalanceNumber.toString();
+					map[assetId] = marketBalance;
+					return map;
+				}, {});
+				for (const assetId in marketBalances) {
+					const marketBalance = marketBalances[assetId];
+					Vue.set(wallet.deposits.dydx, assetId, marketBalance);
+				}
 			}
 		},
 		async _loadFulcrum() {

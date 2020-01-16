@@ -143,11 +143,10 @@ export default {
 			}
 		},
 		async _loadDydxDeposit() {
-			const data = await Loader.loadDydx(this.address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const markets = data.markets;
+			const addresses = [ this.address ];
+			const walletBalances = await Loader.loadDydx(addresses);
+			const markets = walletBalances.markets;
+			
 			const market = markets.find(market => { 
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(market.token.address);
@@ -159,7 +158,8 @@ export default {
 			const rate = rawRateNumber.div('1e18');
 			this.rate = rate;
 
-			const balances = data.users[0].balances;
+			const walletBalance = walletBalances[`user_${this.address}`];
+			const balances = walletBalance.balances;
 			const marketBalances = balances.reduce((map, balance) => {
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.market.token.address);

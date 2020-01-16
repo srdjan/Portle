@@ -127,21 +127,11 @@ class Loader {
 		return data;
 	}
 
-	static async loadDydx(address) {
+	static async loadDydx(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/dydx';
-		const query = `
-			query {
-				markets {
-					token {
-						id
-						address
-					}
-					supplyIndex
-					supplyRate
-				}
-				users(where: {
-					id: "${address}"
-				}) {
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: user(id: "${address}") {
 					balances {
 						balance
 						market {
@@ -153,6 +143,19 @@ class Loader {
 						}
 					}
 				}
+			`;})
+			.join('');
+		const query = `
+			query {
+				markets {
+					token {
+						id
+						address
+					}
+					supplyIndex
+					supplyRate
+				}
+				${addressQuery}
 			}`;
 		const opts = {
 			method: 'POST',
