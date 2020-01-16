@@ -207,7 +207,6 @@ export default {
 
 <style scoped>
 #view {
-	height: 85vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;

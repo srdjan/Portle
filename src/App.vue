@@ -14,7 +14,7 @@
 			<router-view />
 		</main>
 		<footer>
-			<div id="social-links">
+			<div>
 				<a
 					href="https://twitter.com/PortleApp"
 					class="social-link"
@@ -81,6 +81,10 @@ body {
 	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+#app {
+	height: 100vh;
+}
+
 header {
 	height: 64px;
 	padding: 0 1em;
@@ -88,6 +92,10 @@ header {
 	justify-content: space-between;
 	color: white;
 	background: #140925;
+}
+
+main {
+	height: calc(100% - 96px);
 }
 
 #app-title {
@@ -309,10 +317,6 @@ input.invalid {
 .header-part {
 	display: flex;
 	align-items: center;
-}
-
-#social-links {
-	margin-top: 2em;
 }
 
 .social-link {
