@@ -56,9 +56,7 @@ class Loader {
 					continue;
 				}
 				const balance = tokenData.amount;
-				balances[address][assetId] = {
-					balance,
-				};
+				balances[address][assetId] = balance;
 			}
 		}
 
@@ -80,15 +78,9 @@ class Loader {
 		const balanceData = await EthCall.all(calls, provider);
 		for (let i = 0; i < addressCount; i++) {
 			const address = addresses[i];
-			balances[address]['eth'] = {
-				balance: balanceData[3 * i].toString(),
-			};
-			balances[address]['weth'] = {
-				balance: balanceData[3 * i + 1].toString(),
-			};
-			balances[address]['ampl'] = {
-				balance: balanceData[3 * i + 2].toString(),
-			};
+			balances[address]['eth'] = balanceData[3 * i].toString();
+			balances[address]['weth'] = balanceData[3 * i + 1].toString();
+			balances[address]['ampl'] = balanceData[3 * i + 2].toString();
 		}
 		return balances;
 	}

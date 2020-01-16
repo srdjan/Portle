@@ -223,10 +223,7 @@ export default {
 				const wallet = this.wallets[i];
 				for (const assetId in balances) {
 					const balance = balances[assetId];
-					Vue.set(wallet.assets, assetId, balance.balance);
-					if (balance.price) {
-						Vue.set(this.prices, assetId, balance.price);
-					}
+					Vue.set(wallet.assets, assetId, balance);
 				}
 			}
 		},

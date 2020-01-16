@@ -81,8 +81,7 @@ export default {
 		async _loadBalance() {
 			const addresses = [ this.address ];
 			const balances = await Loader.loadAssets(addresses);
-			const balance = balances[this.assetId];
-			this.balance = balance.balance;
+			this.balance = balances[this.assetId];
 		},
 	},
 };
