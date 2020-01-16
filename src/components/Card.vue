@@ -6,7 +6,9 @@
 			:src="logo"
 		>
 		<div class="amount sparse">
-			{{ formatAmount(amount) }} {{ ticker }}
+			<span>
+				{{ formatAmount(amount) }} {{ ticker }}
+			</span>
 			<WalletIcon
 				:id="walletId"
 				class="wallet-icon"
@@ -116,6 +118,12 @@ export default {
 	font-size: 1.125em;
 	overflow: hidden;
 	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.amount > span {
+	white-space: nowrap;
+	overflow: hidden;
 	text-overflow: ellipsis;
 }
 
