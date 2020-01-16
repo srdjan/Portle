@@ -166,6 +166,7 @@ export default {
 	padding: 1.25em 0.5em;
 	border-top: 1px solid #e7e8ea;
 	display: flex;
+	cursor: pointer;
 }
 
 .wallet {
