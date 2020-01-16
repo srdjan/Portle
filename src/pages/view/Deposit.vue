@@ -216,8 +216,8 @@ export default {
 			const maker = data.maker;
 			const index = maker.index;
 			const rawRate = maker.rate;
-			const rawRateNumber = parseFloat(rawRate);
-			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
+			const rawRateNumber = new BigNumber(rawRate);
+			const rateNumber = rawRateNumber.div('1e27').minus(1).times(60 * 60 * 24 * 365);
 			this.rate = rateNumber.toString();
 
 			const user = data[`user_${this.address}`];
