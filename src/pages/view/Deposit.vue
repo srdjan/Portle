@@ -30,7 +30,7 @@ import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
 
-import addresses from '../../data/addresses.json';
+import tokenAddresses from '../../data/addresses.json';
 
 export default {
 	data() {
@@ -116,13 +116,12 @@ export default {
 			}
 		},
 		async _loadCompoundDeposit() {
-			const data = await Loader.loadCompound(this.address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const balances = data.users[0].balances;
+			const addresses = [ this.address ];
+			const walletBalances = await Loader.loadCompound(addresses);
+			const walletBalance = walletBalances[`user_${this.address}`];
+			const balances = walletBalance.balances;
 			for (const balance of balances) {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
 				if (this.assetId != assetId) {
@@ -150,7 +149,7 @@ export default {
 			}
 			const markets = data.markets;
 			const market = markets.find(market => { 
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(market.token.address);
 				const assetId = addressMap[assetAddress];
 				return assetId == this.assetId;
@@ -162,7 +161,7 @@ export default {
 
 			const balances = data.users[0].balances;
 			const marketBalances = balances.reduce((map, balance) => {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
 				const assetId = addressMap[assetAddress];
 
@@ -189,7 +188,7 @@ export default {
 			}
 			const balances = data.users[0].balances;
 			for (const balance of balances) {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
 				if (this.assetId != assetId) {

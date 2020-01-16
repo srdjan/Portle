@@ -85,22 +85,11 @@ class Loader {
 		return balances;
 	}
 
-	static async loadCompound(address) {
+	static async loadCompound(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/destiner/compound';
-		const query = `
-			query {
-				cTokens {
-					symbol
-					address
-					supplyRate
-					supplyIndex
-					underlying {
-						address
-					}
-				}
-				users(where: {
-					id: "${address}"
-				}) {
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: user(id: "${address}") {
 					balances {
 						token {
 							supplyRate
@@ -112,6 +101,20 @@ class Loader {
 						balance
 					}
 				}
+			`;})
+			.join('');
+		const query = `
+			query {
+				cTokens {
+					symbol
+					address
+					supplyRate
+					supplyIndex
+					underlying {
+						address
+					}
+				}
+				${addressQuery}
 			}`;
 		const opts = {
 			method: 'POST',

@@ -76,7 +76,7 @@ import Loader from '../utils/loader.js';
 import Storage from '../utils/storage.js';
 import Wallets from '../utils/wallets.js';
 
-import addresses from '../data/addresses.json';
+import tokenAddresses from '../data/addresses.json';
 
 import AssetList from '../components/group/AssetList.vue';
 import DepositList from '../components/group/DepositList.vue';
@@ -228,35 +228,40 @@ export default {
 			}
 		},
 		async _loadCompound() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadCompound(address);
-			if (data.users.length == 0) {
-				return;
-			}
-			const balances = data.users[0].balances;
-			for (const balance of balances) {
-				const addressMap = Converter.reverseMap(addresses);
-				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
-				const assetId = addressMap[assetAddress];
-				const supplyIndex = balance.token.supplyIndex;
-				const tokenRawBalance = balance.balance;
-				// Set balances
-				const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
-				const tokenBalanceNumber = tokenRawBalanceNumber.times(supplyIndex).div('1e18');
-				const tokenBalance = tokenBalanceNumber.toString();
-				Vue.set(wallet.deposits.compound, assetId, tokenBalance);
-				// Set rates
-				const supplyRawRate = balance.token.supplyRate;
-				const borrowRawRate = balance.token.borrowRate;
-				const supplyRawRateNumber = new BigNumber(supplyRawRate);
-				const borrowRawRateNumber = new BigNumber(borrowRawRate);
-				const supplyRateNumber = supplyRawRateNumber.times('2102400').div('1e18');
-				const borrowRateNumber = borrowRawRateNumber.times('2102400').div('1e18');
-				const supplyRate = supplyRateNumber.toString();
-				const borrowRate = borrowRateNumber.toString();
-				Vue.set(this.rates.supply.compound, assetId, supplyRate);
-				Vue.set(this.rates.borrow.compound, assetId, borrowRate);
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const walletBalances = await Loader.loadCompound(addresses);
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const walletBalance = walletBalances[`user_${address}`];
+				if (!walletBalance) {
+					continue;
+				}
+				const balances = walletBalance.balances;
+				const wallet = this.wallets[i];
+				for (const balance of balances) {
+					const addressMap = Converter.reverseMap(tokenAddresses);
+					const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
+					const assetId = addressMap[assetAddress];
+					const supplyIndex = balance.token.supplyIndex;
+					const tokenRawBalance = balance.balance;
+					// Set balances
+					const tokenRawBalanceNumber = new BigNumber(tokenRawBalance);
+					const tokenBalanceNumber = tokenRawBalanceNumber.times(supplyIndex).div('1e18');
+					const tokenBalance = tokenBalanceNumber.toString();
+					Vue.set(wallet.deposits.compound, assetId, tokenBalance);
+					// Set rates
+					const supplyRawRate = balance.token.supplyRate;
+					const borrowRawRate = balance.token.borrowRate;
+					const supplyRawRateNumber = new BigNumber(supplyRawRate);
+					const borrowRawRateNumber = new BigNumber(borrowRawRate);
+					const supplyRateNumber = supplyRawRateNumber.times('2102400').div('1e18');
+					const borrowRateNumber = borrowRawRateNumber.times('2102400').div('1e18');
+					const supplyRate = supplyRateNumber.toString();
+					const borrowRate = borrowRateNumber.toString();
+					Vue.set(this.rates.supply.compound, assetId, supplyRate);
+					Vue.set(this.rates.borrow.compound, assetId, borrowRate);
+				}
 			}
 		},
 		async _loadDydx() {
@@ -269,7 +274,7 @@ export default {
 
 			const markets = data.markets;
 			for (const market of markets) {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(market.token.address);
 				const assetId = addressMap[assetAddress];
 
@@ -282,7 +287,7 @@ export default {
 
 			const balances = data.users[0].balances;
 			const marketBalances = balances.reduce((map, balance) => {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.market.token.address);
 				const assetId = addressMap[assetAddress];
 
@@ -314,7 +319,7 @@ export default {
 			}
 			const balances = data.users[0].balances;
 			for (const balance of balances) {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(balance.token.underlying.address);
 				const assetId = addressMap[assetAddress];
 				const index = balance.token.supplyIndex;
@@ -376,7 +381,7 @@ export default {
 			const pools = data.userExchangeDatas;
 
 			for (const pool of pools) {
-				const addressMap = Converter.reverseMap(addresses);
+				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
 				const assetId = addressMap[assetAddress];
 				if (!assetId) {
@@ -414,7 +419,7 @@ export default {
 			if (data.users.length == 0) {
 				return;
 			}
-			const addressMap = Converter.reverseMap(addresses);
+			const addressMap = Converter.reverseMap(tokenAddresses);
 			const sets = data.users[0].balances;
 			for (const set of sets) {
 				const investmentId = set.set_.set_.symbol.toLowerCase();
@@ -450,7 +455,7 @@ export default {
 			if (!data.investor) {
 				return;
 			}
-			const addressMap = Converter.reverseMap(addresses);
+			const addressMap = Converter.reverseMap(tokenAddresses);
 			const investments = data.investor.investments;
 			for (const investment of investments) {
 				const investmentId = investment.fund.name;
