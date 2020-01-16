@@ -40,7 +40,7 @@ import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
 
-import addresses from '../../data/addresses.json';
+import tokenAddresses from '../../data/addresses.json';
 
 export default {
 	data() {
@@ -147,7 +147,7 @@ export default {
 			const data = await Loader.loadUniswap(addresses);
 			const walletBalance = data[`user_${this.address}`];
 			const pools = walletBalance.exchangeBalances;
-			const addressMap = Converter.reverseMap(addresses);
+			const addressMap = Converter.reverseMap(tokenAddresses);
 
 			for (const pool of pools) {
 				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
@@ -185,7 +185,7 @@ export default {
 			const data = await Loader.loadTokenSets(addresses);
 			const walletBalance = data[`user_${this.address}`];
 			const sets = walletBalance.balances;
-			const addressMap = Converter.reverseMap(addresses);
+			const addressMap = Converter.reverseMap(tokenAddresses);
 
 			for (const set of sets) {
 				const investmentId = set.set_.set_.symbol.toLowerCase();
@@ -222,7 +222,7 @@ export default {
 			const data = await Loader.loadMelon(addresses);
 			const walletBalance = data[`user_${this.address}`];
 			const investments = walletBalance.investments;
-			const addressMap = Converter.reverseMap(addresses);
+			const addressMap = Converter.reverseMap(tokenAddresses);
 			for (const investment of investments) {
 				const investmentId = investment.fund.name;
 				if (this.investmentId != investmentId) {
