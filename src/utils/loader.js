@@ -5,7 +5,7 @@ import Converter from './converter.js';
 
 import erc20Abi from '../data/abi/erc20.json';
 
-import addresses from '../data/addresses.json';
+import tokenAddresses from '../data/addresses.json';
 
 class Loader {
 	static async loadPrices(assets) {
@@ -16,50 +16,80 @@ class Loader {
 		return prices; 
 	}
 
-	static async loadBalance(address) {
+	static async loadBalance(addresses) {
+		const addressCount = addresses.length;
 		const amberdataKey = 'UAKcba96395cf4b76e0d532cbae62a2bf6e';
 		const headers = {
 			'x-api-key': amberdataKey,
 		};
-		const url = `https://web3api.io/api/v2/addresses/${address}/tokens`;
-		const response = await fetch(url, {
-			headers,
-		});
-		const balanceResponse = await response.json();
+		const balancePromises = [];
+		for (const address of addresses) {
+			const url = `https://web3api.io/api/v2/addresses/${address}/tokens`;
+			const balancePromise = fetch(url, {
+				headers,
+			});
+			balancePromises.push(balancePromise);
+		}
+		const balanceResponses = await Promise.all(balancePromises);
+		const jsonPromises = [];
+		for (const balanceResponse of balanceResponses) {
+			const jsonPromise = balanceResponse.json();
+			jsonPromises.push(jsonPromise);
+		}
+		const balanceJson = await Promise.all(jsonPromises);
 		const balances = {};
-		const addressMap = Converter.reverseMap(addresses);
-		const tokens = balanceResponse.payload.records;
-		for (const tokenData of tokens) {
-			const assetAddress = ethers.utils.getAddress(tokenData.address);
-			if (!assetAddress) {
-				continue;
+		for (const address of addresses) {
+			balances[address] = {};
+		}
+		const addressMap = Converter.reverseMap(tokenAddresses);
+		for (let i = 0; i < addressCount; i++) {
+			const json = balanceJson[i];
+			const address = addresses[i];
+			const tokens = json.payload.records;
+			for (const tokenData of tokens) {
+				const assetAddress = ethers.utils.getAddress(tokenData.address);
+				if (!assetAddress) {
+					continue;
+				}
+				const assetId = addressMap[assetAddress];
+				if (!assetId) {
+					continue;
+				}
+				const balance = tokenData.amount;
+				balances[address][assetId] = {
+					balance,
+				};
 			}
-			const assetId = addressMap[assetAddress];
-			if (!assetId) {
-				continue;
-			}
-			const balance = tokenData.amount;
-			balances[assetId] = {
-				balance,
-			};
 		}
 
 		const provider = getProvider();
-		const wethContract = new EthCall.Contract(addresses['weth'], erc20Abi);
-		const amplContract = new EthCall.Contract(addresses['ampl'], erc20Abi);
-		const ethBalanceCall = EthCall.calls.getEthBalance(address);
-		const wethBalanceCall = wethContract.balanceOf(address);
-		const amplBalanceCall = amplContract.balanceOf(address);
-		const balanceData = await EthCall.all([ethBalanceCall, wethBalanceCall, amplBalanceCall], provider);
-		balances['eth'] = {
-			balance: balanceData[0].toString(),
-		};
-		balances['weth'] = {
-			balance: balanceData[1].toString(),
-		};
-		balances['ampl'] = {
-			balance: balanceData[2].toString(),
-		};
+		const wethContract = new EthCall.Contract(tokenAddresses['weth'], erc20Abi);
+		const amplContract = new EthCall.Contract(tokenAddresses['ampl'], erc20Abi);
+
+		const calls = [];
+		for (let i = 0; i < addressCount; i++) {
+			const address = addresses[i];
+			const ethBalanceCall = EthCall.calls.getEthBalance(address);
+			const wethBalanceCall = wethContract.balanceOf(address);
+			const amplBalanceCall = amplContract.balanceOf(address);
+			calls.push(ethBalanceCall);
+			calls.push(wethBalanceCall);
+			calls.push(amplBalanceCall);
+		}
+
+		const balanceData = await EthCall.all(calls, provider);
+		for (let i = 0; i < addressCount; i++) {
+			const address = addresses[i];
+			balances[address]['eth'] = {
+				balance: balanceData[3 * i].toString(),
+			};
+			balances[address]['weth'] = {
+				balance: balanceData[3 * i + 1].toString(),
+			};
+			balances[address]['ampl'] = {
+				balance: balanceData[3 * i + 2].toString(),
+			};
+		}
 		return balances;
 	}
 

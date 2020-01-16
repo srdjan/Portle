@@ -79,7 +79,8 @@ export default {
 			this.price = prices[this.assetId];
 		},
 		async _loadBalance() {
-			const balances = await Loader.loadBalance(this.address);
+			const addresses = [ this.address ];
+			const balances = await Loader.loadBalance(addresses);
 			const balance = balances[this.assetId];
 			this.balance = balance.balance;
 		},

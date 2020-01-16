@@ -214,14 +214,19 @@ export default {
 			}
 		},
 		async _loadAssets() {
-			const wallet = this.wallets[0];
-			const address = wallet.address;
-			const balances = await Loader.loadBalance(address);
-			for (const assetId in balances) {
-				const balance = balances[assetId];
-				Vue.set(wallet.assets, assetId, balance.balance);
-				if (balance.price) {
-					Vue.set(this.prices, assetId, balance.price);
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const walletBalances = await Loader.loadBalance(addresses);
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const balances = walletBalances[address];
+				const wallet = this.wallets[i];
+				for (const assetId in balances) {
+					const balance = balances[assetId];
+					Vue.set(wallet.assets, assetId, balance.balance);
+					if (balance.price) {
+						Vue.set(this.prices, assetId, balance.price);
+					}
 				}
 			}
 		},
