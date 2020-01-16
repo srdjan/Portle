@@ -390,44 +390,48 @@ export default {
 			}
 		},
 		async _loadUniswap() {
-			const wallet = this.wallets[0];
-			const address = wallet.address.toLowerCase();
-			const data = await Loader.loadUniswap(address);
-			if (data.userExchangeDatas.length == 0) {
-				return;
-			}
-			const pools = data.userExchangeDatas;
-
-			for (const pool of pools) {
-				const addressMap = Converter.reverseMap(tokenAddresses);
-				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
-				const assetId = addressMap[assetAddress];
-				if (!assetId) {
+			const walletCount = this.wallets.length;
+			const addresses = this.wallets.map(wallet => wallet.address);
+			const data = await Loader.loadUniswap(addresses);
+			for (let i = 0; i < walletCount; i++) {
+				const address = addresses[i];
+				const walletBalance = data[`user_${address}`];
+				if (!walletBalance) {
 					continue;
 				}
+				const pools = walletBalance.exchangeBalances;
+				const wallet = this.wallets[i];
+				for (const pool of pools) {
+					const addressMap = Converter.reverseMap(tokenAddresses);
+					const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
+					const assetId = addressMap[assetAddress];
+					if (!assetId) {
+						continue;
+					}
 
-				const uniTokenBalanceNumber = new BigNumber(pool.uniTokenBalance);
-				const totalUniTokenBalanceNumber = new BigNumber(pool.exchange.totalUniToken);
-				const totalEtherBalanceNumber = new BigNumber(pool.exchange.ethBalance);
-				const totalTokenBalanceNumber = new BigNumber(pool.exchange.tokenBalance);
+					const uniTokenBalanceNumber = new BigNumber(pool.uniTokenBalance);
+					const totalUniTokenBalanceNumber = new BigNumber(pool.exchange.totalUniToken);
+					const totalEtherBalanceNumber = new BigNumber(pool.exchange.ethBalance);
+					const totalTokenBalanceNumber = new BigNumber(pool.exchange.tokenBalance);
 
-				const etherPerUniTokenNumber = totalEtherBalanceNumber.div(totalUniTokenBalanceNumber);
-				const tokenPerUniTokenNumber = totalTokenBalanceNumber.div(totalUniTokenBalanceNumber);
+					const etherPerUniTokenNumber = totalEtherBalanceNumber.div(totalUniTokenBalanceNumber);
+					const tokenPerUniTokenNumber = totalTokenBalanceNumber.div(totalUniTokenBalanceNumber);
 
-				const uniTokenBalance = uniTokenBalanceNumber.times('1e18').toString();
-				const etherPerUniToken = etherPerUniTokenNumber.toString();
-				const tokenPerUniToken = tokenPerUniTokenNumber.toString();
+					const uniTokenBalance = uniTokenBalanceNumber.times('1e18').toString();
+					const etherPerUniToken = etherPerUniTokenNumber.toString();
+					const tokenPerUniToken = tokenPerUniTokenNumber.toString();
 
-				const investmentId = `${assetId}_eth`;
-				const components = [{
-					assetId: 'eth',
-					amount: etherPerUniToken,
-				}, {
-					assetId,
-					amount: tokenPerUniToken,
-				}];
-				Vue.set(wallet.investments.uniswap, investmentId, uniTokenBalance);
-				Vue.set(this.components.uniswap, investmentId, components);
+					const investmentId = `${assetId}_eth`;
+					const components = [{
+						assetId: 'eth',
+						amount: etherPerUniToken,
+					}, {
+						assetId,
+						amount: tokenPerUniToken,
+					}];
+					Vue.set(wallet.investments.uniswap, investmentId, uniTokenBalance);
+					Vue.set(this.components.uniswap, investmentId, components);
+				}
 			}
 		},
 		async _loadTokenSets() {

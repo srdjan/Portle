@@ -143,12 +143,11 @@ export default {
 			}
 		},
 		async _loadUniswap() {
-			const data = await Loader.loadUniswap(this.address);
-			if (data.userExchangeDatas.length == 0) {
-				return;
-			}
+			const addresses = [ this.address ];
+			const data = await Loader.loadUniswap(addresses);
+			const walletBalance = data[`user_${this.address}`];
+			const pools = walletBalance.exchangeBalances;
 			const addressMap = Converter.reverseMap(addresses);
-			const pools = data.userExchangeDatas;
 
 			for (const pool of pools) {
 				const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);

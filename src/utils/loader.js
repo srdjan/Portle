@@ -245,25 +245,30 @@ class Loader {
 		return data;
 	}
 
-	static async loadUniswap(address) {
+	static async loadUniswap(addresses) {
 		const url = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
-		const query = `
-			query {
-				userExchangeDatas(where: {
-					userAddress: "${address}",
-					uniTokenBalance_gt: 0
-				}) {
-					uniTokenBalance
-					exchange {
-						id
-						tokenAddress
-						totalUniToken
-						ethBalance
-						tokenBalance
+		const addressQuery = addresses
+			.map(address => { return `
+				user_${address}: user(id: "${address}") {
+					exchangeBalances(where: {
+						uniTokenBalance_gt: 0
+					}) {
+						uniTokenBalance
+						exchange {
+							id
+							tokenAddress
+							totalUniToken
+							ethBalance
+							tokenBalance
+						}
 					}
 				}
-			}
-		`;
+			`;})
+			.join('');
+		const query = `
+			query {
+				${addressQuery}
+			}`;
 		const opts = {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
