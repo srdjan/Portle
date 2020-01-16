@@ -79,6 +79,7 @@
 			<button
 				id="add"
 				class="primary big"
+				:disabled="!isWeb3Available"
 				@click="saveWeb3Wallet()"
 			>
 				Connect wallet
@@ -122,6 +123,9 @@ export default {
 		};
 	},
 	computed: {
+		isWeb3Available() {
+			return window.ethereum || window.web3;
+		},
 		crossIcon() {
 			return crossIcon;
 		},
