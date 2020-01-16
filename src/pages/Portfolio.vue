@@ -230,10 +230,10 @@ export default {
 		async _loadCompound() {
 			const walletCount = this.wallets.length;
 			const addresses = this.wallets.map(wallet => wallet.address);
-			const walletBalances = await Loader.loadCompound(addresses);
+			const data = await Loader.loadCompound(addresses);
 			for (let i = 0; i < walletCount; i++) {
 				const address = addresses[i];
-				const walletBalance = walletBalances[`user_${address}`];
+				const walletBalance = data[`user_${address}`];
 				if (!walletBalance) {
 					continue;
 				}
@@ -267,9 +267,9 @@ export default {
 		async _loadDydx() {
 			const walletCount = this.wallets.length;
 			const addresses = this.wallets.map(wallet => wallet.address);
-			const walletBalances = await Loader.loadDydx(addresses);
+			const data = await Loader.loadDydx(addresses);
 
-			const markets = walletBalances.markets;
+			const markets = data.markets;
 			for (const market of markets) {
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				const assetAddress = ethers.utils.getAddress(market.token.address);
@@ -284,7 +284,7 @@ export default {
 
 			for (let i = 0; i < walletCount; i++) {
 				const address = addresses[i];
-				const walletBalance = walletBalances[`user_${address}`];
+				const walletBalance = data[`user_${address}`];
 				if (!walletBalance) {
 					continue;
 				}
@@ -319,10 +319,10 @@ export default {
 		async _loadFulcrum() {
 			const walletCount = this.wallets.length;
 			const addresses = this.wallets.map(wallet => wallet.address);
-			const walletBalances = await Loader.loadFulcrum(addresses);
+			const data = await Loader.loadFulcrum(addresses);
 			for (let i = 0; i < walletCount; i++) {
 				const address = addresses[i];
-				const walletBalance = walletBalances[`user_${address}`];
+				const walletBalance = data[`user_${address}`];
 				if (!walletBalance) {
 					continue;
 				}
@@ -356,9 +356,9 @@ export default {
 		async _loadMaker() {
 			const walletCount = this.wallets.length;
 			const addresses = this.wallets.map(wallet => wallet.address);
-			const users = await Loader.loadMaker(addresses);
+			const data = await Loader.loadMaker(addresses);
 
-			const maker = users.maker;
+			const maker = data.maker;
 			const index = maker.index;
 			const rawRate = maker.rate;
 			const rawRateNumber = new BigNumber(rawRate);
@@ -368,7 +368,7 @@ export default {
 
 			for (let i = 0; i < walletCount; i++) {
 				const address = addresses[i];
-				const user = users[`user_${address}`];
+				const user = data[`user_${address}`];
 				if (!user) {
 					continue;
 				}

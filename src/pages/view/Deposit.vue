@@ -117,8 +117,8 @@ export default {
 		},
 		async _loadCompoundDeposit() {
 			const addresses = [ this.address ];
-			const walletBalances = await Loader.loadCompound(addresses);
-			const walletBalance = walletBalances[`user_${this.address}`];
+			const data = await Loader.loadCompound(addresses);
+			const walletBalance = data[`user_${this.address}`];
 			const balances = walletBalance.balances;
 			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(tokenAddresses);
@@ -144,8 +144,8 @@ export default {
 		},
 		async _loadDydxDeposit() {
 			const addresses = [ this.address ];
-			const walletBalances = await Loader.loadDydx(addresses);
-			const markets = walletBalances.markets;
+			const data = await Loader.loadDydx(addresses);
+			const markets = data.markets;
 			
 			const market = markets.find(market => { 
 				const addressMap = Converter.reverseMap(tokenAddresses);
@@ -158,7 +158,7 @@ export default {
 			const rate = rawRateNumber.div('1e18');
 			this.rate = rate;
 
-			const walletBalance = walletBalances[`user_${this.address}`];
+			const walletBalance = data[`user_${this.address}`];
 			const balances = walletBalance.balances;
 			const marketBalances = balances.reduce((map, balance) => {
 				const addressMap = Converter.reverseMap(tokenAddresses);
@@ -183,8 +183,8 @@ export default {
 		},
 		async _loadFulcrumDeposit() {
 			const addresses = [ this.address ];
-			const walletBalances = await Loader.loadFulcrum(addresses);
-			const walletBalance = walletBalances[`user_${this.address}`];
+			const data = await Loader.loadFulcrum(addresses);
+			const walletBalance = data[`user_${this.address}`];
 			const balances = walletBalance.balances;
 			for (const balance of balances) {
 				const addressMap = Converter.reverseMap(tokenAddresses);
@@ -210,16 +210,16 @@ export default {
 		},
 		async _loadMakerDeposit() {
 			const addresses = [ this.address ];
-			const users = await Loader.loadMaker(addresses);
+			const data = await Loader.loadMaker(addresses);
 
-			const maker = users.maker;
+			const maker = data.maker;
 			const index = maker.index;
 			const rawRate = maker.rate;
 			const rawRateNumber = parseFloat(rawRate);
 			const rateNumber = (rawRateNumber / 1e27) ** (60 * 60 * 24 * 365) - 1;
 			this.rate = rateNumber.toString();
 
-			const user = users[`user_${this.address}`];
+			const user = data[`user_${this.address}`];
 			const rawBalance = user.balance;
 			const rawChaiBalance = user.chaiBalance;
 			const rawProxyBalance = user.proxy.balance;
