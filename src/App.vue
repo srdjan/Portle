@@ -13,7 +13,7 @@
 		<main>
 			<router-view />
 		</main>
-		<footer>
+		<footer v-if="showNavigation()">
 			<div>
 				<a
 					href="https://twitter.com/PortleApp"
