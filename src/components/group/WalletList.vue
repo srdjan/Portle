@@ -27,6 +27,7 @@
 					</div>
 					<img
 						:src="crossIcon"
+						class="remove-wallet-icon"
 						@click="removeWallet(wallet)"
 					>
 				</div>
@@ -171,6 +172,14 @@ export default {
 
 .wallet {
 	justify-content: space-between;
+}
+
+.remove-wallet-icon {
+	display: none;
+}
+
+.wallet:hover > .remove-wallet-icon {
+	display: initial;
 }
 
 #add-wallet-icon {
