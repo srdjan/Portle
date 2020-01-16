@@ -1,43 +1,13 @@
 <template>
-	<div
-		id="app"
-	>
-		<header
-			v-if="showNavigation()"
-		>
-			<div
-				class="header-part"
-				@click="openHomePage()"
-			>
-				<img
-					id="logo"
-					:src="logo"
-				>
+	<div id="app">
+		<header v-if="showNavigation()">
+			<div class="header-part">
 				<h1
-					id="title"
+					id="app-title"
+					@click="openHomePage()"
 				>
 					Portle
 				</h1>
-			</div>
-			<div
-				class="header-part"
-			>
-				<div class="tooltip-trigger">
-					<span
-						id="address"
-						@click="copyAddress()"
-						@mouseleave="resetTooltip()"
-					>
-						{{ formatAddress(getAddress()) }}
-					</span>
-					<span class="tooltip">{{ copyTooltipText }}</span>
-				</div>
-				<button
-					id="logout-button"
-					@click="logout()"
-				>
-					Log out
-				</button>
 			</div>
 		</header>
 		<main>
@@ -48,8 +18,6 @@
 </template>
 
 <script>
-import Formatter from './utils/formatter.js';
-
 // eslint-disable-next-line no-unused-vars
 import favicon from '../public/favicon.ico';
 // eslint-disable-next-line no-unused-vars
@@ -83,26 +51,6 @@ export default {
 		openHomePage() {
 			this.$router.push('/');
 		},
-		logout() {
-			localStorage.removeItem('address');
-			localStorage.removeItem('auth');
-			this.$router.push('/login');
-		},
-		getAddress() {
-			const address = localStorage.getItem('address');
-			return address;
-		},
-		formatAddress(address) {
-			return Formatter.formatAddress(address);
-		},
-		copyAddress() {
-			const address = localStorage.getItem('address');
-			navigator.clipboard.writeText(address);
-			this.copied = true;
-		},
-		resetTooltip() {
-			this.copied = false;
-		},
 	},
 };
 </script>
@@ -118,20 +66,22 @@ body {
 
 header {
 	height: 64px;
-	padding: 0 16px 0 16px;
+	padding: 0 2em;
 	display: flex;
 	justify-content: space-between;
-	background: white;
-	box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.75);
+	color: white;
+	background: #140925;
+}
+
+#app-title {
+	margin: 0.25em 0;
+	font-size: 1.5em;
+	font-weight: normal;
+	cursor: pointer;
 }
 
 footer {
 	height: 32px;
-}
-
-h1#title {
-	margin: 0.25em 0;
-	font-size: 1.75em;
 }
 
 h2 {
@@ -343,46 +293,10 @@ input.invalid {
 	align-items: center;
 }
 
-h1#title {
-	margin-left: 0.5em;
-	cursor: default;
-}
-
-#logo {
-	height: 32px;
-}
-
-#logout-button {
-	margin-left: 16px;
-}
-
-#address {
-	cursor: pointer;
-}
-
-.tooltip-trigger .tooltip {
-	position: absolute;
-	margin-top: 10px;
-	margin-left: 10px;
-	padding: 4px 8px;
-	font-size: 0.75em;
-	color: #fff;
-	background-color: #555;
-	border-radius: 4px;
-	visibility: hidden;
-	opacity: 0;
-	transition: opacity 0.5s;
-}
-
-.tooltip-trigger:hover .tooltip {
-	visibility: visible;
-	opacity: 1;
-}
-
 /* Mobile */
 
 @media all and (max-width: 767px) {
-	#title {
+	#app-title {
 		display: none;
 	}
 }
