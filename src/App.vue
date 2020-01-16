@@ -112,7 +112,7 @@ footer {
 
 h2 {
 	font-size: 1.25em;
-	margin: 1.25em 0 0.25em 0;
+	margin: 1em 0 0.25em 0;
 }
 
 button {
