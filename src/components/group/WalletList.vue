@@ -16,8 +16,8 @@
 				>
 					<div class="wallet-data">
 						<WalletIcon
-							class="wallet-icon"
 							:id="walletId"
+							class="wallet-icon"
 						/>
 						<div class="wallet-details">
 							<div class="wallet-address">
