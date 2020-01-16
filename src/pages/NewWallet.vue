@@ -49,6 +49,7 @@
 			<button
 				id="add"
 				class="primary big"
+				:disabled="!_isAddressValid(walletId) || !walletId"
 				@click="saveAddressWallet()"
 			>
 				Add wallet
@@ -67,6 +68,7 @@
 			<button
 				id="add"
 				class="primary big"
+				:disabled="!_isEnsValid(walletId) || !walletId"
 				@click="saveEnsWallet()"
 			>
 				Add wallet
