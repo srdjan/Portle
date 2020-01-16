@@ -5,8 +5,8 @@
 			class="logo"
 			:src="logo"
 		>
-		<div class="amount sparse">
-			<span>
+		<div class="sparse">
+			<span class="amount">
 				{{ formatAmount(amount) }} {{ ticker }}
 			</span>
 			<WalletIcon
@@ -14,13 +14,13 @@
 				class="wallet-icon"
 			/>
 		</div>
-		<div class="title sparse">
+		<div class="detail-section sparse">
 			<div>{{ title }}</div>
 			<div v-if="rate">
 				{{ formatRate(rate) }}
 			</div>
 		</div>
-		<div class="price-value sparse">
+		<div class="price-section sparse">
 			<div>{{ formatMoney(price) }}/</div>
 			<div>{{ formatMoney(value) }}</div>
 		</div>
@@ -114,7 +114,7 @@ export default {
 	opacity: 0.1;
 }
 
-.amount > span {
+.amount {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -128,15 +128,15 @@ export default {
 	opacity: 0.25;
 }
 
-.title {
+.detail-section {
 	margin-top: 0.25em;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
 
-.title,
-.price-value {
+.detail-section,
+.price-section {
 	font-size: 0.875em;
 	color: #79818c;
 }
