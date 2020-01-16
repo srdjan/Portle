@@ -130,6 +130,7 @@ export default {
 .wallet-icon {
 	height: 0.75em;
 	width: 0.75em;
+	opacity: 0.25;
 }
 
 .title {
