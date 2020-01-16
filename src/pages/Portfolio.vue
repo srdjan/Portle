@@ -1,42 +1,48 @@
 <template>
 	<div id="view">
 		<section id="wallet-section">
-			<div id="total-value">
-				Net worth: {{ formatMoney(totalBalance) }}
-			</div>
+			<div>
+				<div id="total-value">
+					Net worth: {{ formatMoney(totalBalance) }}
+				</div>
 
-			<div id="wallet-list">
-				<div id="wallet-list-header">
-					Wallets
-				</div>
-				<div
-					v-for="(wallet, walletId) in wallets"
-					:key="wallet.address"
-					class="wallet"
-				>
-					<WalletIcon :id="walletId" />
-					<div class="wallet-details">
-						<div class="wallet-address">
-							{{ formatWalletAddress(wallet.address) }}
+				<div id="wallet-list">
+					<div id="wallet-list-header">
+						Wallets
+					</div>
+					<div
+						v-for="(wallet, walletId) in wallets"
+						:key="wallet.address"
+						class="wallet"
+					>
+						<WalletIcon :id="walletId" />
+						<div class="wallet-details">
+							<div class="wallet-address">
+								{{ formatWalletAddress(wallet.address) }}
+							</div>
+							<div class="wallet-value">
+								{{ formatMoney(walletBalance(walletId)) }}
+							</div>
 						</div>
-						<div class="wallet-value">
-							{{ formatMoney(walletBalance(walletId)) }}
+					</div>
+					<div id="add-wallet">
+						<div id="add-wallet-icon">
+							<img :src="plusIcon">
+						</div>
+						<div id="add-wallet-text">
+							<div id="add-wallet-title">
+								Add new wallet
+							</div>
+							<div id="add-wallet-subtitle">
+								Metamask, ENS, address, etc
+							</div>
 						</div>
 					</div>
 				</div>
-				<div id="add-wallet">
-					<div id="add-wallet-icon">
-						<img :src="plusIcon">
-					</div>
-					<div id="add-wallet-text">
-						<div id="add-wallet-title">
-							Add new wallet
-						</div>
-						<div id="add-wallet-subtitle">
-							Metamask, ENS, address, etc
-						</div>
-					</div>
-				</div>
+			</div>
+			<div id="social-links">
+				<a href="https://twitter.com/PortleApp" class="social-link" target="_blank">Twitter</a>
+				<a href="https://github.com/Destiner/Portle" class="social-link" target="_blank">GitHub</a>
 			</div>
 		</section>
 		<div id="asset-section">
@@ -620,6 +626,9 @@ export default {
 }
 
 #wallet-section {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	flex: 1;
 	padding: 1.5em 1.125em;
 }
@@ -683,6 +692,16 @@ export default {
 #add-wallet-subtitle {
 	font-size: 0.875em;
 	color: #666;
+}
+
+#social-links {
+	margin-top: 2em;
+}
+
+.social-link {
+	text-decoration: none;
+	color: black;
+	margin-right: 0.5em;
 }
 
 #asset-section {
