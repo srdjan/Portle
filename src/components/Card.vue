@@ -114,17 +114,12 @@ export default {
 	opacity: 0.1;
 }
 
-.amount {
-	font-size: 1.125em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-}
-
 .amount > span {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	width: calc(100% - 0.75em);
+	font-size: 1.125em;
 }
 
 .wallet-icon {
