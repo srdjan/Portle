@@ -20,7 +20,16 @@
 </template>
 
 <script>
+import Storage from '../utils/storage.js';
+
 export default {
+	mounted() {
+		const walletList = Storage.getWalletList();
+		if (walletList.length > 0) {
+			this.$router.push('/');
+			return;
+		}
+	},
 	methods: {
 		openNewWallet() {
 			const path = '/wallet/new';
