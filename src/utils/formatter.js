@@ -5,7 +5,7 @@ class Formatter {
 		if (!address) {
 			return '';
 		}
-		const ellipsizedAddress = `${address.substr(0, 6)}…${address.substr(38)}`;
+		const ellipsizedAddress = `${address.substr(0, 8)}…${address.substr(36)}`;
 		return ellipsizedAddress;
 	}
 
