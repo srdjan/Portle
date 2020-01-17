@@ -16,8 +16,8 @@
 		</div>
 		<div class="detail-section sparse">
 			<div>{{ title }}</div>
-			<div v-if="rate">
-				{{ formatRate(rate) }}
+			<div v-if="subtitle">
+				{{ formatRate(subtitle) }}
 			</div>
 		</div>
 		<div class="price-section sparse">
@@ -59,7 +59,7 @@ export default {
 			type: String,
 			default: '',
 		},
-		rate: {
+		subtitle: {
 			type: String,
 			default: '',
 		},

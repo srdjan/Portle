@@ -9,7 +9,7 @@
 				:ticker="formatAsset(deposit.assetId)"
 				:wallet-id="deposit.walletId"
 				:title="formatPlatform(deposit.platformId)"
-				:rate="deposit.rate"
+				:subtitle="deposit.rate"
 				:price="deposit.price"
 				@click.native="openDeposit(deposit)"
 			/>
