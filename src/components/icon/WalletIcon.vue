@@ -1,11 +1,11 @@
 <template>
 	<div
 		:class="{ 
-			'id-0': id == 0,
-			'id-1': id == 1,
-			'id-2': id == 2,
-			'id-3': id == 3,
-			'id-4': id == 4,
+			'id-0': walletId == 0,
+			'id-1': walletId == 1,
+			'id-2': walletId == 2,
+			'id-3': walletId == 3,
+			'id-4': walletId == 4,
 		}"
 	/>
 </template>
@@ -13,7 +13,7 @@
 <script>
 export default {
 	props: {
-		id: {
+		walletId: {
 			type: Number,
 			default: 0,
 		},

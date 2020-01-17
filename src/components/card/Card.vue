@@ -5,7 +5,7 @@
 				{{ formatAmount(amount) }} {{ ticker }}
 			</div>
 			<WalletIcon
-				:id="walletId"
+				:wallet-id="walletId"
 				class="wallet-icon"
 			/>
 		</div>
