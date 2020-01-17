@@ -9,10 +9,10 @@
 		/>
 		<div id="investment-section">
 			<div
-				v-if="investmentLogo"
+				v-if="investment && investment.platformId == 'tokensets'"
 				id="investment-icon"
 			>
-				<img :src="investmentLogo">
+				<SetIcon :id="investment.investmentId" />
 			</div>
 			<div
 				v-if="investment"
@@ -83,10 +83,12 @@ import Wallets from '../../utils/wallets.js';
 import tokens from '../../data/tokens.json';
 import tokenAddresses from '../../data/addresses.json';
 
+import SetIcon from '../../components/icon/SetIcon.vue';
 import WalletList from '../../components/group/WalletList.vue';
 
 export default {
 	components: {
+		SetIcon,
 		WalletList,
 	},
 	data() {
@@ -182,12 +184,6 @@ export default {
 				return 0;
 			}
 			return balance;
-		},
-		investmentLogo() {
-			if (this.platformId == 'tokensets'){
-				return AssetLoader.loadSetLogo(this.investmentId);
-			}
-			return '';
 		},
 		assets() {
 			return Wallets.getAssets(this.wallets);
