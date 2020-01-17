@@ -1,14 +1,14 @@
 <template>
 	<div>
 		<div id="list">
-			<Card
+			<DepositCard
 				v-for="deposit in sortedDeposits"
 				:key="deposit.walletId + '-' + deposit.platformId + '-' + deposit.assetId"
 				:amount="deposit.amount"
-				:ticker="formatAsset(deposit.assetId)"
+				:asset-id="deposit.assetId"
 				:wallet-id="deposit.walletId"
-				:title="formatPlatform(deposit.platformId)"
-				:subtitle="deposit.rate"
+				:platform-id="deposit.platformId"
+				:rate="deposit.rate"
 				:price="deposit.price"
 				@click.native="openDeposit(deposit)"
 			/>
@@ -31,7 +31,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import Card from '../card/Card.vue';
+import DepositCard from '../card/DepositCard.vue';
 import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
@@ -40,7 +40,7 @@ import Storage from '../../utils/storage.js';
 
 export default {
 	components: {
-		Card,
+		DepositCard,
 		Row,
 	},
 	props: {
