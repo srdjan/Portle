@@ -1,13 +1,12 @@
 <template>
 	<div>
 		<div id="list">
-			<Card
+			<AssetCard
 				v-for="asset in sortedAssets"
 				:key="asset.walletId + '-' + asset.assetId"
 				:amount="asset.amount"
-				:ticker="formatAsset(asset.assetId)"
+				:asset-id="asset.assetId"
 				:wallet-id="asset.walletId"
-				:title="asset.name"
 				:price="asset.price"
 				@click.native="openAsset(asset)"
 			/>
@@ -17,7 +16,7 @@
 				v-for="asset in sortedAssets"
 				:key="asset.walletId + '-' + asset.assetId"
 				:amount="asset.amount"
-				:ticker="formatAsset(asset.assetId)"
+				:ticker="asset.assetId"
 				:title="asset.name"
 				:price="asset.price"
 				@click.native="openAsset(asset)"
@@ -29,7 +28,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import Card from '../card/Card.vue';
+import AssetCard from '../card/AssetCard.vue';
 import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
@@ -40,7 +39,7 @@ import tokens from '../../data/tokens.json';
 
 export default {
 	components: {
-		Card,
+		AssetCard,
 		Row,
 	},
 	props: {
@@ -96,9 +95,6 @@ export default {
 			const walletAddress = walletList[walletId].address;
 			const path = `/wallet/${walletAddress}/asset/${assetId}`;
 			this.$router.push(path);
-		},
-		formatAsset(assetId) {
-			return Formatter.formatAsset(assetId);
 		},
 	},
 };
