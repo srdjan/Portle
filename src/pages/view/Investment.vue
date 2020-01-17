@@ -18,23 +18,49 @@
 				v-if="investment"
 				id="investment-view"
 			>
-				<div id="amount">
-					{{ formatAmount(investment.amount) }} {{ formatInvestmentId(investment) }}
-				</div>
-				<div id="investment-details">
-					<div>
-						{{ formatInvestmentName(investment) }}
+				<div id="asset">
+					<div id="amount">
+						{{ formatAmount(investment.amount) }} {{ formatInvestmentId(investment) }}
+					</div>
+					<div id="investment-details">
+						<div>
+							{{ formatInvestmentName(investment) }}
+						</div>
+					</div>
+					<div id="price-details">
+						<div>
+							{{ formatPlatform(investment.platformId) }}
+						</div>
+						<div>
+							{{ formatMoney(investment.price) }}/
+						</div>
+						<div>
+							{{ formatMoney(investment.value) }}
+						</div>
 					</div>
 				</div>
-				<div id="price-details">
-					<div>
-						{{ formatPlatform(investment.platformId) }}
-					</div>
-					<div>
-						{{ formatMoney(investment.price) }}/
-					</div>
-					<div>
-						{{ formatMoney(investment.value) }}
+				<div id="components">
+					<div
+						v-for="component in investmentComponents"
+						:key="component.assetId"
+						class="component"
+					>
+						<div class="component-icon">
+							<img :src="componentLogo(component)">
+						</div>
+						<div class="component-details">
+							<div>
+								<div class="component-amount">
+									{{ formatAmount(component.amount) }} {{ formatAsset(component.assetId) }}
+								</div>
+								<div class="component-name">
+									{{ component.assetName }}
+								</div>
+							</div>
+							<div class="component-price">
+								{{ formatMoney(component.price) }}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -54,6 +80,7 @@ import Loader from '../../utils/loader.js';
 import Storage from '../../utils/storage.js';
 import Wallets from '../../utils/wallets.js';
 
+import tokens from '../../data/tokens.json';
 import tokenAddresses from '../../data/addresses.json';
 
 import WalletList from '../../components/group/WalletList.vue';
@@ -96,8 +123,7 @@ export default {
 			if (this.balance == 0) {
 				return;
 			}
-			const components = this.components[this.platformId][this.investmentId];
-			const price = this._getPrice(components);
+			const price = this._getPrice(this.investmentComponents);
 			if (!price) {
 				return;
 			}
@@ -114,6 +140,31 @@ export default {
 				value,
 			};
 			return investment;
+		},
+		investmentComponents() {
+			if (!this.components) {
+				return [];
+			}
+			if (!this.components[this.platformId]) {
+				return [];
+			}
+			const components = this.components[this.platformId][this.investmentId];
+			const investmentComponents = [];
+			for (const component of components) {
+				const { amount, assetId } = component;
+				const assetName = tokens[assetId];
+				const assetPriceNumber = new BigNumber(this.prices[assetId]);
+				const investmentAmount = Converter.toAmount(this.balance, assetId);
+				const price = assetPriceNumber.times(amount).times(investmentAmount).toString();
+				const investmentComponent = {
+					amount,
+					assetId,
+					assetName,
+					price,
+				};
+				investmentComponents.push(investmentComponent);
+			}
+			return investmentComponents;
 		},
 		investmentLogo() {
 			if (this.platformId == 'tokensets'){
@@ -174,7 +225,8 @@ export default {
 		},
 		formatInvestmentName(investment) {
 			if (investment.platformId == 'uniswap') {
-				return '';
+				const assets = this.investmentId.split('_');
+				return `${this.formatAsset(assets[0])}-${this.formatAsset(assets[1])} Uniswap pool`;
 			}
 			if (investment.platformId == 'tokensets') {
 				return Formatter.formatSetName(investment.investmentId);
@@ -189,6 +241,9 @@ export default {
 		},
 		formatMoney(priceString) {
 			return Formatter.formatMoney(priceString);
+		},
+		componentLogo(component) {
+			return AssetLoader.loadAssetLogo(component.assetId);
 		},
 		_initWallets(walletList) {
 			this.wallets = [];
@@ -612,12 +667,18 @@ export default {
 }
 
 #investment-view {
-	padding: 2.75em 3em 0 3em;
 	box-sizing: border-box;
 	width: 40em;
 	height: 14.75em;
+}
+
+#asset {
+	padding: 2.75em 3em 0 3em;
+	box-sizing: border-box;
+	height: 14.75em;
 	background: #140925;
-	border-radius: 8px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 	color: white;
 }
 
@@ -640,5 +701,53 @@ export default {
 #price-details {
 	margin-top: 0.875rem;
 	justify-content: space-between;
+}
+
+#components {
+	border: 1px solid #140925;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+
+.component {
+	display: flex;
+	box-sizing: border-box;
+	height: 4em;
+	padding: 0.75em 1em;
+	border-top: 1px solid #e7e8ea;
+}
+
+.component-icon {
+	display: flex;
+	height: 2.5em;
+	width: 2.5em;
+	justify-content: center;
+	align-items: center;
+	background: #ececec;
+	border-radius: 1.25em;
+}
+
+.component-icon > img {
+	height: 1.5em;
+	width: 1.5em;
+	filter: grayscale(100%);
+}
+
+.component-details {
+	display: flex;
+	width: 100%;
+	padding-left: 1em;
+	justify-content: space-between;
+	align-items: end;
+}
+
+.component-amount {
+	font-size: 1.125em;
+}
+
+.component-name,
+.component-price {
+	font-size: 0.875em;
+	color: #79818c;
 }
 </style>
