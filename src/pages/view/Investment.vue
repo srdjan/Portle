@@ -12,7 +12,7 @@
 				v-if="investment && investment.platformId == 'tokensets'"
 				id="investment-icon"
 			>
-				<SetIcon :set-id="investment.investmentId" />
+				<SetIcon :set-id="investment.id" />
 			</div>
 			<div
 				v-if="investment"
@@ -125,7 +125,7 @@ export default {
 			if (this.balance == 0) {
 				return;
 			}
-			const investmentId = this.investmentId;
+			const id = this.investmentId;
 			const platformId = this.platformId;
 			const amount = Converter.toAmount(this.balance, 'eth');
 			const valueNumber = this.investmentComponents
@@ -133,7 +133,7 @@ export default {
 			const value = valueNumber.toString();
 			const price = valueNumber.div(amount).toString();
 			const investment = {
-				investmentId,
+				id,
 				platformId,
 				amount,
 				price,
@@ -225,15 +225,15 @@ export default {
 		},
 		formatInvestmentId(investment) {
 			if (investment.platformId == 'uniswap') {
-				return Formatter.formatUniswapPool(investment.investmentId);
+				return Formatter.formatUniswapPool(investment.id);
 			}
 			if (investment.platformId == 'tokensets') {
-				return Formatter.formatSet(investment.investmentId);
+				return Formatter.formatSet(investment.id);
 			}
 			if (investment.platformId == 'melon') {
 				return 'sh.';
 			}
-			return investment.investmentId;
+			return investment.id;
 		},
 		formatInvestmentName(investment) {
 			if (investment.platformId == 'uniswap') {
@@ -241,9 +241,9 @@ export default {
 				return `${this.formatAsset(assets[0])}-${this.formatAsset(assets[1])} Uniswap pool`;
 			}
 			if (investment.platformId == 'tokensets') {
-				return Formatter.formatSetName(investment.investmentId);
+				return Formatter.formatSetName(investment.id);
 			}
-			return investment.investmentId;
+			return investment.id;
 		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);
@@ -300,8 +300,8 @@ export default {
 				assetSet[assetId] = true;
 			}
 			for (const investment of this.investments) {
-				const { platformId, investmentId } = investment;
-				const components = this.components[platformId][investmentId];
+				const { platformId, id } = investment;
+				const components = this.components[platformId][id];
 				for (const component of components) {
 					const { assetId } = component;
 					assetSet[assetId] = true;
@@ -523,7 +523,7 @@ export default {
 					const etherPerUniToken = etherPerUniTokenNumber.toString();
 					const tokenPerUniToken = tokenPerUniTokenNumber.toString();
 
-					const investmentId = `${assetId}_eth`;
+					const id = `${assetId}_eth`;
 					const components = [{
 						assetId: 'eth',
 						amount: etherPerUniToken,
@@ -531,8 +531,8 @@ export default {
 						assetId,
 						amount: tokenPerUniToken,
 					}];
-					Vue.set(wallet.investments.uniswap, investmentId, uniTokenBalance);
-					Vue.set(this.components.uniswap, investmentId, components);
+					Vue.set(wallet.investments.uniswap, id, uniTokenBalance);
+					Vue.set(this.components.uniswap, id, components);
 				}
 			}
 		},
@@ -550,7 +550,7 @@ export default {
 				const wallet = this.wallets[i];
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				for (const set of sets) {
-					const investmentId = set.set_.set_.symbol.toLowerCase();
+					const id = set.set_.set_.symbol.toLowerCase();
 					const balance = set.balance;
 					const units = set.set_.set_.units;
 					const unitsNumber = new BigNumber(units);
@@ -572,8 +572,8 @@ export default {
 						};
 						components.push(component);
 					}
-					Vue.set(wallet.investments.tokensets, investmentId, balance);
-					Vue.set(this.components.tokensets, investmentId, components);
+					Vue.set(wallet.investments.tokensets, id, balance);
+					Vue.set(this.components.tokensets, id, components);
 				}
 			}
 		},
@@ -591,7 +591,7 @@ export default {
 				const wallet = this.wallets[i];
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				for (const investment of investments) {
-					const investmentId = investment.fund.name;
+					const id = investment.fund.name;
 					const balance = investment.shares;
 					const totalShares = investment.fund.totalSupply;
 					if (totalShares == 0) {
@@ -615,8 +615,8 @@ export default {
 						};
 						components.push(component);
 					}
-					Vue.set(wallet.investments.melon, investmentId, balance);
-					Vue.set(this.components.melon, investmentId, components);
+					Vue.set(wallet.investments.melon, id, balance);
+					Vue.set(this.components.melon, id, components);
 				}
 			}
 		},

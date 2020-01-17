@@ -59,13 +59,13 @@ class Wallets {
 			const wallet = wallets[walletId];
 			for (const platformId in wallet.investments) {
 				const platformBalance = wallet.investments[platformId];
-				for (const investmentId in platformBalance) {
-					const balance = platformBalance[investmentId];
+				for (const id in platformBalance) {
+					const balance = platformBalance[id];
 					if (balance != '0') {
 						const investment = {
 							walletId,
 							platformId,
-							investmentId,
+							id,
 							balance,
 						};
 						investments.push(investment);

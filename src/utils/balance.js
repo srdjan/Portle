@@ -46,8 +46,8 @@ class Balance {
 	static getInvestments(investments, components, prices) {
 		let investmentValue = new BigNumber(0);
 		for (const investment of investments) {
-			const { platformId, investmentId, balance} = investment;
-			const investmentComponents = components[platformId][investmentId];
+			const { platformId, id, balance} = investment;
+			const investmentComponents = components[platformId][id];
 			let price = new BigNumber(0);
 			for (const component of investmentComponents) {
 				const amountNumber = new BigNumber(component.amount);

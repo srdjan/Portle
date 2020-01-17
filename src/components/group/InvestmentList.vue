@@ -3,9 +3,9 @@
 		<div id="list">
 			<InvestmentCard
 				v-for="investment in sortedInvestments"
-				:key="investment.walletId + '-' + investment.platformId + '-' + investment.investmentId"
+				:key="investment.walletId + '-' + investment.platformId + '-' + investment.id"
 				:amount="investment.amount"
-				:investment-id="investment.investmentId"
+				:investment-id="investment.id"
 				:wallet-id="investment.walletId"
 				:platform-id="investment.platformId"
 				:price="investment.price"
@@ -15,7 +15,7 @@
 		<div id="table">
 			<Row
 				v-for="investment in sortedInvestments"
-				:key="investment.walletId + '-' + investment.platformId + '-' + investment.investmentId"
+				:key="investment.walletId + '-' + investment.platformId + '-' + investment.id"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
 				:title="formatPlatform(investment.platformId)"
@@ -59,8 +59,8 @@ export default {
 		sortedInvestments() {
 			const investments = [];
 			for (const rawInvestment of this.investments) {
-				const { walletId, platformId, investmentId, balance } = rawInvestment;
-				const components = this.components[platformId][investmentId];
+				const { walletId, platformId, id, balance } = rawInvestment;
+				const components = this.components[platformId][id];
 				const price = this._getPrice(components);
 				if (!price) {
 					continue;
@@ -70,7 +70,7 @@ export default {
 				const value = amountNumber.times(price).toString();
 				const investment = {
 					walletId,
-					investmentId,
+					id,
 					platformId,
 					amount,
 					price,
@@ -96,20 +96,20 @@ export default {
 	},
 	methods: {
 		openInvestment(investment) {
-			const { walletId, platformId, investmentId } = investment;
+			const { walletId, platformId, id } = investment;
 			const walletList = Storage.getWalletList();
 			const walletAddress = walletList[walletId].address;
-			const path = `/wallet/${walletAddress}/investment/${platformId}/${investmentId}`;
+			const path = `/wallet/${walletAddress}/investment/${platformId}/${id}`;
 			this.$router.push(path);
 		},
 		formatInvestment(investment) {
 			if (investment.platformId == 'uniswap') {
-				return Formatter.formatUniswapPool(investment.investmentId);
+				return Formatter.formatUniswapPool(investment.id);
 			}
 			if (investment.platformId == 'tokensets') {
-				return Formatter.formatSet(investment.investmentId);
+				return Formatter.formatSet(investment.id);
 			}
-			return investment.investmentId;
+			return investment.id;
 		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);

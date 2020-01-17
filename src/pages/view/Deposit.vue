@@ -234,8 +234,8 @@ export default {
 				assetSet[assetId] = true;
 			}
 			for (const investment of this.investments) {
-				const { platformId, investmentId } = investment;
-				const components = this.components[platformId][investmentId];
+				const { platformId, id } = investment;
+				const components = this.components[platformId][id];
 				for (const component of components) {
 					const { assetId } = component;
 					assetSet[assetId] = true;
@@ -457,7 +457,7 @@ export default {
 					const etherPerUniToken = etherPerUniTokenNumber.toString();
 					const tokenPerUniToken = tokenPerUniTokenNumber.toString();
 
-					const investmentId = `${assetId}_eth`;
+					const id = `${assetId}_eth`;
 					const components = [{
 						assetId: 'eth',
 						amount: etherPerUniToken,
@@ -465,8 +465,8 @@ export default {
 						assetId,
 						amount: tokenPerUniToken,
 					}];
-					Vue.set(wallet.investments.uniswap, investmentId, uniTokenBalance);
-					Vue.set(this.components.uniswap, investmentId, components);
+					Vue.set(wallet.investments.uniswap, id, uniTokenBalance);
+					Vue.set(this.components.uniswap, id, components);
 				}
 			}
 		},
@@ -484,7 +484,7 @@ export default {
 				const wallet = this.wallets[i];
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				for (const set of sets) {
-					const investmentId = set.set_.set_.symbol.toLowerCase();
+					const id = set.set_.set_.symbol.toLowerCase();
 					const balance = set.balance;
 					const units = set.set_.set_.units;
 					const unitsNumber = new BigNumber(units);
@@ -506,8 +506,8 @@ export default {
 						};
 						components.push(component);
 					}
-					Vue.set(wallet.investments.tokensets, investmentId, balance);
-					Vue.set(this.components.tokensets, investmentId, components);
+					Vue.set(wallet.investments.tokensets, id, balance);
+					Vue.set(this.components.tokensets, id, components);
 				}
 			}
 		},
@@ -525,7 +525,7 @@ export default {
 				const wallet = this.wallets[i];
 				const addressMap = Converter.reverseMap(tokenAddresses);
 				for (const investment of investments) {
-					const investmentId = investment.fund.name;
+					const id = investment.fund.name;
 					const balance = investment.shares;
 					const totalShares = investment.fund.totalSupply;
 					if (totalShares == 0) {
@@ -549,8 +549,8 @@ export default {
 						};
 						components.push(component);
 					}
-					Vue.set(wallet.investments.melon, investmentId, balance);
-					Vue.set(this.components.melon, investmentId, components);
+					Vue.set(wallet.investments.melon, id, balance);
+					Vue.set(this.components.melon, id, components);
 				}
 			}
 		},
