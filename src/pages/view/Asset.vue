@@ -532,7 +532,7 @@ export default {
 
 #asset-section {
 	flex: 3;
-	padding: 4.5em 3.5em 0 3.5em;
+	padding: 4.75em 3.5em 0 3.5em;
 	display: flex;
 	justify-content: center;
 }
@@ -571,7 +571,7 @@ export default {
 
 #details {
 	display: flex;
-	margin-top: 1.5rem;
+	margin-top: 1.25rem;
 	font-size: 1.5em;
 	justify-content: space-between;
 }
