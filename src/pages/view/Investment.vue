@@ -123,15 +123,13 @@ export default {
 			if (this.balance == 0) {
 				return;
 			}
-			const price = this._getPrice(this.investmentComponents);
-			if (!price) {
-				return;
-			}
 			const investmentId = this.investmentId;
 			const platformId = this.platformId;
 			const amount = Converter.toAmount(this.balance, 'eth');
-			const amountNumber = new BigNumber(amount);
-			const value = amountNumber.times(price).toString();
+			const valueNumber = this.investmentComponents
+				.reduce((sum, component) => sum.plus(component.value), new BigNumber(0));
+			const value = valueNumber.toString();
+			const price = valueNumber.div(amount).toString();
 			const investment = {
 				investmentId,
 				platformId,
@@ -619,20 +617,6 @@ export default {
 					Vue.set(this.components.melon, investmentId, components);
 				}
 			}
-		},
-		_getPrice(components) {
-			let price = new BigNumber(0);
-			for (const component of components) {
-				const amountNumber = new BigNumber(component.amount);
-				const assetId = component.assetId;
-				const assetPrice = this.prices[assetId];
-				if (!assetPrice) {
-					return;
-				}
-				const componentPrice = amountNumber.times(assetPrice);
-				price = price.plus(componentPrice);
-			}
-			return price;
 		},
 	},
 };
