@@ -13,6 +13,7 @@
 					v-for="(wallet, walletId) in wallets"
 					:key="wallet.address"
 					class="wallet"
+					:class="{ 'wallet-selected': walletId == selectedWallet }"
 				>
 					<div class="wallet-data">
 						<WalletIcon
@@ -82,6 +83,10 @@ export default {
 		wallets: {
 			type: Array,
 			default: () => [],
+		},
+		selectedWallet: {
+			type: Number,
+			default: -1,
 		},
 		components: {
 			type: Object,
@@ -192,6 +197,12 @@ export default {
 	align-items: center;
 }
 
+.wallet-selected {
+	background: #140925;
+	margin: 0 -1em;
+	padding: 1.25em 1.5em;
+}
+
 .wallet-actions {
 	display: none;
 }
@@ -243,6 +254,11 @@ export default {
 .wallet-value {
 	font-size: 1.125em;
 	font-weight: bold;
+}
+
+.wallet-selected .wallet-address,
+.wallet-selected .wallet-value {
+	color: white;
 }
 
 #add-wallet-icon > img {
