@@ -59,8 +59,6 @@ export default {
 		return {
 			address: '',
 			assetId: '',
-			balance: 0,
-			price: 0,
 			wallets: [],
 			components: {
 				uniswap: {},
@@ -92,7 +90,7 @@ export default {
 			const assetId = this.assetId;
 			const name = tokens[assetId];
 			const balance = this.balance;
-			const price = this.price;
+			const price = this.prices[assetId];
 			const amount = Converter.toAmount(balance, assetId);
 			const amountNumber = new BigNumber(amount);
 			const value = amountNumber.times(price).toString();
@@ -104,6 +102,17 @@ export default {
 				value,
 			};
 			return asset;
+		},
+		balance() {
+			const wallet = this.wallets[this.walletId];
+			if (!wallet) {
+				return 0;
+			}
+			const balance = wallet.assets[this.assetId];
+			if (!balance) {
+				return 0;
+			}
+			return balance;
 		},
 		assetLogo() {
 			return AssetLoader.loadAssetLogo(this.assetId);
@@ -133,9 +142,6 @@ export default {
 		this._initWallets(walletList);
 		await this._loadBalances();
 		await this._loadPrices();
-
-		this.balance = this.wallets[this.walletId].assets[this.assetId];
-		this.price = this.prices[this.assetId];
 	},
 	methods: {
 		formatAsset(assetId) {

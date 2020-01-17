@@ -68,8 +68,6 @@ export default {
 			address: '',
 			platformId: '',
 			assetId: '',
-			balance: 0,
-			rate: 0,
 			wallets: [],
 			components: {
 				uniswap: {},
@@ -121,6 +119,28 @@ export default {
 			};
 			return asset;
 		},
+		balance() {
+			const wallet = this.wallets[this.walletId];
+			if (!wallet) {
+				return 0;
+			}
+			const balance = wallet.deposits[this.platformId][this.assetId];
+			if (!balance) {
+				return 0;
+			}
+			return balance;
+		},
+		rate() {
+			const platformRates = this.rates.supply[this.platformId];
+			if (!platformRates) {
+				return 0;
+			}
+			const rate = platformRates[this.assetId];
+			if (!rate) {
+				return 0;
+			}
+			return rate;
+		},
 		assetLogo() {
 			return AssetLoader.loadAssetLogo(this.assetId);
 		},
@@ -150,10 +170,6 @@ export default {
 		this._initWallets(walletList);
 		await this._loadBalances();
 		await this._loadPrices();
-
-		this.balance = this.wallets[this.walletId].deposits[this.platformId][this.assetId];
-		this.price = this.prices[this.assetId];
-		this.rate = this.rates.supply[this.platformId][this.assetId];
 	},
 	methods: {
 		formatAsset(assetId) {

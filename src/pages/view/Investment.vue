@@ -94,7 +94,6 @@ export default {
 			address: '',
 			platformId: '',
 			investmentId: '',
-			balance: 0,
 			wallets: [],
 			components: {
 				uniswap: {},
@@ -173,6 +172,17 @@ export default {
 			});
 			return investmentComponents;
 		},
+		balance() {
+			const wallet = this.wallets[this.walletId];
+			if (!wallet) {
+				return 0;
+			}
+			const balance = wallet.investments[this.platformId][this.investmentId];
+			if (!balance) {
+				return 0;
+			}
+			return balance;
+		},
 		investmentLogo() {
 			if (this.platformId == 'tokensets'){
 				return AssetLoader.loadSetLogo(this.investmentId);
@@ -205,8 +215,6 @@ export default {
 		this._initWallets(walletList);
 		await this._loadBalances();
 		await this._loadPrices();
-
-		this.balance = this.wallets[this.walletId].investments[this.platformId][this.investmentId];
 	},
 	methods: {
 		getUnderlyingAmount(component) {
