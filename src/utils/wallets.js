@@ -62,13 +62,13 @@ class Wallets {
 				for (const investmentId in platformBalance) {
 					const balance = platformBalance[investmentId];
 					if (balance != '0') {
-						const deposit = {
+						const investment = {
 							walletId,
 							platformId,
 							investmentId,
 							balance,
 						};
-						investments.push(deposit);
+						investments.push(investment);
 					}
 				}
 			}
