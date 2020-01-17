@@ -30,7 +30,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import WalletIcon from './WalletIcon.vue';
+import WalletIcon from './icon/WalletIcon.vue';
 
 import Formatter from '../utils/formatter.js';
 

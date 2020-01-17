@@ -68,7 +68,7 @@ import clipboardIcon from '../../../public/img/clipboard.svg';
 import crossIcon from '../../../public/img/cross.svg';
 import plusIcon from '../../../public/img/plus.svg';
 
-import WalletIcon from '../WalletIcon.vue';
+import WalletIcon from '../icon/WalletIcon.vue';
 
 import Balance from '../../utils/balance.js';
 import Formatter from '../../utils/formatter.js';
