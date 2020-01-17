@@ -150,11 +150,11 @@ export default {
 			}
 			const components = this.components[this.platformId][this.investmentId];
 			const investmentComponents = [];
+			const investmentAmount = Converter.toAmount(this.balance, 'eth');
 			for (const component of components) {
 				const { amount, assetId } = component;
 				const assetName = tokens[assetId];
 				const assetPriceNumber = new BigNumber(this.prices[assetId]);
-				const investmentAmount = Converter.toAmount(this.balance, assetId);
 				const value = assetPriceNumber.times(amount).times(investmentAmount).toString();
 				const investmentComponent = {
 					amount,
