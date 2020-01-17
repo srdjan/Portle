@@ -8,8 +8,11 @@
 			:components="components"
 		/>
 		<div id="asset-section">
-			<div id="asset-icon">
-				<img :src="assetLogo">
+			<div
+				v-if="asset"
+				id="asset-icon"
+			>
+				<AssetIcon :id="asset.assetId" />
 			</div>
 			<div
 				v-if="asset"
@@ -39,7 +42,6 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
-import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
@@ -49,10 +51,12 @@ import Wallets from '../../utils/wallets.js';
 import tokens from '../../data/tokens.json';
 import tokenAddresses from '../../data/addresses.json';
 
+import AssetIcon from '../../components/icon/AssetIcon.vue';
 import WalletList from '../../components/group/WalletList.vue';
 
 export default {
 	components: {
+		AssetIcon,
 		WalletList,
 	},
 	data() {
@@ -113,9 +117,6 @@ export default {
 				return 0;
 			}
 			return balance;
-		},
-		assetLogo() {
-			return AssetLoader.loadAssetLogo(this.assetId);
 		},
 		assets() {
 			return Wallets.getAssets(this.wallets);
