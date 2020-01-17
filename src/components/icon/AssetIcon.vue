@@ -1,5 +1,8 @@
 <template>
-	<img :src="icon">
+	<img
+		v-if="icon"
+		:src="icon"
+	>
 </template>
 
 <script>
