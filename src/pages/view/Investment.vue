@@ -46,7 +46,7 @@
 						class="component"
 					>
 						<div class="component-icon">
-							<AssetIcon :id="component.assetId" />
+							<AssetIcon :asset-id="component.assetId" />
 						</div>
 						<div class="component-details">
 							<div>

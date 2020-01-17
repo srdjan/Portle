@@ -12,7 +12,7 @@
 				v-if="asset"
 				id="asset-icon"
 			>
-				<AssetIcon :id="asset.assetId" />
+				<AssetIcon :asset-id="asset.assetId" />
 			</div>
 			<div
 				v-if="asset"

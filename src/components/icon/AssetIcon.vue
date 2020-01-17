@@ -7,14 +7,14 @@ import AssetLoader from '../../utils/assetLoader.js';
 
 export default {
 	props: {
-		id: {
+		assetId: {
 			type: String,
 			default: '',
 		},
 	},
 	computed: {
 		icon() {
-			return AssetLoader.loadAssetLogo(this.id);
+			return AssetLoader.loadAssetLogo(this.assetId);
 		},
 	}
 };
