@@ -14,12 +14,12 @@ class Balance {
 	static getAssets(assets, prices) {
 		let assetValue = new BigNumber(0);
 		for (const asset of assets) {
-			const { assetId, balance } = asset;
-			const price = prices[assetId];
+			const { id, balance } = asset;
+			const price = prices[id];
 			if (!price) {
 				continue;
 			}
-			const amount = Converter.toAmount(balance, assetId);
+			const amount = Converter.toAmount(balance, id);
 			const amountNumber = new BigNumber(amount);
 			const value = amountNumber.times(price);
 			assetValue = assetValue.plus(value);

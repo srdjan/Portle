@@ -190,8 +190,8 @@ export default {
 		async _loadPrices() {
 			const assetSet = {};
 			for (const asset of this.assets) {
-				const { assetId } = asset;
-				assetSet[assetId] = true;
+				const { id } = asset;
+				assetSet[id] = true;
 			}
 			for (const deposit of this.deposits) {
 				const { assetId } = deposit;

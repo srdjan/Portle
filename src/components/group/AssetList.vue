@@ -3,9 +3,9 @@
 		<div id="list">
 			<AssetCard
 				v-for="asset in sortedAssets"
-				:key="asset.walletId + '-' + asset.assetId"
+				:key="asset.walletId + '-' + asset.id"
 				:amount="asset.amount"
-				:asset-id="asset.assetId"
+				:asset-id="asset.id"
 				:wallet-id="asset.walletId"
 				:price="asset.price"
 				@click.native="openAsset(asset)"
@@ -14,9 +14,9 @@
 		<div id="table">
 			<Row
 				v-for="asset in sortedAssets"
-				:key="asset.walletId + '-' + asset.assetId"
+				:key="asset.walletId + '-' + asset.id"
 				:amount="asset.amount"
-				:ticker="asset.assetId"
+				:ticker="asset.id"
 				:title="asset.name"
 				:price="asset.price"
 				@click.native="openAsset(asset)"
@@ -55,15 +55,15 @@ export default {
 		sortedAssets() {
 			const assets = [];
 			for (const rawAsset of this.assets) {
-				const { walletId, assetId, balance } = rawAsset;
-				const name = tokens[assetId];
-				const price = this.prices[assetId] || '0';
-				const amount = Converter.toAmount(balance, assetId);
+				const { walletId, id, balance } = rawAsset;
+				const name = tokens[id];
+				const price = this.prices[id] || '0';
+				const amount = Converter.toAmount(balance, id);
 				const amountNumber = new BigNumber(amount);
 				const value = amountNumber.times(price).toString();
 				const asset = {
 					walletId,
-					assetId,
+					id,
 					name,
 					amount,
 					price,
@@ -89,10 +89,10 @@ export default {
 	},
 	methods: {
 		openAsset(asset) {
-			const { walletId, assetId } = asset;
+			const { walletId, id } = asset;
 			const walletList = Storage.getWalletList();
 			const walletAddress = walletList[walletId].address;
-			const path = `/wallet/${walletAddress}/asset/${assetId}`;
+			const path = `/wallet/${walletAddress}/asset/${id}`;
 			this.$router.push(path);
 		},
 	},

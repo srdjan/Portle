@@ -7,12 +7,12 @@ class Wallets {
 		for (const walletIndex in wallets) {
 			const walletId = parseInt(walletIndex);
 			const wallet = wallets[walletId];
-			for (const assetId in wallet.assets) {
-				const balance = wallet.assets[assetId];
+			for (const id in wallet.assets) {
+				const balance = wallet.assets[id];
 				if (balance != '0') {
 					const asset = {
 						walletId,
-						assetId,
+						id,
 						balance,
 					};
 					assets.push(asset);

@@ -12,14 +12,14 @@
 				v-if="asset"
 				id="asset-icon"
 			>
-				<AssetIcon :asset-id="asset.assetId" />
+				<AssetIcon :asset-id="asset.id" />
 			</div>
 			<div
 				v-if="asset"
 				id="asset-view"
 			>
 				<div id="amount">
-					{{ formatAmount(asset.amount) }} {{ formatAsset(asset.assetId) }}
+					{{ formatAmount(asset.amount) }} {{ formatAsset(asset.id) }}
 				</div>
 				<div id="details">
 					<div id="name">
@@ -91,16 +91,16 @@ export default {
 			if (!this.assetId) {
 				return;
 			}
-			const assetId = this.assetId;
-			const name = tokens[assetId];
+			const id = this.assetId;
+			const name = tokens[id];
 			const balance = this.balance;
-			const price = this.prices[assetId];
-			const amount = Converter.toAmount(balance, assetId);
+			const price = this.prices[id];
+			const amount = Converter.toAmount(balance, id);
 			const amountNumber = new BigNumber(amount);
 			const value = amountNumber.times(price).toString();
 			const asset = {
 				name,
-				assetId,
+				id,
 				amount,
 				price,
 				value,
@@ -192,8 +192,8 @@ export default {
 		async _loadPrices() {
 			const assetSet = {};
 			for (const asset of this.assets) {
-				const { assetId } = asset;
-				assetSet[assetId] = true;
+				const { id } = asset;
+				assetSet[id] = true;
 			}
 			for (const deposit of this.deposits) {
 				const { assetId } = deposit;
