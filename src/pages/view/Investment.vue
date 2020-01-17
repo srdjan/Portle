@@ -57,8 +57,8 @@
 									{{ component.assetName }}
 								</div>
 							</div>
-							<div class="component-price">
-								{{ formatMoney(component.price) }}
+							<div class="component-value">
+								{{ formatMoney(component.value) }}
 							</div>
 						</div>
 					</div>
@@ -155,21 +155,21 @@ export default {
 				const assetName = tokens[assetId];
 				const assetPriceNumber = new BigNumber(this.prices[assetId]);
 				const investmentAmount = Converter.toAmount(this.balance, assetId);
-				const price = assetPriceNumber.times(amount).times(investmentAmount).toString();
+				const value = assetPriceNumber.times(amount).times(investmentAmount).toString();
 				const investmentComponent = {
 					amount,
 					assetId,
 					assetName,
-					price,
+					value,
 				};
 				investmentComponents.push(investmentComponent);
 			}
 			investmentComponents.sort((a, b) => {
-				const aPrice = new BigNumber(a.price);
-				const bPrice = new BigNumber(b.price);
-				return aPrice.lt(bPrice)
+				const aValue = new BigNumber(a.value);
+				const bValue = new BigNumber(b.value);
+				return aValue.lt(bValue)
 					? 1
-					: aPrice.gt(bPrice)
+					: aValue.gt(bValue)
 						? -1
 						: 0;
 			});
@@ -755,7 +755,7 @@ export default {
 }
 
 .component-name,
-.component-price {
+.component-value {
 	font-size: 0.875em;
 	color: #79818c;
 }
