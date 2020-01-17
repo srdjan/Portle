@@ -46,7 +46,7 @@
 						class="component"
 					>
 						<div class="component-icon">
-							<img :src="componentLogo(component)">
+							<AssetIcon :id="component.assetId" />
 						</div>
 						<div class="component-details">
 							<div>
@@ -73,7 +73,6 @@ import Vue from 'vue';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 
-import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Loader from '../../utils/loader.js';
@@ -83,11 +82,13 @@ import Wallets from '../../utils/wallets.js';
 import tokens from '../../data/tokens.json';
 import tokenAddresses from '../../data/addresses.json';
 
+import AssetIcon from '../../components/icon/AssetIcon.vue';
 import SetIcon from '../../components/icon/SetIcon.vue';
 import WalletList from '../../components/group/WalletList.vue';
 
 export default {
 	components: {
+		AssetIcon,
 		SetIcon,
 		WalletList,
 	},
@@ -252,9 +253,6 @@ export default {
 		},
 		formatMoney(priceString) {
 			return Formatter.formatMoney(priceString);
-		},
-		componentLogo(component) {
-			return AssetLoader.loadAssetLogo(component.assetId);
 		},
 		_initWallets(walletList) {
 			this.wallets = [];
