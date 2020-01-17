@@ -30,7 +30,7 @@
 <script>
 import BigNumber from 'bignumber.js';
 
-import Card from '../Card.vue';
+import Card from '../card/Card.vue';
 import Row from '../Row.vue';
 
 import AssetLoader from '../../utils/assetLoader.js';
