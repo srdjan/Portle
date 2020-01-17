@@ -4,7 +4,6 @@
 			<Card
 				v-for="investment in sortedInvestments"
 				:key="investment.walletId + '-' + investment.platformId + '-' + investment.investmentId"
-				:logo="getLogo(investment)"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
 				:wallet-id="investment.walletId"
@@ -33,7 +32,6 @@ import BigNumber from 'bignumber.js';
 import Card from '../card/Card.vue';
 import Row from '../Row.vue';
 
-import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Storage from '../../utils/storage.js';
@@ -115,12 +113,6 @@ export default {
 		},
 		formatPlatform(platformId) {
 			return Formatter.formatPlatform(platformId);
-		},
-		getLogo(investment) {
-			if (investment.platformId == 'tokensets') {
-				const setId = investment.investmentId;
-				return AssetLoader.loadSetLogo(setId);
-			}
 		},
 		_getPrice(components) {
 			let price = new BigNumber(0);

@@ -1,10 +1,5 @@
 <template>
 	<div class="card">
-		<img
-			v-if="logo"
-			class="logo"
-			:src="logo"
-		>
 		<div class="sparse">
 			<div class="amount">
 				{{ formatAmount(amount) }} {{ ticker }}
@@ -39,10 +34,6 @@ export default {
 		WalletIcon,
 	},
 	props: {
-		logo: {
-			type: String,
-			default: '',
-		},
 		amount: {
 			type: String,
 			default: '0',
@@ -104,14 +95,6 @@ export default {
 
 .card:hover {
 	box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
-}
-
-.logo {
-	width: 64px;
-	height: 64px;
-	position: absolute;
-	margin-left: 3em;
-	opacity: 0.1;
 }
 
 .amount {

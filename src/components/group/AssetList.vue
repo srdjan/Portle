@@ -4,7 +4,6 @@
 			<Card
 				v-for="asset in sortedAssets"
 				:key="asset.walletId + '-' + asset.assetId"
-				:logo="getLogo(asset.assetId)"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.assetId)"
 				:wallet-id="asset.walletId"
@@ -33,7 +32,6 @@ import BigNumber from 'bignumber.js';
 import Card from '../card/Card.vue';
 import Row from '../Row.vue';
 
-import AssetLoader from '../../utils/assetLoader.js';
 import Converter from '../../utils/converter.js';
 import Formatter from '../../utils/formatter.js';
 import Storage from '../../utils/storage.js';
@@ -101,9 +99,6 @@ export default {
 		},
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
-		},
-		getLogo(assetId) {
-			return AssetLoader.loadAssetLogo(assetId);
 		},
 	},
 };
