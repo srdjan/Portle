@@ -12,7 +12,7 @@
 				v-if="investment && investment.platformId == 'tokensets'"
 				id="investment-icon"
 			>
-				<SetIcon :id="investment.investmentId" />
+				<SetIcon :set-id="investment.investmentId" />
 			</div>
 			<div
 				v-if="investment"
