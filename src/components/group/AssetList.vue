@@ -32,7 +32,6 @@ import AssetCard from '../card/AssetCard.vue';
 import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
-import Formatter from '../../utils/formatter.js';
 import Storage from '../../utils/storage.js';
 
 import tokens from '../../data/tokens.json';
