@@ -164,6 +164,15 @@ export default {
 				};
 				investmentComponents.push(investmentComponent);
 			}
+			investmentComponents.sort((a, b) => {
+				const aPrice = new BigNumber(a.price);
+				const bPrice = new BigNumber(b.price);
+				return aPrice.lt(bPrice)
+					? 1
+					: aPrice.gt(bPrice)
+						? -1
+						: 0;
+			});
 			return investmentComponents;
 		},
 		investmentLogo() {
