@@ -552,7 +552,7 @@ export default {
 	margin-top: -2em;
 	align-items: center;
 	justify-content: center;
-	background: #ededed;
+	background: var(--cover-color);
 	border-radius: 2em;
 }
 

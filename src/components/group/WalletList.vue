@@ -233,7 +233,7 @@ export default {
 	align-items: center;
 	justify-content: center;
 	border-radius: 1em;
-	background: #d6d6d6;
+	background: var(--cover-color);
 }
 
 .wallet-data {

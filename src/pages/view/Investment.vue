@@ -652,7 +652,7 @@ export default {
 	margin-top: -2em;
 	align-items: center;
 	justify-content: center;
-	background: #ededed;
+	background: var(--cover-color);
 	border-radius: 2em;
 }
 
@@ -718,7 +718,7 @@ export default {
 	width: 2.5em;
 	justify-content: center;
 	align-items: center;
-	background: #ececec;
+	background: var(--cover-color);
 	border-radius: 1.25em;
 }
 

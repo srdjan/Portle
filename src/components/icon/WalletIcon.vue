@@ -26,7 +26,7 @@ div {
 	height: 2em;
 	width: 2em;
 	border-radius: 1em;
-	background: #d6d6d6;
+	background: var(--cover-color);
 }
 
 .id-0 {

@@ -82,6 +82,7 @@ export default {
 	--secondary-text-color: #666;
 	--inverted-text-color: white;
 	--outline-color: #e7e8ea;
+	--cover-color: #ededed;
 	--error-color: #c80815;
 }
 
