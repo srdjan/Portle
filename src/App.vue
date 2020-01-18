@@ -83,12 +83,14 @@ export default {
 	--inverted-text-color: white;
 	--outline-color: #e7e8ea;
 	--cover-color: #ededed;
+	--background-color: white;
 	--error-color: #c80815;
 }
 
 body {
 	margin: 0;
 	color: var(--primary-text-color);
+	background: var(--background-color);
 	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
