@@ -78,7 +78,7 @@ export default {
 :root {
 	--brand-color: #140925;
 	--accent-color: #efb22d;
-	--primary-text-color: black;
+	--primary-text-color: #333;
 	--secondary-text-color: #666;
 	--inverted-text-color: white;
 	--outline-color: #e7e8ea;
