@@ -91,12 +91,12 @@ export default {
 }
 
 .wrapper.invalid {
-	border-color: #c80815;
+	border-color: var(--error-color);
 }
 
 .label.invalid,
 .field_input.invalid,
 .field_input:focus ~ .label.invalid {
-	color: #c80815;
+	color: var(--error-color);
 }
 </style>
