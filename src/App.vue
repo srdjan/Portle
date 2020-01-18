@@ -75,9 +75,17 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700&display=swap');
 
+:root {
+	--brand-color: #140925;
+	--primary-text-color: black;
+	--secondary-text-color: #666;
+	--inverted-text-color: white;
+	--outline-color: #e7e8ea;
+}
+
 body {
 	margin: 0;
-	color: black;
+	color: var(--primary-text-color);
 	font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -90,8 +98,8 @@ header {
 	padding: 0 1em;
 	display: flex;
 	justify-content: space-between;
-	color: white;
-	background: #140925;
+	color: var(--inverted-text-color);
+	background: var(--brand-color);
 }
 
 main {
@@ -129,7 +137,7 @@ button {
 
 button.primary {
 	background: #efb22d;
-	color: white;
+	color: var(--inverted-text-color);
 	border: none;
 	width: 14em;
 }
@@ -172,7 +180,7 @@ button:disabled {
 .social-link {
 	font-size: 0.875em;
 	text-decoration: none;
-	color: black;
+	color: var(--primary-text-color);
 	margin-right: 0.5em;
 }
 

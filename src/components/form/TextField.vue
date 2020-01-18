@@ -55,7 +55,7 @@ export default {
 	left: 0;
 	margin: 0;
 	padding: 18px 12px 0;
-	color: #79818c;
+	color: var(--secondary-text-color);
 	font-size: 0.875em;
 	transition: all 0.2s;
 	transform: translateY(-14px);
@@ -63,7 +63,7 @@ export default {
 
 .wrapper {
 	position: relative;
-	border: 1px solid #e7e8ea;
+	border: 1px solid var(--outline-color);
 	border-radius: 4px;
 }
 
@@ -85,7 +85,7 @@ export default {
 }
 
 .field_input:focus ~ .label {
-	color: #79818c;
+	color: var(--secondary-text-color);
 	font-size: 0.875em;
 	transform: translateY(-14px);
 }

@@ -187,7 +187,7 @@ export default {
 .wallet,
 #add-wallet {
 	padding: 1.25em 0.5em;
-	border-top: 1px solid #e7e8ea;
+	border-top: 1px solid var(--outline-color);
 	display: flex;
 	align-items: center;
 	cursor: pointer;
@@ -198,7 +198,7 @@ export default {
 }
 
 .wallet-selected {
-	background: #140925;
+	background: var(--brand-color);
 	margin: 0 -1em;
 	padding: 1.25em 1.5em;
 }
@@ -252,7 +252,7 @@ export default {
 
 .wallet-address {
 	font-size: 0.875em;
-	color: #666;
+	color: var(--secondary-text-color);
 }
 
 .wallet-value {
@@ -262,7 +262,7 @@ export default {
 
 .wallet-selected .wallet-address,
 .wallet-selected .wallet-value {
-	color: white;
+	color: var(--inverted-text-color);
 }
 
 #add-wallet-icon > img {
@@ -273,6 +273,6 @@ export default {
 
 #add-wallet-subtitle {
 	font-size: 0.875em;
-	color: #666;
+	color: var(--secondary-text-color);
 }
 </style>

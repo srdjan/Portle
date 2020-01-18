@@ -548,7 +548,7 @@ export default {
 .category {
 	margin-bottom: 2em;
 	padding: 0 2em 1em 2em;
-	border: 1px solid #e7e8ea;
+	border: 1px solid var(--outline-color);
 	border-radius: 8px;
 }
 

@@ -566,9 +566,9 @@ export default {
 	box-sizing: border-box;
 	width: 40em;
 	height: 13.5em;
-	background: #140925;
+	background: var(--brand-color);
 	border-radius: 8px;
-	color: white;
+	color: var(--inverted-text-color);
 }
 
 #amount {

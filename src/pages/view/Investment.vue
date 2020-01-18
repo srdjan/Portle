@@ -671,10 +671,10 @@ export default {
 	padding: 2.75em 3em 0 3em;
 	box-sizing: border-box;
 	height: 14.75em;
-	background: #140925;
+	background: var(--brand-color);
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
-	color: white;
+	color: var(--inverted-text-color);
 }
 
 #amount {
@@ -699,7 +699,7 @@ export default {
 }
 
 #components {
-	border: 1px solid #140925;
+	border: 1px solid var(--brand-color);
 	border-bottom-left-radius: 8px;
 	border-bottom-right-radius: 8px;
 }
@@ -709,7 +709,7 @@ export default {
 	box-sizing: border-box;
 	height: 4em;
 	padding: 0.75em 1em;
-	border-top: 1px solid #e7e8ea;
+	border-top: 1px solid var(--outline-color);
 }
 
 .component-icon {
@@ -743,6 +743,6 @@ export default {
 .component-name,
 .component-value {
 	font-size: 0.875em;
-	color: #79818c;
+	color: var(--secondary-text-color);
 }
 </style>

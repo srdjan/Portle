@@ -273,7 +273,7 @@ h1#title {
 
 #wallet-type-subtitle {
 	font-size: 0.875em;
-	color: #79818c;
+	color: var(--secondary-text-color);
 	font-style: italic;
 }
 

@@ -121,7 +121,7 @@ export default {
 .detail-section,
 .price-section {
 	font-size: 0.875em;
-	color: #79818c;
+	color: var(--secondary-text-color);
 }
 
 .sparse {

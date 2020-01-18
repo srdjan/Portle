@@ -65,7 +65,7 @@ h2#subtitle {
 	font-size: 1.5em;
 	font-weight: normal;
 	margin-top: 0;
-	color: #666;
+	color: var(--secondary-text-color);
 }
 
 #spacer {
