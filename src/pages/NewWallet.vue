@@ -225,10 +225,7 @@ input[type="radio"] {
 
 .input {
 	width: 28em;
-}
-
-button#add {
-	margin-left: 2em;
+	margin-right: 2em;
 }
 
 #close {
