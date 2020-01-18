@@ -64,7 +64,7 @@ export default {
 .row {
 	padding: 0.25em 1em;
 	background: white;
-	border-bottom: 1px solid #e6e6e6;
+	border-bottom: 1px solid var(--outline-color);
 	cursor: pointer;
 }
 
