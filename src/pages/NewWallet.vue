@@ -240,6 +240,11 @@ button#add {
 #icon {
 	height: 32px;
 	width: 32px;
+	opacity: 0.2;
+}
+
+#icon:hover {
+	opacity: 0.5;
 }
 
 h1#title {

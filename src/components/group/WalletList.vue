@@ -215,11 +215,15 @@ export default {
 	margin-left: 0.5em;
 	height: 1.25em;
 	width: 1.25em;
-	opacity: 0.5;
+	opacity: 0.25;
 }
 
 .wallet-actions > img:hover {
-	opacity: 1;
+	opacity: 0.5;
+}
+
+.wallet-selected .wallet-actions > img {
+	filter: invert(100%);
 }
 
 #add-wallet-icon {
@@ -264,6 +268,7 @@ export default {
 #add-wallet-icon > img {
 	height: 1em;
 	width: 1em;
+	opacity: 0.5;
 }
 
 #add-wallet-subtitle {
