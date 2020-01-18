@@ -730,7 +730,7 @@ export default {
 
 .component-details {
 	display: flex;
-	width: 100%;
+	flex-grow: 1;
 	padding-left: 1em;
 	justify-content: space-between;
 	align-items: end;
