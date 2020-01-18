@@ -77,6 +77,7 @@ export default {
 
 :root {
 	--brand-color: #140925;
+	--accent-color: #efb22d;
 	--primary-text-color: black;
 	--secondary-text-color: #666;
 	--inverted-text-color: white;
@@ -136,7 +137,7 @@ button {
 }
 
 button.primary {
-	background: #efb22d;
+	background: var(--accent-color);
 	color: var(--inverted-text-color);
 	border: none;
 	width: 14em;
