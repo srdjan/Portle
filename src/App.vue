@@ -131,16 +131,9 @@ button {
 	min-width: 2rem;
 	cursor: pointer;
 	border: none;
-	background: #eedfbd;
-	color: #333;
-	border-radius: 4px;
-}
-
-button.primary {
 	background: var(--accent-color);
 	color: var(--inverted-text-color);
-	border: none;
-	width: 14em;
+	border-radius: 4px;
 }
 
 button.big {
@@ -150,19 +143,11 @@ button.big {
 }
 
 button:hover {
-	background: #dbbb74;
+	background: #e6a10d;
 	box-shadow: rgba(0, 0, 0, 0.2) 0 2px 4px;
 }
 
-button.primary:hover {
-	background: #e6a10d;
-}
-
 button:active {
-	background: #dbbb74;
-}
-
-button.primary:active {
 	background: #d79406;
 }
 

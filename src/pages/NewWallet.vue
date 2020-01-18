@@ -48,7 +48,7 @@
 			/>
 			<button
 				id="add"
-				class="primary big"
+				class="big"
 				:disabled="!_isAddressValid(walletId) || !walletId"
 				@click="saveAddressWallet()"
 			>
@@ -226,6 +226,10 @@ input[type="radio"] {
 .input {
 	width: 28em;
 	margin-right: 2em;
+}
+
+#add {
+	width: 14rem;
 }
 
 #close {
