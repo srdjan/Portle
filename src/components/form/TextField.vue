@@ -70,7 +70,6 @@ export default {
 .field_input {
 	display: block;
 	color: var(--primary-text-color);
-	appearance: none;
 	width: 95%;
 	padding: 0 12px 10px 12px;
 	background: transparent;
