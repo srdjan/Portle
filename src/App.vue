@@ -170,8 +170,12 @@ button:disabled {
 .social-link {
 	font-size: 0.875em;
 	text-decoration: none;
-	color: var(--primary-text-color);
+	color: var(--secondary-text-color);
 	margin-right: 0.5em;
+}
+
+.social-link:hover {
+	color: var(--primary-text-color);
 }
 
 /* Mobile */
