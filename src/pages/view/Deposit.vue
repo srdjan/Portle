@@ -651,7 +651,7 @@ export default {
 
 	#platform-details > div {
 		font-size: 1.125rem;
-		color: #C6BECA;
+		color: var(--inverted-secondary-text-color);
 		text-align: center;
 	}
 

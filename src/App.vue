@@ -81,6 +81,7 @@ export default {
 	--primary-text-color: #1a202c;
 	--secondary-text-color: #4a5568;
 	--inverted-primary-text-color: #edf2f7;
+	--inverted-secondary-text-color: #c6beca;
 	--outline-color: #e7e8ea;
 	--cover-color: #ededed;
 	--background-color: white;

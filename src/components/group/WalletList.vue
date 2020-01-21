@@ -331,7 +331,7 @@ export default {
 
 	.wallet-address {
 		font-size: 0.625em;
-		color: #C6BECA;
+		color: var(--inverted-secondary-text-color);
 	}
 
 	.wallet-selected .wallet-value {
