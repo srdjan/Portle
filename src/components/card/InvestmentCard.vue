@@ -7,6 +7,11 @@
 			:title="title"
 			:price="price"
 		/>
+		<AssetIcon
+			v-if="platformId == 'uniswap'"
+			id="logo"
+			:asset-id="investmentId.split('_')[0]"
+		/>
 		<SetIcon
 			v-if="platformId == 'tokensets'"
 			id="logo"
@@ -16,6 +21,7 @@
 </template>
 
 <script>
+import AssetIcon from '../icon/AssetIcon.vue';
 import SetIcon from '../icon/SetIcon.vue';
 import Card from './Card.vue';
 
@@ -23,6 +29,7 @@ import Formatter from '../../utils/formatter.js';
 
 export default {
 	components: {
+		AssetIcon,
 		SetIcon,
 		Card,
 	},
