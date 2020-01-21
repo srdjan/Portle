@@ -15,16 +15,11 @@
 		<div id="wallet-type-list">
 			<div
 				v-for="walletType in walletTypes"
-				id="wallet-type"
 				:key="walletType.id"
+				class="wallet-type"
+				:class="{ 'wallet-type-selected': walletType.id == selectedWalletType }"
 				@click="pickWalletType(walletType.id)"
 			>
-				<input
-					v-model="selectedWalletType"
-					type="radio"
-					name="type"
-					:value="walletType.id"
-				>
 				<div>
 					<div id="wallet-type-title">
 						{{ walletType.title }}
@@ -258,14 +253,22 @@ h1#title {
 	margin: 3.5em 0 4em 0;
 }
 
-#wallet-type {
+.wallet-type {
 	display: flex;
 	height: 4em;
 	width: 12em;
-	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
 	margin: 0 2em;
+	padding-left: 1em;
 	align-items: center;
+	box-sizing: border-box;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+	border: 2px solid transparent;
+	border-radius: 4px;
 	cursor: pointer;
+}
+
+.wallet-type-selected {
+	border: 2px solid var(--accent-color);
 }
 
 #wallet-type-title {
