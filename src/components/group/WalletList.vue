@@ -14,6 +14,7 @@
 					:key="wallet.address"
 					class="wallet"
 					:class="{ 'wallet-selected': walletId == selectedWallet }"
+					@click="openWallet(wallet.address)"
 				>
 					<div class="wallet-data">
 						<WalletIcon
@@ -159,6 +160,10 @@ export default {
 		removeWallet(wallet) {
 			Storage.removeWallet(wallet);
 			this.$router.go();
+		},
+		openWallet(address) {
+			const path = `/wallet/${address}`;
+			this.$router.push(path);
 		},
 		openNewWallet() {
 			const path = '/wallet/new';
