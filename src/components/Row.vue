@@ -91,4 +91,11 @@ export default {
 	display: flex;
 	justify-content: space-between;
 }
+
+@media all and (max-width: 767px) {
+	.row {
+		padding: 0;
+		border: none;
+	}
+}
 </style>

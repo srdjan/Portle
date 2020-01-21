@@ -31,7 +31,7 @@
 						<div>
 							{{ formatPlatform(investment.platformId) }}
 						</div>
-						<div>
+						<div id="price">
 							{{ formatMoney(investment.price) }}/
 						</div>
 						<div>
@@ -634,7 +634,6 @@ export default {
 #wallet-section {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 	flex: 1;
 	padding: 1.5em 1em;
 }
@@ -746,5 +745,53 @@ export default {
 .component-value {
 	font-size: 0.875em;
 	color: var(--secondary-text-color);
+}
+
+@media all and (max-width: 767px) {
+	#view {
+		display: block;
+	}
+
+	#wallet-section {
+		flex-direction: row;
+		flex: 0;
+		align-items: end;
+		background: var(--brand-color);
+		color: var(--inverted-text-color);
+		overflow-x: auto;
+		padding: 0 1em 0.75em 1em;
+	}
+
+	#asset {
+		height: initial;
+		padding: 3em 1.5em 1em 1.5em;
+	}
+
+	#investment-section {
+		padding: 4em 0 1em 0;
+	}
+
+	#investment-view {
+		height: initial;
+		width: 90%;
+	}
+
+	#investment-details > div {
+		font-size: 1.125rem;
+		color: #C6BECA;
+		text-align: center;
+	}
+
+	#price-details > div {
+		font-size: 1.125rem;
+	}
+
+	#amount {
+		font-size: 1.5em;
+	}
+
+	#price {
+		display: none;
+	}
 }
 </style>

@@ -33,7 +33,7 @@
 					<div>
 						{{ deposit.assetName }}
 					</div>
-					<div>
+					<div id="price">
 						{{ formatMoney(deposit.price) }}/
 					</div>
 					<div>
@@ -566,7 +566,6 @@ export default {
 #wallet-section {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 	flex: 1;
 	padding: 1.5em 1em;
 }
@@ -623,5 +622,49 @@ export default {
 
 #asset-details {
 	margin-top: 0.875rem;
+}
+
+@media all and (max-width: 767px) {
+	#view {
+		display: block;
+	}
+
+	#wallet-section {
+		flex-direction: row;
+		flex: 0;
+		align-items: end;
+		background: var(--brand-color);
+		color: var(--inverted-text-color);
+		overflow-x: auto;
+		padding: 0 1em 0.75em 1em;
+	}
+
+	#deposit-section {
+		padding: 4em 0 1em 0;
+	}
+
+	#deposit-view {
+		height: initial;
+		padding: 3em 1.5em 1em 1.5em;
+		width: 90%;
+	}
+
+	#platform-details > div {
+		font-size: 1.125rem;
+		color: #C6BECA;
+		text-align: center;
+	}
+
+	#asset-details > div {
+		font-size: 1.125rem;
+	}
+
+	#amount {
+		font-size: 1.5em;
+	}
+
+	#price {
+		display: none;
+	}
 }
 </style>

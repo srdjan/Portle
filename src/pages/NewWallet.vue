@@ -288,4 +288,40 @@ h1#title {
 #spacer {
 	height: 4em;
 }
+
+/* Mobile */
+
+@media all and (max-width: 767px) {
+	h1#title {
+		margin-bottom: 0.5em;
+	}
+
+	#close {
+		right: 16px;
+		top: 80px;
+	}
+
+	#wallet-type-list {
+		flex-direction: column;
+		margin: 0.5em 0;
+	}
+
+	.wallet-type {
+		margin: 1em 0;
+	}
+
+	#input-group {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.input {
+		width: 20em;
+		margin-right: 0;
+	}
+
+	#add {
+		margin-top: 1em;
+	}
+}
 </style>

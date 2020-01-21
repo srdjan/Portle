@@ -177,12 +177,4 @@ button:disabled {
 .social-link:hover {
 	color: var(--primary-text-color);
 }
-
-/* Mobile */
-
-@media all and (max-width: 767px) {
-	#app-title {
-		display: none;
-	}
-}
 </style>

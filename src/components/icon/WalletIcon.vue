@@ -23,8 +23,6 @@ export default {
 
 <style scoped>
 div {
-	height: 2em;
-	width: 2em;
 	border-radius: 1em;
 	background: var(--cover-color);
 }

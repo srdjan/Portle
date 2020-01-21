@@ -64,8 +64,9 @@ h1#title {
 h2#subtitle {
 	font-size: 1.5em;
 	font-weight: normal;
-	margin-top: 0;
+	margin: 0 1em;
 	color: var(--secondary-text-color);
+	text-align: center;
 }
 
 #spacer {

@@ -1,62 +1,61 @@
 <template>
 	<section>
-		<div>
-			<div id="total-value">
-				Net worth: {{ formatMoney(totalBalance) }}
-			</div>
+		<div id="total-value">
+			<span id="total-value-label">Net worth: </span>
+			{{ formatMoney(totalBalance) }}
+		</div>
 
-			<div id="wallet-list">
-				<div id="wallet-list-header">
-					Wallets
-				</div>
-				<div
-					v-for="(wallet, walletId) in wallets"
-					:key="wallet.address"
-					class="wallet"
-					:class="{ 'wallet-selected': walletId == selectedWallet }"
-					@click="openWallet(wallet.address)"
-				>
-					<div class="wallet-data">
-						<WalletIcon
-							:wallet-id="walletId"
-							class="wallet-icon"
-						/>
-						<div class="wallet-details">
-							<div class="wallet-address">
-								{{ formatWalletAddress(wallet.address) }}
-							</div>
-							<div class="wallet-value">
-								{{ formatMoney(walletBalance(walletId)) }}
-							</div>
+		<div id="wallet-list">
+			<div id="wallet-list-header">
+				Wallets
+			</div>
+			<div
+				v-for="(wallet, walletId) in wallets"
+				:key="wallet.address"
+				class="wallet"
+				:class="{ 'wallet-selected': walletId == selectedWallet }"
+				@click="openWallet(wallet.address)"
+			>
+				<div class="wallet-data">
+					<WalletIcon
+						:wallet-id="walletId"
+						class="wallet-icon"
+					/>
+					<div class="wallet-details">
+						<div class="wallet-address">
+							{{ formatWalletAddress(wallet.address) }}
 						</div>
-					</div>
-					<div class="wallet-actions">
-						<img
-							:src="clipboardIcon"
-							class="copy-address-icon"
-							@click="copyWalletAddress(wallet.address)"
-						>
-						<img
-							:src="crossIcon"
-							class="remove-wallet-icon"
-							@click="removeWallet(wallet)"
-						>
+						<div class="wallet-value">
+							{{ formatMoney(walletBalance(walletId)) }}
+						</div>
 					</div>
 				</div>
-				<div
-					id="add-wallet"
-					@click="openNewWallet()"
-				>
-					<div id="add-wallet-icon">
-						<img :src="plusIcon">
+				<div class="wallet-actions">
+					<img
+						:src="clipboardIcon"
+						class="copy-address-icon"
+						@click="copyWalletAddress(wallet.address)"
+					>
+					<img
+						:src="crossIcon"
+						class="remove-wallet-icon"
+						@click="removeWallet(wallet)"
+					>
+				</div>
+			</div>
+			<div
+				id="add-wallet"
+				@click="openNewWallet()"
+			>
+				<div id="add-wallet-icon">
+					<img :src="plusIcon">
+				</div>
+				<div id="add-wallet-text">
+					<div id="add-wallet-title">
+						Add new wallet
 					</div>
-					<div id="add-wallet-text">
-						<div id="add-wallet-title">
-							Add new wallet
-						</div>
-						<div id="add-wallet-subtitle">
-							Metamask, ENS, address, etc
-						</div>
+					<div id="add-wallet-subtitle">
+						Metamask, ENS, address, etc
 					</div>
 				</div>
 			</div>
@@ -247,6 +246,8 @@ export default {
 }
 
 .wallet-icon {
+	height: 2em;
+	width: 2em;
 	opacity: 0.75;
 }
 
@@ -279,5 +280,88 @@ export default {
 #add-wallet-subtitle {
 	font-size: 0.875em;
 	color: var(--secondary-text-color);
+}
+
+/* Mobile */
+
+@media all and (max-width: 767px) {
+	#total-value {
+		font-weight: normal;
+	}
+
+	#total-value-label {
+		display: none;
+	}
+
+	#wallet-list {
+		display: flex;
+		align-items: end;
+		margin: 0;
+	}
+
+	#wallet-list-header {
+		display: none;
+	}
+
+	.wallet,
+	#add-wallet {
+		height: 2.25em;
+		padding: 0;
+		border: none;
+		margin-left: 1em;
+	}
+
+	.wallet-selected {
+		color: inherit;
+		background: none;
+		padding: 0;
+		margin-right: 0;
+	}
+
+	.wallet-icon {
+		height: 1em;
+		width: 1em;
+	}
+
+	.wallet-details,
+	#add-wallet-text {
+		height: 2.25em;
+		min-width: 5em;
+	}
+
+	.wallet-address {
+		font-size: 0.625em;
+		color: #C6BECA;
+	}
+
+	.wallet-selected .wallet-value {
+		font-weight: bold;
+	}
+
+	.wallet-value {
+		font-weight: normal;
+	}
+
+	.wallet:hover > .wallet-actions {
+		display: none;
+	}
+
+	#add-wallet {
+		margin-right: 1em;
+	}
+
+	#add-wallet-icon {
+		height: 1em;
+		width: 1em;
+	}
+
+	#add-wallet-icon > img {
+		height: 0.75em;
+		width: 0.75em;
+	}
+
+	#add-wallet-text {
+		display: none;
+	}
 }
 </style>

@@ -16,7 +16,7 @@
 				v-for="asset in sortedAssets"
 				:key="asset.walletId + '-' + asset.id"
 				:amount="asset.amount"
-				:ticker="asset.id"
+				:ticker="formatAsset(asset.id)"
 				:title="asset.name"
 				:price="asset.price"
 				@click.native="openAsset(asset)"
@@ -32,6 +32,7 @@ import AssetCard from '../card/AssetCard.vue';
 import Row from '../Row.vue';
 
 import Converter from '../../utils/converter.js';
+import Formatter from '../../utils/formatter.js';
 import Storage from '../../utils/storage.js';
 
 import tokens from '../../data/tokens.json';
@@ -94,6 +95,9 @@ export default {
 			const walletAddress = walletList[walletId].address;
 			const path = `/wallet/${walletAddress}/asset/${id}`;
 			this.$router.push(path);
+		},
+		formatAsset(assetId) {
+			return Formatter.formatAsset(assetId);
 		},
 	},
 };

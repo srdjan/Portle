@@ -539,7 +539,6 @@ export default {
 #wallet-section {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
 	flex: 1;
 	padding: 1.5em 1em;
 }
@@ -593,5 +592,32 @@ export default {
 
 #advanced-buttons {
 	margin-top: 1em;
+}
+
+@media all and (max-width: 767px) {
+	#view {
+		display: block;
+	}
+
+	#wallet-section {
+		flex-direction: row;
+		flex: 0;
+		align-items: end;
+		background: var(--brand-color);
+		color: var(--inverted-text-color);
+		overflow-x: auto;
+		padding: 0 1em 0.75em 1em;
+	}
+
+	#asset-section {
+		flex: 0;
+		padding: 0;
+	}
+
+	.category {
+		margin-bottom: 1em;
+		padding: 0 2em;
+		border: none;
+	}
 }
 </style>
