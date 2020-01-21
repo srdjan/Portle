@@ -11,7 +11,7 @@
 			</div>
 		</header>
 		<main>
-			<router-view />
+			<router-view :key="$route.fullPath" />
 		</main>
 		<footer v-if="showNavigation()">
 			<div>
