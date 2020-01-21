@@ -268,7 +268,7 @@ export default {
 
 .wallet-selected .wallet-address,
 .wallet-selected .wallet-value {
-	color: var(--inverted-text-color);
+	color: var(--inverted-primary-text-color);
 }
 
 #add-wallet-icon > img {

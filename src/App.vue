@@ -80,7 +80,7 @@ export default {
 	--accent-color: #efb22d;
 	--primary-text-color: #1a202c;
 	--secondary-text-color: #4a5568;
-	--inverted-text-color: #edf2f7;
+	--inverted-primary-text-color: #edf2f7;
 	--outline-color: #e7e8ea;
 	--cover-color: #ededed;
 	--background-color: white;
@@ -103,7 +103,7 @@ header {
 	padding: 0 1em;
 	display: flex;
 	justify-content: space-between;
-	color: var(--inverted-text-color);
+	color: var(--inverted-primary-text-color);
 	background: var(--brand-color);
 }
 
@@ -136,7 +136,7 @@ button {
 	cursor: pointer;
 	border: none;
 	background: var(--accent-color);
-	color: var(--inverted-text-color);
+	color: var(--inverted-primary-text-color);
 	border-radius: 4px;
 }
 

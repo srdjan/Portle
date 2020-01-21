@@ -601,7 +601,7 @@ export default {
 	height: 14.75em;
 	background: var(--brand-color);
 	border-radius: 8px;
-	color: var(--inverted-text-color);
+	color: var(--inverted-primary-text-color);
 }
 
 #amount {
@@ -634,7 +634,7 @@ export default {
 		flex: 0;
 		align-items: end;
 		background: var(--brand-color);
-		color: var(--inverted-text-color);
+		color: var(--inverted-primary-text-color);
 		overflow-x: auto;
 		padding: 0 1em 0.75em 1em;
 	}
