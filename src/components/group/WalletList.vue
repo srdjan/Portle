@@ -1,8 +1,12 @@
 <template>
 	<section>
-		<div id="total-value">
-			<span id="total-value-label">Net worth: </span>
-			{{ formatMoney(totalBalance) }}
+		<div id="total-value-wrapper">
+			<div id="total-value-label">
+				Net worth:
+			</div>
+			<div id="total-value">
+				{{ formatMoney(totalBalance) }}
+			</div>
 		</div>
 
 		<div id="wallet-list">
@@ -173,9 +177,14 @@ export default {
 </script>
 
 <style scoped>
-#total-value {
+#total-value-wrapper {
+	display: flex;
 	font-size: 1.125em;
 	font-weight: bold;
+}
+
+#total-value {
+	margin-left: 0.25em;
 }
 
 #wallet-list {
@@ -285,12 +294,18 @@ export default {
 /* Mobile */
 
 @media all and (max-width: 767px) {
-	#total-value {
+	#total-value-wrapper {
+		flex-direction: column;
 		font-weight: normal;
 	}
 
 	#total-value-label {
-		display: none;
+		font-size: 0.625rem;
+		color: var(--inverted-secondary-text-color);
+	}
+
+	#total-value {
+		margin-left: 0;
 	}
 
 	#wallet-list {
