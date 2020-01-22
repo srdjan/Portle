@@ -734,7 +734,7 @@ export default {
 	flex-grow: 1;
 	padding-left: 1em;
 	justify-content: space-between;
-	align-items: end;
+	align-items: flex-end;
 }
 
 .component-amount {
