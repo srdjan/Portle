@@ -9,7 +9,7 @@
 		<div class="details">
 			<div class="title sparse">
 				<div>{{ title }}</div>
-				<div>{{ formatMoney(price) }}</div>
+				<div>{{ formatMoney(price) }}/</div>
 			</div>
 			<div class="amount sparse">
 				<div>{{ formatAmount(amount) }} {{ ticker }}</div>
