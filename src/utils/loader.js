@@ -25,10 +25,23 @@ class Loader {
 		const balancePromises = [];
 		for (const address of addresses) {
 			const url = `https://web3api.io/api/v2/addresses/${address}/tokens`;
-			const balancePromise = fetch(url, {
-				headers,
-			});
-			balancePromises.push(balancePromise);
+			try {
+				const balancePromise = fetch(url, {
+					headers,
+				});
+				balancePromises.push(balancePromise);
+			} catch(e) {
+				const emptyBalance = {
+					json: function() {
+						return {
+							payload: {
+								records: [],
+							},
+						};
+					},
+				};
+				balancePromises.push(emptyBalance);
+			}
 		}
 		const balanceResponses = await Promise.all(balancePromises);
 		const jsonPromises = [];
