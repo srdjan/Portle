@@ -1,6 +1,9 @@
 <template>
 	<section>
-		<div id="total-value-wrapper">
+		<div
+			id="total-value-wrapper"
+			:class="{ 'selected': selectedWallet == -1 }"
+		>
 			<div id="total-value-label">
 				Net worth:
 			</div>
@@ -318,6 +321,14 @@ export default {
 
 	#total-value {
 		margin-left: 0;
+	}
+
+	#total-value-wrapper.selected > #total-value-label {
+		color: var(--inverted-primary-text-color);
+	}
+
+	#total-value-wrapper.selected > #total-value {
+		font-weight: bold;
 	}
 
 	#wallet-list {
