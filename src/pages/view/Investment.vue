@@ -675,12 +675,13 @@ export default {
 	background: var(--brand-color);
 	border-top-left-radius: 8px;
 	border-top-right-radius: 8px;
-	color: var(--inverted-primary-text-color);
+	color: var(--inverted-secondary-text-color);
 }
 
 #amount {
 	font-size: 4em;
 	text-align: center;
+	color: var(--inverted-primary-text-color);
 }
 
 #investment-details,
@@ -778,7 +779,6 @@ export default {
 
 	#investment-details > div {
 		font-size: 1.125rem;
-		color: var(--inverted-secondary-text-color);
 		text-align: center;
 	}
 

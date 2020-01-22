@@ -601,12 +601,13 @@ export default {
 	height: 14.75em;
 	background: var(--brand-color);
 	border-radius: 8px;
-	color: var(--inverted-primary-text-color);
+	color: var(--inverted-secondary-text-color);
 }
 
 #amount {
 	font-size: 4em;
 	text-align: center;
+	color: var(--inverted-primary-text-color);
 }
 
 #platform-details,
@@ -651,7 +652,6 @@ export default {
 
 	#platform-details > div {
 		font-size: 1.125rem;
-		color: var(--inverted-secondary-text-color);
 		text-align: center;
 	}
 
