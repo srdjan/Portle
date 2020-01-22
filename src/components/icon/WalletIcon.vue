@@ -32,7 +32,7 @@ div {
 }
 
 .id-1 {
-	background: darkslateblue;
+	background: mediumorchid;
 }
 
 .id-2 {
