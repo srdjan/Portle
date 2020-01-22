@@ -2,7 +2,8 @@
 	<section>
 		<div
 			id="total-value-wrapper"
-			:class="{ 'selected': selectedWallet == -1 }"
+			:class="{ 'total-value-wrapper-selected': selectedWallet == -1 }"
+			@click="openPortfolio()"
 		>
 			<div id="total-value-label">
 				Net worth:
@@ -169,6 +170,10 @@ export default {
 			Storage.removeWallet(wallet);
 			this.$router.go();
 		},
+		openPortfolio() {
+			const path = '/';
+			this.$router.push(path);
+		},
 		openWallet(address) {
 			const path = `/wallet/${address}`;
 			this.$router.push(path);
@@ -186,6 +191,7 @@ export default {
 	display: flex;
 	font-size: 1.125em;
 	font-weight: bold;
+	cursor: pointer;
 }
 
 #total-value {
@@ -323,11 +329,11 @@ export default {
 		margin-left: 0;
 	}
 
-	#total-value-wrapper.selected > #total-value-label {
+	.total-value-wrapper-selected > #total-value-label {
 		color: var(--inverted-primary-text-color);
 	}
 
-	#total-value-wrapper.selected > #total-value {
+	.total-value-wrapper-selected > #total-value {
 		font-weight: bold;
 	}
 
