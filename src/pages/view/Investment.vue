@@ -251,7 +251,7 @@ export default {
 				return Formatter.formatSet(investment.id);
 			}
 			if (investment.platformId == 'melon') {
-				return 'sh.';
+				return 'shares';
 			}
 			return investment.id;
 		},
