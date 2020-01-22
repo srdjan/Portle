@@ -15,6 +15,12 @@
 				<SetIcon :set-id="investment.id" />
 			</div>
 			<div
+				v-if="investment && investment.platformId == 'uniswap'"
+				id="investment-icon"
+			>
+				<AssetIcon :asset-id="investment.id.split('_')[0]" />
+			</div>
+			<div
 				v-if="investment"
 				id="investment-view"
 			>
