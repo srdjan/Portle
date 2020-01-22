@@ -598,7 +598,7 @@ export default {
 	#view {
 		display: block;
 	}
-	
+
 	#wallet-section {
 		flex-direction: row;
 		flex: 0;
