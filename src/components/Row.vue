@@ -81,9 +81,8 @@ export default {
 .row {
 	display: flex;
 	margin-left: -1.5em;
-	padding: 0.25em 1em;
+	padding: 0;
 	background: white;
-	border-bottom: 1px solid var(--outline-color);
 	cursor: pointer;
 }
 
@@ -125,12 +124,5 @@ export default {
 .sparse {
 	display: flex;
 	justify-content: space-between;
-}
-
-@media all and (max-width: 767px) {
-	.row {
-		padding: 0;
-		border: none;
-	}
 }
 </style>
