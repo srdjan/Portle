@@ -310,7 +310,7 @@ export default {
 
 	#wallet-list {
 		display: flex;
-		margin: 0;
+		margin: 0 0 0 1em;
 	}
 
 	#wallet-list-header {
@@ -322,7 +322,7 @@ export default {
 		height: 2.25em;
 		padding: 0;
 		border: none;
-		margin-left: 1em;
+		margin-left: 0.5em;
 	}
 
 	.wallet-selected {
@@ -340,6 +340,7 @@ export default {
 	.wallet-details,
 	#add-wallet-text {
 		height: 2.25em;
+		margin-left: 0.25em;
 		min-width: 5em;
 	}
 
