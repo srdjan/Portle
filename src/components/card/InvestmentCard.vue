@@ -7,29 +7,29 @@
 			:title="title"
 			:price="price"
 		/>
-		<AssetIcon
-			v-if="platformId == 'uniswap'"
-			id="logo"
-			:asset-id="investmentId.split('_')[0]"
-		/>
 		<SetIcon
 			v-if="platformId == 'tokensets'"
 			id="logo"
 			:set-id="investmentId"
 		/>
+		<UniswapIcon
+			v-if="platformId == 'uniswap'"
+			id="logo"
+			:pool-id="investmentId"
+		/>
 	</div>
 </template>
 
 <script>
-import AssetIcon from '../icon/AssetIcon.vue';
 import SetIcon from '../icon/SetIcon.vue';
+import UniswapIcon from '../icon/UniswapIcon.vue';
 import Card from './Card.vue';
 
 import Formatter from '../../utils/formatter.js';
 
 export default {
 	components: {
-		AssetIcon,
+		UniswapIcon,
 		SetIcon,
 		Card,
 	},

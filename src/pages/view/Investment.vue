@@ -18,7 +18,7 @@
 				v-if="investment && investment.platformId == 'uniswap'"
 				id="investment-icon"
 			>
-				<AssetIcon :asset-id="investment.id.split('_')[0]" />
+				<UniswapIcon :pool-id="investment.id" />
 			</div>
 			<div
 				v-if="investment"
@@ -88,14 +88,14 @@ import Wallets from '../../utils/wallets.js';
 import tokens from '../../data/tokens.json';
 import tokenAddresses from '../../data/addresses.json';
 
-import AssetIcon from '../../components/icon/AssetIcon.vue';
 import SetIcon from '../../components/icon/SetIcon.vue';
+import UniswapIcon from '../../components/icon/UniswapIcon.vue';
 import WalletList from '../../components/group/WalletList.vue';
 
 export default {
 	components: {
-		AssetIcon,
 		SetIcon,
+		UniswapIcon,
 		WalletList,
 	},
 	data() {
