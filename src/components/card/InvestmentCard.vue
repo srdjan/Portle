@@ -73,7 +73,7 @@ export default {
 			return this.investmentId;
 		},
 		title() {
-			const title = Formatter.formatProtocol(this.protocolId)
+			const title = Formatter.formatProtocol(this.protocolId);
 			return title;
 		},
 	},
