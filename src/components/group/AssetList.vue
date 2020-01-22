@@ -15,6 +15,7 @@
 			<Row
 				v-for="asset in sortedAssets"
 				:key="asset.walletId + '-' + asset.id"
+				:wallet-id="asset.walletId"
 				:amount="asset.amount"
 				:ticker="formatAsset(asset.id)"
 				:title="asset.name"

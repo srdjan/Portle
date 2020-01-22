@@ -1,12 +1,20 @@
 <template>
 	<div class="row">
-		<div class="title sparse">
-			<div>{{ title }}</div>
-			<div>{{ formatMoney(price) }}</div>
+		<div class="wallet-icon-wrapper">
+			<WalletIcon
+				:wallet-id="walletId"
+				class="wallet-icon"
+			/>
 		</div>
-		<div class="amount sparse">
-			<div>{{ formatAmount(amount) }} {{ ticker }}</div>
-			<div>{{ formatMoney(value) }}</div>
+		<div class="details">
+			<div class="title sparse">
+				<div>{{ title }}</div>
+				<div>{{ formatMoney(price) }}</div>
+			</div>
+			<div class="amount sparse">
+				<div>{{ formatAmount(amount) }} {{ ticker }}</div>
+				<div>{{ formatMoney(value) }}</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -14,10 +22,19 @@
 <script>
 import BigNumber from 'bignumber.js';
 
+import WalletIcon from './icon/WalletIcon.vue';
+
 import Formatter from '../utils/formatter.js';
 
 export default {
+	components: {
+		WalletIcon,
+	},
 	props: {
+		walletId: {
+			type: Number,
+			default: 0,
+		},
 		amount: {
 			type: String,
 			default: '0',
@@ -62,6 +79,8 @@ export default {
 
 <style scoped>
 .row {
+	display: flex;
+	margin-left: -1.5em;
 	padding: 0.25em 1em;
 	background: white;
 	border-bottom: 1px solid var(--outline-color);
@@ -70,6 +89,22 @@ export default {
 
 .row:last-child {
 	border: none;
+}
+
+.wallet-icon-wrapper {
+	display: flex;
+	margin: 0.5em;
+	align-items: center;
+}
+
+.wallet-icon {
+	height: 0.5em;
+	width: 0.5em;
+	opacity: 0.25;
+}
+
+.details {
+	flex: 1;
 }
 
 .amount {

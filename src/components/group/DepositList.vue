@@ -17,6 +17,7 @@
 			<Row
 				v-for="deposit in sortedDeposits"
 				:key="deposit.walletId + '-' + deposit.platformId + '-' + deposit.assetId"
+				:wallet-id="deposit.walletId"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
 				:title="formatPlatform(deposit.platformId)"

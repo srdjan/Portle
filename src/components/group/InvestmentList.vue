@@ -16,6 +16,7 @@
 			<Row
 				v-for="investment in sortedInvestments"
 				:key="investment.walletId + '-' + investment.platformId + '-' + investment.id"
+				:wallet-id="investment.walletId"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
 				:title="formatPlatform(investment.platformId)"
