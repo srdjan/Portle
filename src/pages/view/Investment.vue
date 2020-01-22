@@ -154,7 +154,11 @@ export default {
 			for (const component of components) {
 				const { amount, assetId } = component;
 				const assetName = tokens[assetId];
-				const assetPriceNumber = new BigNumber(this.prices[assetId]);
+				const assetPrice = this.prices[assetId];
+				if (!assetPrice) {
+					return [];
+				}
+				const assetPriceNumber = new BigNumber(assetPrice);
 				const amountNumber = new BigNumber(amount);
 				const componentAmount = amountNumber.times(investmentAmount);
 				const value = amountNumber.times(investmentAmount).times(assetPriceNumber).toString();
