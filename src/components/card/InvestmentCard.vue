@@ -17,21 +17,28 @@
 			id="logo"
 			:pool-id="investmentId"
 		/>
+		<ProtocolIcon
+			v-if="platformId == 'melon'"
+			id="logo"
+			:protocol-id="platformId"
+		/>
 	</div>
 </template>
 
 <script>
+import Card from './Card.vue';
 import SetIcon from '../icon/SetIcon.vue';
 import UniswapIcon from '../icon/UniswapIcon.vue';
-import Card from './Card.vue';
+import ProtocolIcon from '../icon/ProtocolIcon.vue';
 
 import Formatter from '../../utils/formatter.js';
 
 export default {
 	components: {
-		UniswapIcon,
-		SetIcon,
 		Card,
+		SetIcon,
+		UniswapIcon,
+		ProtocolIcon,
 	},
 	props: {
 		amount: {

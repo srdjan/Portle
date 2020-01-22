@@ -21,6 +21,12 @@
 				<UniswapIcon :pool-id="investment.id" />
 			</div>
 			<div
+				v-if="investment && investment.platformId == 'melon'"
+				id="investment-icon"
+			>
+				<ProtocolIcon :protocol-id="investment.platformId" />
+			</div>
+			<div
 				v-if="investment"
 				id="investment-view"
 			>
@@ -90,12 +96,14 @@ import tokenAddresses from '../../data/addresses.json';
 
 import SetIcon from '../../components/icon/SetIcon.vue';
 import UniswapIcon from '../../components/icon/UniswapIcon.vue';
+import ProtocolIcon from '../../components/icon/ProtocolIcon.vue';
 import WalletList from '../../components/group/WalletList.vue';
 
 export default {
 	components: {
 		SetIcon,
 		UniswapIcon,
+		ProtocolIcon,
 		WalletList,
 	},
 	data() {
