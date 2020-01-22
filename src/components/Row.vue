@@ -80,7 +80,7 @@ export default {
 <style scoped>
 .row {
 	display: flex;
-	margin-left: -1.5em;
+	margin: 0 0 0.5em -1.5em;
 	padding: 0;
 	background: white;
 	cursor: pointer;
