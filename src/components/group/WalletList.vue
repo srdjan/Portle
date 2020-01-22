@@ -309,6 +309,7 @@ export default {
 	}
 
 	#total-value-label {
+		width: 9em;
 		font-size: 0.625rem;
 		color: var(--inverted-secondary-text-color);
 	}
@@ -350,10 +351,10 @@ export default {
 	#add-wallet-text {
 		height: 2.25em;
 		margin-left: 0.25em;
-		min-width: 5em;
 	}
 
 	.wallet-address {
+		width: 9em;
 		font-size: 0.625em;
 		color: var(--inverted-secondary-text-color);
 	}
