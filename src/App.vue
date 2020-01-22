@@ -137,7 +137,7 @@ button {
 	cursor: pointer;
 	border: none;
 	background: var(--accent-color);
-	color: var(--inverted-primary-text-color);
+	color: var(--primary-text-color);
 	border-radius: 4px;
 }
 
