@@ -44,7 +44,7 @@
 			<button
 				id="add"
 				class="big"
-				:disabled="!_isAddressValid(walletId) || !walletId"
+				:disabled="!_isAddressValid(walletId) || !walletId || processing"
 				@click="saveAddressWallet()"
 			>
 				Add wallet
@@ -63,7 +63,7 @@
 			<button
 				id="add"
 				class="primary big"
-				:disabled="!_isEnsValid(walletId) || !walletId"
+				:disabled="!_isEnsValid(walletId) || !walletId || processing"
 				@click="saveEnsWallet()"
 			>
 				Add wallet
@@ -117,6 +117,7 @@ export default {
 		return {
 			selectedWalletType: walletTypes[0].id,
 			walletId: '',
+			processing: false,
 		};
 	},
 	computed: {
@@ -148,12 +149,16 @@ export default {
 		},
 		async saveEnsWallet() {
 			const ens = this.walletId;
+			this.processing = true;
 			const address = await this._resolveEns(ens);
+			this.processing = false;
 			this._saveWallet(address);
 		},
 		async saveWeb3Wallet() {
+			this.processing = true;
 			// eslint-disable-next-line no-undef
 			const addresses = await ethereum.enable();
+			this.processing = false;
 			const address = addresses[0];
 			this._saveWallet(address);
 		},
