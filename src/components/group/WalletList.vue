@@ -18,14 +18,16 @@
 				:key="wallet.address"
 				class="wallet"
 				:class="{ 'wallet-selected': walletId == selectedWallet }"
-				@click="openWallet(wallet.address)"
 			>
 				<div class="wallet-data">
 					<WalletIcon
 						:wallet-id="walletId"
 						class="wallet-icon"
 					/>
-					<div class="wallet-details">
+					<div
+						class="wallet-details"
+						@click="openWallet(wallet.address)"
+					>
 						<div class="wallet-address">
 							{{ formatWalletAddress(wallet.address) }}
 						</div>
@@ -203,7 +205,6 @@ export default {
 	border-top: 1px solid var(--outline-color);
 	display: flex;
 	align-items: center;
-	cursor: pointer;
 }
 
 .wallet {
@@ -214,6 +215,10 @@ export default {
 	background: var(--brand-color);
 	margin: 0 -1em;
 	padding: 1.25em 1.5em;
+}
+
+.wallet-details {
+	cursor: pointer;
 }
 
 .wallet-actions {
@@ -237,6 +242,10 @@ export default {
 
 .wallet-selected .wallet-actions > img {
 	filter: invert(100%);
+}
+
+#add-wallet {
+	cursor: pointer;
 }
 
 #add-wallet-icon {
