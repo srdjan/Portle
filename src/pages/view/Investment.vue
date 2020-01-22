@@ -97,6 +97,7 @@ import tokenAddresses from '../../data/addresses.json';
 import SetIcon from '../../components/icon/SetIcon.vue';
 import UniswapIcon from '../../components/icon/UniswapIcon.vue';
 import ProtocolIcon from '../../components/icon/ProtocolIcon.vue';
+import AssetIcon from '../../components/icon/AssetIcon.vue';
 import WalletList from '../../components/group/WalletList.vue';
 
 export default {
@@ -104,6 +105,7 @@ export default {
 		SetIcon,
 		UniswapIcon,
 		ProtocolIcon,
+		AssetIcon,
 		WalletList,
 	},
 	data() {
