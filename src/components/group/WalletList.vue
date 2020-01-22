@@ -229,14 +229,16 @@ export default {
 	display: initial;
 }
 
-.wallet-actions > img {
+.copy-address-icon,
+.remove-wallet-icon {
 	margin-left: 0.5em;
 	height: 1.25em;
 	width: 1.25em;
 	opacity: 0.25;
 }
 
-.wallet-actions > img:hover {
+.copy-address-icon:hover,
+.remove-wallet-icon:hover {
 	opacity: 0.5;
 }
 
@@ -367,8 +369,18 @@ export default {
 		font-weight: normal;
 	}
 
-	.wallet:hover > .wallet-actions {
+	.wallet-actions {
+		display: initial;
+	}
+
+	.copy-address-icon {
 		display: none;
+	}
+
+	.remove-wallet-icon {
+		margin-left: 0;
+		opacity: 0.5;
+		filter: invert();
 	}
 
 	#add-wallet {
