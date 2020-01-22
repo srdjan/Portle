@@ -39,7 +39,7 @@ export default {
 			type: Number,
 			default: 0,
 		},
-		platformId: {
+		protocolId: {
 			type: String,
 			default: '',
 		},
@@ -57,7 +57,7 @@ export default {
 			return Formatter.formatAsset(this.assetId);	
 		},
 		title() {
-			return Formatter.formatPlatform(this.platformId);
+			return Formatter.formatProtocol(this.protocolId);
 		},
 	},
 };

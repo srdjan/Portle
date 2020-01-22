@@ -3,11 +3,11 @@
 		<div id="list">
 			<InvestmentCard
 				v-for="investment in sortedInvestments"
-				:key="investment.walletId + '-' + investment.platformId + '-' + investment.id"
+				:key="investment.walletId + '-' + investment.protocolId + '-' + investment.id"
 				:amount="investment.amount"
 				:investment-id="investment.id"
 				:wallet-id="investment.walletId"
-				:platform-id="investment.platformId"
+				:protocol-id="investment.protocolId"
 				:price="investment.price"
 				@click.native="openInvestment(investment)"
 			/>
@@ -15,11 +15,11 @@
 		<div id="table">
 			<Row
 				v-for="investment in sortedInvestments"
-				:key="investment.walletId + '-' + investment.platformId + '-' + investment.id"
+				:key="investment.walletId + '-' + investment.protocolId + '-' + investment.id"
 				:wallet-id="investment.walletId"
 				:amount="investment.amount"
 				:ticker="formatInvestment(investment)"
-				:title="formatPlatform(investment.platformId)"
+				:title="formatProtocol(investment.protocolId)"
 				:price="investment.price"
 				@click.native="openInvestment(investment)"
 			/>
@@ -60,8 +60,8 @@ export default {
 		sortedInvestments() {
 			const investments = [];
 			for (const rawInvestment of this.investments) {
-				const { walletId, platformId, id, balance } = rawInvestment;
-				const components = this.components[platformId][id];
+				const { walletId, protocolId, id, balance } = rawInvestment;
+				const components = this.components[protocolId][id];
 				const price = this._getPrice(components);
 				if (!price) {
 					continue;
@@ -72,7 +72,7 @@ export default {
 				const investment = {
 					walletId,
 					id,
-					platformId,
+					protocolId,
 					amount,
 					price,
 					value,
@@ -97,23 +97,23 @@ export default {
 	},
 	methods: {
 		openInvestment(investment) {
-			const { walletId, platformId, id } = investment;
+			const { walletId, protocolId, id } = investment;
 			const walletList = Storage.getWalletList();
 			const walletAddress = walletList[walletId].address;
-			const path = `/wallet/${walletAddress}/investment/${platformId}/${id}`;
+			const path = `/wallet/${walletAddress}/investment/${protocolId}/${id}`;
 			this.$router.push(path);
 		},
 		formatInvestment(investment) {
-			if (investment.platformId == 'uniswap') {
+			if (investment.protocolId == 'uniswap') {
 				return Formatter.formatUniswapPool(investment.id);
 			}
-			if (investment.platformId == 'tokensets') {
+			if (investment.protocolId == 'tokensets') {
 				return Formatter.formatSet(investment.id);
 			}
 			return investment.id;
 		},
-		formatPlatform(platformId) {
-			return Formatter.formatPlatform(platformId);
+		formatProtocol(protocolId) {
+			return Formatter.formatProtocol(protocolId);
 		},
 		_getPrice(components) {
 			let price = new BigNumber(0);

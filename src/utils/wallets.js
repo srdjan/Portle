@@ -30,14 +30,14 @@ class Wallets {
 		for (const walletIndex in wallets) {
 			const walletId = parseInt(walletIndex);
 			const wallet = wallets[walletId];
-			for (const platformId in wallet.deposits) {
-				const platformBalance = wallet.deposits[platformId];
-				for (const assetId in platformBalance) {
-					const balance = platformBalance[assetId];
+			for (const protocolId in wallet.deposits) {
+				const protocolBalance = wallet.deposits[protocolId];
+				for (const assetId in protocolBalance) {
+					const balance = protocolBalance[assetId];
 					if (balance != '0') {
 						const deposit = {
 							walletId,
-							platformId,
+							protocolId,
 							assetId,
 							balance,
 						};
@@ -57,14 +57,14 @@ class Wallets {
 		for (const walletIndex in wallets) {
 			const walletId = parseInt(walletIndex);
 			const wallet = wallets[walletId];
-			for (const platformId in wallet.investments) {
-				const platformBalance = wallet.investments[platformId];
-				for (const id in platformBalance) {
-					const balance = platformBalance[id];
+			for (const protocolId in wallet.investments) {
+				const protocolBalance = wallet.investments[protocolId];
+				for (const id in protocolBalance) {
+					const balance = protocolBalance[id];
 					if (balance != '0') {
 						const investment = {
 							walletId,
-							platformId,
+							protocolId,
 							id,
 							balance,
 						};

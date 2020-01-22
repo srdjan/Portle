@@ -8,19 +8,19 @@
 			:price="price"
 		/>
 		<SetIcon
-			v-if="platformId == 'tokensets'"
+			v-if="protocolId == 'tokensets'"
 			id="logo"
 			:set-id="investmentId"
 		/>
 		<UniswapIcon
-			v-if="platformId == 'uniswap'"
+			v-if="protocolId == 'uniswap'"
 			id="logo"
 			:pool-id="investmentId"
 		/>
 		<ProtocolIcon
-			v-if="platformId == 'melon'"
+			v-if="protocolId == 'melon'"
 			id="logo"
-			:protocol-id="platformId"
+			:protocol-id="protocolId"
 		/>
 	</div>
 </template>
@@ -53,7 +53,7 @@ export default {
 			type: Number,
 			default: 0,
 		},
-		platformId: {
+		protocolId: {
 			type: String,
 			default: '',
 		},
@@ -64,16 +64,17 @@ export default {
 	},
 	computed: {
 		ticker() {
-			if (this.platformId == 'uniswap') {
+			if (this.protocolId == 'uniswap') {
 				return Formatter.formatUniswapPool(this.investmentId);
 			}
-			if (this.platformId == 'tokensets') {
+			if (this.protocolId == 'tokensets') {
 				return Formatter.formatSet(this.investmentId);
 			}
 			return this.investmentId;
 		},
 		title() {
-			return Formatter.formatPlatform(this.platformId);
+			const title = Formatter.formatProtocol(this.protocolId)
+			return title;
 		},
 	},
 };

@@ -14,8 +14,8 @@ class Formatter {
 		return ticker;
 	}
 
-	static formatPlatform(platformId) {
-		const platformMap = {
+	static formatProtocol(protocolId) {
+		const protocolMap = {
 			'compound': 'Compound',
 			'dydx': 'dYdX',
 			'fulcrum': 'Fulcrum',
@@ -24,8 +24,8 @@ class Formatter {
 			'tokensets': 'TokenSets',
 			'melon': 'Melon',
 		};
-		const platform = platformMap[platformId];
-		return platform;
+		const protocol = protocolMap[protocolId];
+		return protocol;
 	}
 
 	static formatAmount(amountString) {

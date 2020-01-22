@@ -21,9 +21,9 @@
 				<div id="amount">
 					{{ formatAmount(deposit.amount) }} {{ formatAsset(deposit.assetId) }}
 				</div>
-				<div id="platform-details">
+				<div id="protocol-details">
 					<div>
-						{{ formatPlatform(deposit.platformId) }}
+						{{ formatProtocol(deposit.protocolId) }}
 					</div>
 					<div>
 						{{ formatRate(deposit.rate) }}
@@ -70,7 +70,7 @@ export default {
 	data() {
 		return {
 			address: '',
-			platformId: '',
+			protocolId: '',
 			assetId: '',
 			wallets: [],
 			components: {
@@ -102,7 +102,7 @@ export default {
 			}
 			const assetName = tokens[this.assetId];
 			const assetId = this.assetId;
-			const platformId = this.platformId;
+			const protocolId = this.protocolId;
 			const rate = this.rate;
 			const price = this.prices[assetId];
 			const balance = this.balance;
@@ -113,7 +113,7 @@ export default {
 			const amountNumber = new BigNumber(amount);
 			const value = amountNumber.times(price).toString();
 			const asset = {
-				platformId,
+				protocolId,
 				assetId,
 				assetName,
 				amount,
@@ -128,18 +128,18 @@ export default {
 			if (!wallet) {
 				return 0;
 			}
-			const balance = wallet.deposits[this.platformId][this.assetId];
+			const balance = wallet.deposits[this.protocolId][this.assetId];
 			if (!balance) {
 				return 0;
 			}
 			return balance;
 		},
 		rate() {
-			const platformRates = this.rates.supply[this.platformId];
-			if (!platformRates) {
+			const protocolRates = this.rates.supply[this.protocolId];
+			if (!protocolRates) {
 				return 0;
 			}
-			const rate = platformRates[this.assetId];
+			const rate = protocolRates[this.assetId];
 			if (!rate) {
 				return 0;
 			}
@@ -165,7 +165,7 @@ export default {
 			return;
 		}
 		this.address = this.$route.params.wallet;
-		this.platformId = this.$route.params.platformId;
+		this.protocolId = this.$route.params.protocolId;
 		this.assetId = this.$route.params.assetId;
 
 		this._initWallets(walletList);
@@ -176,8 +176,8 @@ export default {
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
-		formatPlatform(platformId) {
-			return Formatter.formatPlatform(platformId);
+		formatProtocol(protocolId) {
+			return Formatter.formatProtocol(protocolId);
 		},
 		formatAmount(amountString) {
 			return Formatter.formatAmount(amountString);
@@ -234,8 +234,8 @@ export default {
 				assetSet[assetId] = true;
 			}
 			for (const investment of this.investments) {
-				const { platformId, id } = investment;
-				const components = this.components[platformId][id];
+				const { protocolId, id } = investment;
+				const components = this.components[protocolId][id];
 				for (const component of components) {
 					const { assetId } = component;
 					assetSet[assetId] = true;
@@ -610,14 +610,14 @@ export default {
 	color: var(--inverted-primary-text-color);
 }
 
-#platform-details,
+#protocol-details,
 #asset-details {
 	display: flex;
 	font-size: 1.5em;
 	justify-content: space-between;
 }
 
-#platform-details {
+#protocol-details {
 	margin-top: 1.25rem;
 }
 
@@ -651,7 +651,7 @@ export default {
 		width: 90%;
 	}
 
-	#platform-details > div {
+	#protocol-details > div {
 		font-size: 1.125rem;
 		text-align: center;
 	}

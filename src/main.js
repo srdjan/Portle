@@ -21,8 +21,8 @@ const routes = [
 	{ path: '/wallet/:wallet', component: Wallet },
 
 	{ path: '/wallet/:wallet/asset/:assetId', component: Asset },
-	{ path: '/wallet/:wallet/deposit/:platformId/:assetId', component: Deposit },
-	{ path: '/wallet/:wallet/investment/:platformId/:investmentId', component: Investment },
+	{ path: '/wallet/:wallet/deposit/:protocolId/:assetId', component: Deposit },
+	{ path: '/wallet/:wallet/investment/:protocolId/:investmentId', component: Investment },
 ];
 
 const router = new VueRouter({

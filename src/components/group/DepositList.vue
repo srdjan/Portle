@@ -3,11 +3,11 @@
 		<div id="list">
 			<DepositCard
 				v-for="deposit in sortedDeposits"
-				:key="deposit.walletId + '-' + deposit.platformId + '-' + deposit.assetId"
+				:key="deposit.walletId + '-' + deposit.protocolId + '-' + deposit.assetId"
 				:amount="deposit.amount"
 				:asset-id="deposit.assetId"
 				:wallet-id="deposit.walletId"
-				:platform-id="deposit.platformId"
+				:protocol-id="deposit.protocolId"
 				:rate="deposit.rate"
 				:price="deposit.price"
 				@click.native="openDeposit(deposit)"
@@ -16,11 +16,11 @@
 		<div id="table">
 			<Row
 				v-for="deposit in sortedDeposits"
-				:key="deposit.walletId + '-' + deposit.platformId + '-' + deposit.assetId"
+				:key="deposit.walletId + '-' + deposit.protocolId + '-' + deposit.assetId"
 				:wallet-id="deposit.walletId"
 				:amount="deposit.amount"
 				:ticker="formatAsset(deposit.assetId)"
-				:title="formatPlatform(deposit.platformId)"
+				:title="formatProtocol(deposit.protocolId)"
 				:rate="deposit.rate"
 				:price="deposit.price"
 				@click.native="openDeposit(deposit)"
@@ -62,9 +62,9 @@ export default {
 		sortedDeposits() {
 			const deposits = [];
 			for (const rawDeposit of this.deposits) {
-				const { walletId, assetId, platformId, balance } = rawDeposit;
+				const { walletId, assetId, protocolId, balance } = rawDeposit;
 				const price = this.prices[assetId] || '0';
-				const rate = this.rates.supply[platformId][assetId];
+				const rate = this.rates.supply[protocolId][assetId];
 				const amount = Converter.toAmount(balance, assetId);
 				const amountNumber = new BigNumber(amount);
 				const value = amountNumber.times(price).toString();
@@ -72,7 +72,7 @@ export default {
 					walletId,
 					amount,
 					assetId,
-					platformId,
+					protocolId,
 					price,
 					rate,
 					value,
@@ -97,17 +97,17 @@ export default {
 	},
 	methods: {
 		openDeposit(deposit) {
-			const { walletId, platformId, assetId } = deposit;
+			const { walletId, protocolId, assetId } = deposit;
 			const walletList = Storage.getWalletList();
 			const walletAddress = walletList[walletId].address;
-			const path = `/wallet/${walletAddress}/deposit/${platformId}/${assetId}`;
+			const path = `/wallet/${walletAddress}/deposit/${protocolId}/${assetId}`;
 			this.$router.push(path);
 		},
 		formatAsset(assetId) {
 			return Formatter.formatAsset(assetId);
 		},
-		formatPlatform(platformId) {
-			return Formatter.formatPlatform(platformId);
+		formatProtocol(protocolId) {
+			return Formatter.formatProtocol(protocolId);
 		},
 	},
 };

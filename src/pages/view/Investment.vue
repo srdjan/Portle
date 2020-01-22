@@ -9,22 +9,22 @@
 		/>
 		<div id="investment-section">
 			<div
-				v-if="investment && investment.platformId == 'tokensets'"
+				v-if="investment && investment.protocolId == 'tokensets'"
 				id="investment-icon"
 			>
 				<SetIcon :set-id="investment.id" />
 			</div>
 			<div
-				v-if="investment && investment.platformId == 'uniswap'"
+				v-if="investment && investment.protocolId == 'uniswap'"
 				id="investment-icon"
 			>
 				<UniswapIcon :pool-id="investment.id" />
 			</div>
 			<div
-				v-if="investment && investment.platformId == 'melon'"
+				v-if="investment && investment.protocolId == 'melon'"
 				id="investment-icon"
 			>
-				<ProtocolIcon :protocol-id="investment.platformId" />
+				<ProtocolIcon :protocol-id="investment.protocolId" />
 			</div>
 			<div
 				v-if="investment"
@@ -41,7 +41,7 @@
 					</div>
 					<div id="price-details">
 						<div>
-							{{ formatPlatform(investment.platformId) }}
+							{{ formatProtocol(investment.protocolId) }}
 						</div>
 						<div id="price">
 							{{ formatMoney(investment.price) }}/
@@ -111,7 +111,7 @@ export default {
 	data() {
 		return {
 			address: '',
-			platformId: '',
+			protocolId: '',
 			investmentId: '',
 			wallets: [],
 			components: {
@@ -142,7 +142,7 @@ export default {
 				return;
 			}
 			const id = this.investmentId;
-			const platformId = this.platformId;
+			const protocolId = this.protocolId;
 			const amount = Converter.toAmount(this.balance, 'eth');
 			const valueNumber = this.investmentComponents
 				.reduce((sum, component) => sum.plus(component.value), new BigNumber(0));
@@ -150,7 +150,7 @@ export default {
 			const price = valueNumber.div(amount).toString();
 			const investment = {
 				id,
-				platformId,
+				protocolId,
 				amount,
 				price,
 				value,
@@ -161,10 +161,10 @@ export default {
 			if (!this.components) {
 				return [];
 			}
-			if (!this.components[this.platformId]) {
+			if (!this.components[this.protocolId]) {
 				return [];
 			}
-			const components = this.components[this.platformId][this.investmentId];
+			const components = this.components[this.protocolId][this.investmentId];
 			const investmentComponents = [];
 			const investmentAmount = Converter.toAmount(this.balance, 'eth');
 			for (const component of components) {
@@ -202,7 +202,7 @@ export default {
 			if (!wallet) {
 				return 0;
 			}
-			const balance = wallet.investments[this.platformId][this.investmentId];
+			const balance = wallet.investments[this.protocolId][this.investmentId];
 			if (!balance) {
 				return 0;
 			}
@@ -228,7 +228,7 @@ export default {
 			return;
 		}
 		this.address = this.$route.params.wallet;
-		this.platformId = this.$route.params.platformId;
+		this.protocolId = this.$route.params.protocolId;
 		this.investmentId = this.$route.params.investmentId;
 
 		this._initWallets(walletList);
@@ -246,29 +246,29 @@ export default {
 			return Formatter.formatAsset(assetId);
 		},
 		formatInvestmentId(investment) {
-			if (investment.platformId == 'uniswap') {
+			if (investment.protocolId == 'uniswap') {
 				return Formatter.formatUniswapPool(investment.id);
 			}
-			if (investment.platformId == 'tokensets') {
+			if (investment.protocolId == 'tokensets') {
 				return Formatter.formatSet(investment.id);
 			}
-			if (investment.platformId == 'melon') {
+			if (investment.protocolId == 'melon') {
 				return 'shares';
 			}
 			return investment.id;
 		},
 		formatInvestmentName(investment) {
-			if (investment.platformId == 'uniswap') {
+			if (investment.protocolId == 'uniswap') {
 				const assets = this.investmentId.split('_');
 				return `${this.formatAsset(assets[0])}-${this.formatAsset(assets[1])} Uniswap pool`;
 			}
-			if (investment.platformId == 'tokensets') {
+			if (investment.protocolId == 'tokensets') {
 				return Formatter.formatSetName(investment.id);
 			}
 			return investment.id;
 		},
-		formatPlatform(platformId) {
-			return Formatter.formatPlatform(platformId);
+		formatProtocol(protocolId) {
+			return Formatter.formatProtocol(protocolId);
 		},
 		formatAmount(amountString) {
 			return Formatter.formatAmount(amountString);
@@ -322,8 +322,8 @@ export default {
 				assetSet[assetId] = true;
 			}
 			for (const investment of this.investments) {
-				const { platformId, id } = investment;
-				const components = this.components[platformId][id];
+				const { protocolId, id } = investment;
+				const components = this.components[protocolId][id];
 				for (const component of components) {
 					const { assetId } = component;
 					assetSet[assetId] = true;

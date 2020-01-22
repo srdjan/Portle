@@ -207,8 +207,8 @@ export default {
 				assetSet[assetId] = true;
 			}
 			for (const investment of this.investments) {
-				const { platformId, id } = investment;
-				const components = this.components[platformId][id];
+				const { protocolId, id } = investment;
+				const components = this.components[protocolId][id];
 				for (const component of components) {
 					const { assetId } = component;
 					assetSet[assetId] = true;
