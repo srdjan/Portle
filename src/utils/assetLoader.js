@@ -49,6 +49,8 @@ import wbtcLogo from '../../public/img/assets/wbtc.svg';
 import wethLogo from '../../public/img/assets/weth.svg';
 import zrxLogo from '../../public/img/assets/zrx.svg';
 
+import melonLogo from '../../public/img/protocols/melon.svg';
+
 import btcdaiLogo from '../../public/img/sets/btcdai.svg';
 import btceth2575Logo from '../../public/img/sets/btceth2575.svg';
 import btceth5050Logo from '../../public/img/sets/btceth5050.svg';
@@ -126,6 +128,13 @@ class AssetLoader {
 			'zrx': zrxLogo,
 		};
 		return logoMap[assetId];
+	}
+
+	static loadProtocolLogo(protocolId) {
+		const logoMap = {
+			'melon': melonLogo,
+		};
+		return logoMap[protocolId];
 	}
 
 	static loadSetLogo(setId) {
