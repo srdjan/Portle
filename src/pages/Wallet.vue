@@ -594,11 +594,11 @@ export default {
 	margin-top: 1em;
 }
 
-@media all and (max-width: 767px) {
+@media all and (max-width: 1024px) {
 	#view {
 		display: block;
 	}
-
+	
 	#wallet-section {
 		flex-direction: row;
 		flex: 0;
@@ -607,7 +607,9 @@ export default {
 		overflow-x: auto;
 		padding: 0 1em 0.75em 1em;
 	}
+}
 
+@media all and (max-width: 768px) {
 	#asset-section {
 		flex: 0;
 		padding: 0;

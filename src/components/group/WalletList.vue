@@ -302,7 +302,7 @@ export default {
 
 /* Mobile */
 
-@media all and (max-width: 767px) {
+@media all and (max-width: 1024px) {
 	#total-value-wrapper {
 		flex-direction: column;
 		font-weight: normal;

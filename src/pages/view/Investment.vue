@@ -748,7 +748,7 @@ export default {
 	color: var(--secondary-text-color);
 }
 
-@media all and (max-width: 767px) {
+@media all and (max-width: 1024px) {
 	#view {
 		display: block;
 	}
@@ -761,7 +761,9 @@ export default {
 		overflow-x: auto;
 		padding: 0 1em 0.75em 1em;
 	}
+}
 
+@media all and (max-width: 767px) {
 	#asset {
 		height: initial;
 		padding: 3em 1.5em 1em 1.5em;

@@ -625,7 +625,7 @@ export default {
 	margin-top: 0.875rem;
 }
 
-@media all and (max-width: 767px) {
+@media all and (max-width: 1024px) {
 	#view {
 		display: block;
 	}
@@ -638,7 +638,9 @@ export default {
 		overflow-x: auto;
 		padding: 0 1em 0.75em 1em;
 	}
+}
 
+@media all and (max-width: 767px) {
 	#deposit-section {
 		padding: 4em 0 1em 0;
 	}
