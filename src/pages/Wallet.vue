@@ -602,7 +602,7 @@ export default {
 	#wallet-section {
 		flex-direction: row;
 		flex: 0;
-		align-items: end;
+		align-items: flex-end;
 		background: var(--brand-color);
 		color: var(--inverted-primary-text-color);
 		overflow-x: auto;

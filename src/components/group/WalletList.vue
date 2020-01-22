@@ -295,7 +295,6 @@ export default {
 
 	#wallet-list {
 		display: flex;
-		align-items: end;
 		margin: 0;
 	}
 
