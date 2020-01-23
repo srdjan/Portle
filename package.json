@@ -2,7 +2,7 @@
   "name": "portle-app",
   "version": "1.0.0",
   "description": "Portle app",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/Destiner/Portle.git"
