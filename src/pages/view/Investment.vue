@@ -527,7 +527,11 @@ export default {
 				const wallet = this.wallets[i];
 				for (const pool of pools) {
 					const addressMap = Converter.reverseMap(tokenAddresses);
-					const assetAddress = ethers.utils.getAddress(pool.exchange.tokenAddress);
+					const tokenAddress = pool.exchange.tokenAddress;
+					const address = tokenAddress == '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f'
+						? '0xc011a72400e58ecd99ee497cf89e3775d4bd732f'
+						: tokenAddress;
+					const assetAddress = ethers.utils.getAddress(address);
 					const assetId = addressMap[assetAddress];
 					if (!assetId) {
 						continue;
