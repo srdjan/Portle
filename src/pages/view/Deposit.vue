@@ -564,8 +564,6 @@ export default {
 }
 
 #wallet-section {
-	display: flex;
-	flex-direction: column;
 	flex: 1;
 	padding: 1.5em 1em;
 }
@@ -631,12 +629,7 @@ export default {
 	}
 
 	#wallet-section {
-		flex-direction: row;
-		flex: 0;
-		background: var(--brand-color);
-		color: var(--inverted-primary-text-color);
-		overflow-x: auto;
-		padding: 0 1em 0.75em 1em;
+		padding: 0;
 	}
 }
 
