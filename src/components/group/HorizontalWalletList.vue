@@ -56,7 +56,7 @@
 				:src="plusIcon"
 			>
 			<div id="add-wallet-text">
-				Wallet
+				Add wallet
 			</div>
 		</div>
 	</div>
@@ -261,15 +261,15 @@ export default {
 }
 
 #add-wallet-icon {
-	height: 1.125em;
-	width: 1.125em;
+	height: 0.75em;
+	width: 0.75em;
 	opacity: 1;
 	filter: invert();
 }
 
 #add-wallet-text {
-	width: 2.75em;
-	margin-left: 0.5em;
+	width: 4.5em;
+	margin-left: 0.25em;
 	font-size: 0.75em;
 }
 </style>
