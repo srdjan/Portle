@@ -5,7 +5,7 @@
 				Portle
 			</h1>
 			<h2 id="subtitle">
-				Decentralized finance portfolio management
+				Decentralized finance portfolio tracker
 			</h2>
 		</div>
 		<button
